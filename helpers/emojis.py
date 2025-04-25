@@ -8,7 +8,7 @@ X = "<:deny:1270407948643864586>"
 """X mark emoji."""
 DENY = XMARK = X
 """X mark emoji."""
-LOADING = "<a:loading:1268592455767293985>"
+LOADING = "<a:loading:1365446979244527737>"
 """Animated loading emoji."""
 WARNING = "<:warning:1270407924497383536>"
 """Exclamation mark emoji."""
