@@ -403,6 +403,8 @@ class Economy(commands.GroupCog, group_name="economy"):
     async def pay(self, ctx: Context, member: discord.Member, amount: discord.app_commands.Range[int, 1]):
         if amount < 1:
             return await ctx.send("pay.errors.positive")
+        if member == ctx.author:
+            return await ctx.send(content="??? xd")
 
         author_balance = await self.helper.get_balance(ctx.author.id, ctx.guild.id)
         if author_balance < amount:
@@ -411,7 +413,7 @@ class Economy(commands.GroupCog, group_name="economy"):
         await self.helper.add_money(member.id, ctx.guild.id, amount)
         await self.helper.remove_money(ctx.author.id, ctx.guild.id, amount)
 
-        await ctx.send("pay.success")
+        await ctx.send("pay.success", amount=amount, member=CustomMember.from_user(member))
 
     @app_commands.rename(
         member="global-member"
