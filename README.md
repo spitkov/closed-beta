@@ -10,6 +10,7 @@ Lumin is a Discord bot project with the purpose of updating & refactoring it's p
 1. Clone the repository
 2. Install the required packages using `pip install --upgrade -r requirements.txt`
     - You can use virtual environments to keep the dependencies isolated from your system _(recommended)_
+    - If you're using anything other than Windows, you must also install `uvloop`
 3. Create a `.env` file in the root directory of the project, this needs to have 4 keys:
     - `TOKEN`, containing your bot's token
     - `DB_HOST`, containing the IP address for your database (can be _`localhost`_ as well)
