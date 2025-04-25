@@ -240,7 +240,7 @@ class Economy(commands.GroupCog, group_name="economy"):
     async def leaderboard(self, ctx: commands.Context):
         rows = await self.client.db.fetch('SELECT * FROM economy WHERE guild_id = $1 ORDER BY cash+bank DESC LIMIT 10',
                                           ctx.guild.id)
-        message: dict = await self.custom_response("leaderboard", ctx)
+        message: dict = await self.custom_response("leaderboard", ctx, convert_embeds=False)
         embeds: list[discord.Embed] = message.get("embeds")
         if not rows:
             if embeds:
