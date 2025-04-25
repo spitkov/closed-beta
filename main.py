@@ -1,3 +1,5 @@
+import helpers
+
 if __name__ == "__main__":
     print("Importing modules...")
 import os
@@ -348,6 +350,10 @@ class MyClient(commands.AutoShardedBot):
                                for permission in error.missing_permissions]
 
                 await ctx.send("errors.missing_permissions", command=command, permissions=", ".join(permissions))
+            case commands.CommandOnCooldown():
+                error: commands.CommandOnCooldown
+                retry_after = helpers.convert_time_to_text(int(error.retry_after))
+                await ctx.send("errors.command_on_cooldown", command=command, retry_after=retry_after)
             case commands.ChannelNotFound():
                 await ctx.send("errors.channel_not_found", command=command)
             case commands.EmojiNotFound():

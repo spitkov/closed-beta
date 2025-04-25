@@ -888,6 +888,15 @@
                     }
                 ]
             },
+            "command_on_cooldown": {
+                "embeds": [
+                    {
+                        "title": "You're on cooldown",
+                        "description": "You may use this command in `{retry_after}`.",
+                        "color": 13369344
+                    }
+                ]
+            },
             "channel_not_found": {
                 "embeds": [
                     {
@@ -1878,6 +1887,15 @@
                                 "inline": false
                             }
                         ],
+                        "color": 13369344
+                    }
+                ]
+            },
+            "command_on_cooldown": {
+                "embeds": [
+                    {
+                        "title": "Egy picit lassíts!",
+                        "description": "A **{command.name}** parancsot legközelebb `{retry_after}` idő múlva használhatod újra.",
                         "color": 13369344
                     }
                 ]
