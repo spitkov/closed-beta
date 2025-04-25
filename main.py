@@ -120,13 +120,8 @@ class Context(commands.Context):
           - A localization key as the first positional argument (key)
           - A raw message string via the keyword-only argument `content`
 
-        If both or neither are provided, raises a ValueError.
+        No errors will be raised if both or neither are provided.
         """
-        if key is not None and content is not None:
-            raise ValueError("Cannot specify both 'key' and 'content'.")
-        if key is None and content is None:
-            raise ValueError("Must specify either a localization key or a content string.")
-
         base_args = {
             "content": content,
             "tts": tts,
