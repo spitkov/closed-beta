@@ -39,7 +39,7 @@ class Basic(commands.Cog):
         if not row:
             await self.client.db.execute("INSERT INTO afk (user_id, guild_id, message, state, previous_nick) VALUES($1, $2, $3, $4, $5)", ctx.author.id, ctx.guild.id, reason, True, ctx.author.display_name)
             try:
-                await ctx.author.edit(nick=(await self.custom_response("afk.nick", ctx, nickname=ctx.author.display_name)))
+                await ctx.author.edit(nick=(await self.custom_response("afk.name", ctx, nickname=ctx.author.display_name)))
             except discord.errors.Forbidden:
                 pass
             return await ctx.reply("afk.on")
@@ -56,7 +56,7 @@ class Basic(commands.Cog):
             # Turn on AFK
             await self.client.db.execute("UPDATE afk SET state = $1, message = $2, previous_nick = $3 WHERE user_id = $4 AND guild_id = $5", True, reason, ctx.author.display_name, ctx.author.id, ctx.guild.id)
             try:
-                await ctx.author.edit(nick=(await self.custom_response("afk.nick", ctx, nickname=ctx.author.display_name)))
+                await ctx.author.edit(nick=(await self.custom_response("afk.name", ctx, nickname=ctx.author.display_name)))
             except discord.Forbidden:
                 pass
             return await ctx.reply("afk.on")
