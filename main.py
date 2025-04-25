@@ -31,10 +31,15 @@ if __name__ == '__main__':
 
 load_dotenv()
 TOKEN = os.getenv("TOKEN")
-DEBUG = True
-"""Whether the bot is in debug mode or not. This controls which token to use and where to send error reports."""
+DEBUG = False
+"""Whether the bot is in debug mode or not. This controls which token to use and where to send error reports. If you're
+on Windows, this will be set to True."""
+if platform.system() == "Windows":
+    DEBUG = True
+    TOKEN = os.getenv("DEBUG_TOKEN")
+    logger.info("Running in debug mode!")
 
-_slash = localization.Localization("./slash.i18n.json", default_locale="en", separator="-")
+_slash = localization.Localization("/slash.i18n.json", default_locale="en", separator="-")
 
 if __name__ == '__main__':
     if platform.system() != "Windows":
@@ -43,8 +48,8 @@ if __name__ == '__main__':
         asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
         logger.info("Using uvloop event loop policy")
     else:
-        asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy()) # type: ignore
-        logger.info("Using WindowsSelector event loop policy")
+        asyncio.set_event_loop_policy(asyncio.DefaultEventLoopPolicy())
+        logger.info("Using default event loop policy")
 
 @dataclass
 class Command:
@@ -83,49 +88,6 @@ class Argument:
         )
 
 class Context(commands.Context):
-    @overload
-    async def send(
-        self,
-        key: str, *,
-        content: None = None,
-        tts: bool = False,
-        embed: Optional[discord.Embed] = None,
-        file: Optional[discord.File] = None,
-        stickers: Optional[Sequence[Union[discord.GuildSticker, discord.StickerItem]]] = None,
-        delete_after: Optional[float] = None,
-        nonce: Optional[Union[str, int]] = None,
-        allowed_mentions: Optional[discord.AllowedMentions] = None,
-        reference: Optional[Union[discord.Message, discord.MessageReference, discord.PartialMessage]] = None,
-        mention_author: Optional[bool] = None,
-        view: Optional[discord.ui.View] = None,
-        suppress_embeds: bool = False,
-        ephemeral: bool = False,
-        silent: bool = False,
-        poll: Optional[discord.Poll] = None,
-        **format_kwargs: object
-    ) -> discord.Message: ...
-
-    @overload
-    async def send(
-        self,
-        key: None = None, *,
-        content: str,
-        tts: bool = False,
-        embed: Optional[discord.Embed] = None,
-        file: Optional[discord.File] = None,
-        stickers: Optional[Sequence[Union[discord.GuildSticker, discord.StickerItem]]] = None,
-        delete_after: Optional[float] = None,
-        nonce: Optional[Union[str, int]] = None,
-        allowed_mentions: Optional[discord.AllowedMentions] = None,
-        reference: Optional[Union[discord.Message, discord.MessageReference, discord.PartialMessage]] = None,
-        mention_author: Optional[bool] = None,
-        view: Optional[discord.ui.View] = None,
-        suppress_embeds: bool = False,
-        ephemeral: bool = False,
-        silent: bool = False,
-        poll: Optional[discord.Poll] = None
-    ) -> discord.Message: ...
-
     async def send(
         self,
         key: Optional[str] = None,
@@ -205,7 +167,7 @@ class Context(commands.Context):
 
     async def reply(self, *args, **kwargs) -> discord.Message:
         """
-        Behaves like send, but automatically sets reference to self.message.
+        Behaves like send, but automatically sets reference to self.message. Don't use this unless it's necessary.
         """
         kwargs.setdefault("reference", self.message)
         return await self.send(*args, **kwargs)
@@ -233,11 +195,11 @@ class SlashCommandLocalizer(app_commands.Translator):
 class MyClient(commands.AutoShardedBot):
     """Represents the bot client. Inherits from `commands.AutoShardedBot`."""
 
-    # noinspection PyTypeChecker
     def __init__(self):
-        loop = asyncio.new_event_loop()
-        intents = discord.Intents.all()
-        self.db: asyncpg.Pool = None
+        self.uptime: Optional[datetime.datetime] = None
+        self.loop: asyncio.AbstractEventLoop = asyncio.new_event_loop()
+        intents: discord.Intents = discord.Intents.all()
+        self.db: Optional[asyncpg.Pool] = None
         self.ready_event = asyncio.Event()
         self.devs = [
             648168353453572117, # pearoo
@@ -253,7 +215,7 @@ class MyClient(commands.AutoShardedBot):
             activity=discord.CustomActivity(name="Bot starting...", emoji="🟡"),
             status=discord.Status.idle,
             chunk_guilds_at_startup=False,
-            loop=loop,
+            loop=self.loop,
             member_cache_flags=discord.MemberCacheFlags.from_intents(intents),
             max_messages=20000
         )
@@ -342,7 +304,6 @@ class MyClient(commands.AutoShardedBot):
         logger.info("Loading cogs...")
         benchmark = perf_counter()
         # Load all cogs within the cogs folder
-        ignore: list[str] = ["join.py", "setup.py", "whitelist.py", "giveaway.py", "fun.py", "globalban.py", "handlers.py", "ipc_server.py", "itdt.py", "log.py", "nevnap.py", "poll.py", "raid.py", "report.py", "say.py", "serverstats_v2.py", "szwhite.py", "tickets.py", "topgg_cog.py", "twitch.py", "valuta.py", "yt_announcer.py", "yt.py", "main.py"]
         allowed: list[str] = ["basic", "closedbeta", "economy", "snapshot", "status"]
         cogs = Path("./cogs").glob("*.py")
         for cog in cogs:
@@ -360,7 +321,7 @@ class MyClient(commands.AutoShardedBot):
         logger.info(f"Loaded cogs: {', '.join([cog for cog in self.cogs])}")
         logger.info(f"discord-localization v{localization.__version__}")
 
-    async def on_command_error(self, ctx: commands.Context, error: discord.errors.DiscordException):
+    async def on_command_error(self, ctx: Context, error: Union[discord.errors.DiscordException, app_commands.AppCommandError]):
         if ctx.command:
             command = Command.from_ctx(ctx)
         match error:
@@ -368,94 +329,37 @@ class MyClient(commands.AutoShardedBot):
                 error: commands.MissingRequiredArgument
                 name = _slash(error.param.name, ctx)
                 parameter = f"[{name if error.param.required else f'({name})'}]"
-                message = await self.custom_response(
-                    "errors.missing_required_argument", ctx,
-                    command=command,
-                    parameter=parameter
-                )
 
-                await ctx.send(**message)
-            case commands.BotMissingPermissions():
+                await ctx.send("errors.missing_required_argument", command=command, parameter=parameter)
+            case commands.BotMissingPermissions(), app_commands.BotMissingPermissions():
                 error: commands.BotMissingPermissions
                 permissions = [(await self.custom_response(f"permissions.{permission}", ctx))
                                for permission in error.missing_permissions]
 
-                message = await self.custom_response(
-                    "errors.bot_missing_permissions", ctx,
-                    command=command,
-                    permissions=", ".join(permissions)
-                )
-
-                await ctx.send(**message)
+                await ctx.send("errors.bot_missing_permissions", command=command, permissions=", ".join(permissions))
             case commands.BadArgument():
-                message = await self.custom_response(
-                    "errors.bad_argument", ctx,
-                    command=command
-                )
-
-                await ctx.reply(**message)
-            case commands.MissingPermissions():
+                await ctx.send("errors.bad_argument", command=command)
+            case commands.MissingPermissions(), discord.app_commands.MissingPermissions():
                 error: commands.MissingPermissions
                 permissions = [(await self.custom_response(f"permissions.{permission}", ctx))
                                for permission in error.missing_permissions]
 
-                message = await self.custom_response(
-                    "errors.missing_permissions", ctx,
-                    command=command,
-                    permissions=", ".join(permissions)
-                )
-
-                await ctx.reply(**message)
+                await ctx.send("errors.missing_permissions", command=command, permissions=", ".join(permissions))
             case commands.ChannelNotFound():
-                message = await self.custom_response(
-                    "errors.channel_not_found", ctx,
-                    command=command
-                )
-
-                await ctx.send(**message)
+                await ctx.send("errors.channel_not_found", command=command)
             case commands.EmojiNotFound():
-                message = await self.custom_response(
-                    "errors.emoji_not_found", ctx,
-                    command=command
-                )
-
-                await ctx.reply(**message)
+                await ctx.send("errors.emoji_not_found", command=command)
             case commands.MemberNotFound():
-                message = await self.custom_response(
-                    "errors.member_not_found", ctx,
-                    command=command
-                )
-
-                await ctx.send(**message)
+                await ctx.send("errors.member_not_found", command=command)
             case commands.UserNotFound():
-                message = await self.custom_response(
-                    "errors.user_not_found", ctx,
-                    command=command
-                )
-
-                await ctx.reply(**message)
+                await ctx.send("errors.user_not_found", command=command)
             case commands.RoleNotFound():
-                message = await self.custom_response(
-                    "errors.role_not_found", ctx,
-                    command=command
-                )
-
-                await ctx.send(**message)
+                await ctx.send("errors.role_not_found", command=command)
             case discord.Forbidden():
-                message = await self.custom_response(
-                    "errors.forbidden", ctx,
-                    command=command
-                )
-
-                await ctx.reply(**message)
+                await ctx.send("errors.forbidden", command=command)
             case commands.NotOwner():
-                message = await self.custom_response(
-                    "errors.not_owner", ctx,
-                    command=command
-                )
-
-                await ctx.send(**message)
-            case commands.CommandNotFound():
+                await ctx.send("errors.not_owner", command=command)
+            case commands.CommandNotFound(), app_commands.CommandNotFound():
                 return
             case discord.RateLimited():
                 channel: discord.TextChannel = await self.fetch_channel(1268260404677574697)
@@ -605,7 +509,7 @@ async def start():
     try:
         await client.start(TOKEN)
     except KeyboardInterrupt:
-        logger.info("SIGINT received, bot is shutting down")
+        logger.error("KeyboardInterrupt: Bot shut down by console")
         await client.close()
 
 if __name__ == "__main__":

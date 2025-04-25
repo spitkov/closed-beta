@@ -237,10 +237,10 @@ class Economy(commands.GroupCog, group_name="economy"):
         self.custom_response = custom_response.CustomResponse(client, name="economy")
 
     @commands.hybrid_command(name="leaderboard", description="leaderboard_specs-description")
-    async def leaderboard(self, ctx: Context):
+    async def leaderboard(self, ctx: commands.Context):
         rows = await self.client.db.fetch('SELECT * FROM economy WHERE guild_id = $1 ORDER BY cash+bank DESC LIMIT 10',
                                           ctx.guild.id)
-        message = await self.custom_response("leaderboard", ctx)
+        message: dict = await self.custom_response("leaderboard", ctx)
         embeds: list[discord.Embed] = message.get("embeds")
         if not rows:
             if embeds:
@@ -370,6 +370,8 @@ class Economy(commands.GroupCog, group_name="economy"):
             await ctx.send("luck.errors.balance", amount=minimum_balance)
 
         amount = random.randint(200, 1000)
+        if balance - amount < 0:
+            await ctx.send("luck.errors.balance", amount=minimum_balance)
 
         won = random_helper.randbool()
         if won:
@@ -429,7 +431,7 @@ class Economy(commands.GroupCog, group_name="economy"):
                     if len(embed.fields) > 2:
                         message["embeds"][index].remove_field(2)
 
-        await ctx.send(**message)
+        await ctx.send(content="", **message)
 
     @app_commands.rename(
         bet="slots_specs-args-bet-name"
@@ -462,7 +464,7 @@ class Economy(commands.GroupCog, group_name="economy"):
             except ValueError:
                 new_balance = await self.helper.set_balance(ctx.author.id, ctx.guild.id, balance - bet, "bank")
 
-            message: dict = await self.custom_response("slots.lose", ctx, results=" ".join(results), amount=bet)
+            message: dict = await self.custom_response("slots.lose", ctx, convert_embeds=False, results=" ".join(results), amount=bet)
             if new_balance >= 0: # remove the debt alert embed field
                 if message.get("embeds"):
                     for index, embed in enumerate(message["embeds"]):
