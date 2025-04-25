@@ -565,7 +565,7 @@ class Shop(commands.Cog):
         if not row:
             return await ctx.send("shop.list.empty")
 
-        message = await self.custom_response.get_message("shop.list.show", ctx)
+        message: dict = await self.custom_response.get_message("shop.list.show", ctx)
         embeds: list[discord.Embed] = message.get("embeds")
         if message.get("embeds"):
             template = embeds[0].to_dict().get("fields", [None])[0]

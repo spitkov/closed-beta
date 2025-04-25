@@ -348,7 +348,7 @@ class CustomRole:
             _created_at=role.created_at,
             mention=role.mention,
             _members=role.members,
-            _purchaseable=role.tags.is_available_for_purchase()
+            _purchaseable=role.tags.is_available_for_purchase() if role.tags else False
         )
 
     @property
