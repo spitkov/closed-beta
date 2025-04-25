@@ -39,7 +39,7 @@ if platform.system() == "Windows":
     TOKEN = os.getenv("DEBUG_TOKEN")
     logger.info("Running in debug mode!")
 
-_slash = localization.Localization("/slash.i18n.json", default_locale="en", separator="-")
+_slash = localization.Localization("./slash.i18n.json", default_locale="en", separator="-")
 
 if __name__ == '__main__':
     if platform.system() != "Windows":
