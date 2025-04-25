@@ -304,7 +304,6 @@ class Economy(commands.GroupCog, group_name="economy"):
         amount="addmoney_specs-args-amount-description",
         account="addmoney_specs-args-account-description"
     )
-    @app_commands.checks.has_permissions(administrator=True)
     @app_commands.choices(
         account=[
             app_commands.Choice(name="global-cash", value="cash"),
@@ -316,6 +315,8 @@ class Economy(commands.GroupCog, group_name="economy"):
         description="addmoney_specs-description",
         usage="addmoney_specs-usage"
     )
+    @app_commands.checks.has_permissions(administrator=True)
+    @commands.has_permissions(administrator=True)
     async def addmoney(self, ctx: Context, member: discord.Member, amount: discord.app_commands.Range[int, 1],
                        account: Literal["cash", "bank"] = "cash"):
         if amount > 0:
@@ -336,7 +337,6 @@ class Economy(commands.GroupCog, group_name="economy"):
         amount="removemoney_specs-args-amount-description",
         account="removemoney_specs-args-account-description"
     )
-    @app_commands.checks.has_permissions(administrator=True)
     @app_commands.choices(
         account=[
             app_commands.Choice(name="global-cash", value="cash"),
@@ -348,6 +348,8 @@ class Economy(commands.GroupCog, group_name="economy"):
         description="removemoney_specs-description",
         usage="removemoney_specs-usage"
     )
+    @app_commands.checks.has_permissions(administrator=True)
+    @commands.has_permissions(administrator=True)
     async def removemoney(self, ctx: Context, member: discord.Member, amount: discord.app_commands.Range[int, 1],
                           account: Literal["cash", "bank"] = "cash"):
         if amount > 0:
