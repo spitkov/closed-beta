@@ -324,6 +324,9 @@ class MyClient(commands.AutoShardedBot):
         elif hasattr(ctx, "command") and ctx.command:
             command = Command.from_ctx(ctx)
 
+        if isinstance(error, commands.HybridCommandError):
+            error = error.original # type: ignore
+
         match error:
             case commands.MissingRequiredArgument():
                 error: commands.MissingRequiredArgument
@@ -339,7 +342,7 @@ class MyClient(commands.AutoShardedBot):
                 await ctx.send("errors.bot_missing_permissions", command=command, permissions=", ".join(permissions))
             case commands.BadArgument():
                 await ctx.send("errors.bad_argument", command=command)
-            case commands.MissingPermissions() | discord.app_commands.MissingPermissions():
+            case commands.MissingPermissions() | app_commands.MissingPermissions():
                 error: commands.MissingPermissions
                 permissions = [(await self.custom_response(f"permissions.{permission}", ctx))
                                for permission in error.missing_permissions]
