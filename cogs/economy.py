@@ -4,6 +4,7 @@ import discord
 from discord import app_commands
 from discord.ext import commands, localization
 
+import main
 from main import MyClient, Context
 from helpers import custom_response
 from helpers import random_helper
@@ -244,7 +245,7 @@ class Economy(commands.GroupCog, group_name="economy"):
         embeds: list[discord.Embed] = message.get("embeds")
         if not rows:
             if embeds:
-                embeds[0].remove_field(1)
+                embeds[0].remove_field(0)
             return await ctx.send(**message)
 
         if embeds:
