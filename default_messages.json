@@ -1010,30 +1010,25 @@
             "name": "[AKF] {nickname}"
         },
         "ping": {
-            "pong": {
-                "content": "Pong..."
-            },
-            "latency": {
-                "content": null,
-                "embeds": [
-                    {
-                        "title": "Pong!",
-                        "fields": [
-                            {
-                                "name": "Bot válaszidő",
-                                "value": "`{latency:.3f}mp`",
-                                "inline": false
-                            },
-                            {
-                                "name": "Adatbázis válaszidő",
-                                "value": "`{db:.3f}mp`",
-                                "inline": false
-                            }
-                        ],
-                        "color": 6656243
-                    }
-                ]
-            }
+            "embeds": [
+                {
+                    "title": "Pong!",
+                    "fields": [
+                        {
+                            "name": "Bot válaszidő",
+                            "value": "`{latency:.3f}s`",
+                            "inline": false
+                        },
+                        {
+                            "name": "Adatbázis ping",
+                            "value": "`{db:.3f}s`",
+                            "inline": false
+                        }
+                    ],
+                    "color": 6656243
+                }
+            ],
+            "reply": false
         },
         "all": [
             "mind",
