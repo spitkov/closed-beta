@@ -16,14 +16,14 @@ class ClosedBeta(commands.GroupCog, group_name="beta"):
 	@commands.hybrid_command(name="add")
 	async def add_guild_to_closed_beta(self, ctx: main.Context, guild_id):
 		if not ctx.author.id in self.client.devs:
-			return await ctx.reply("You are not a developer.")
+			return await ctx.reply(content="You are not a developer.")
 		await self.client.db.execute("INSERT INTO closed_beta(guild_id, added_by) VALUES ($1, $2)", guild_id, ctx.author.id)
 		await ctx.reply(f"Guild **{guild_id}** added to closed beta.")
 
 	@commands.hybrid_command(name="remove")
 	async def remove_guild_from_closed_beta(self, ctx: main.Context, guild_id):
 		if not ctx.author.id in self.client.devs:
-			return await ctx.reply("You are not a developer.")
+			return await ctx.reply(content="You are not a developer.")
 		await self.client.db.execute("DELETE FROM closed_beta WHERE guild_id = $1", guild_id)
 		await ctx.reply(f"Guild **{guild_id}** removed from closed beta.")
 
