@@ -71,7 +71,7 @@ class Basic(commands.Cog):
         await self.client.db.execute("SELECT guild_id FROM guilds WHERE guild_id = $1", ctx.guild.id)
         database = perf_counter() - database_start
         
-        await ctx.send("ping", latency=self.client.latency, db=database)
+        await ctx.send("ping", latency=float(self.client.latency), db=float(database))
 
 async def setup(client: MyClient):
     await client.add_cog(Basic(client))

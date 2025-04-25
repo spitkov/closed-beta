@@ -1025,12 +1025,7 @@
                                 "inline": false
                             },
                             {
-                                "name": "Üzenetkezelési idő",
-                                "value": "`{roundtrip:.3f}mp`",
-                                "inline": false
-                            },
-                            {
-                                "name": "Adatbázis ping",
+                                "name": "Adatbázis válaszidő",
                                 "value": "`{db:.3f}mp`",
                                 "inline": false
                             }
