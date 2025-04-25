@@ -268,6 +268,7 @@ class Economy(commands.GroupCog, group_name="economy"):
         name="work",
         description="work_specs-description"
     )
+    @commands.cooldown(1, 3600, commands.BucketType.user)
     async def work(self, ctx: Context):
         amount: int = random.randint(300, 1500)
         await self.helper.add_money(ctx.author.id, ctx.guild.id, amount)
@@ -288,6 +289,7 @@ class Economy(commands.GroupCog, group_name="economy"):
         name="daily",
         description="daily_specs-description"
     )
+    @commands.cooldown(1, 86400, commands.BucketType.user)
     async def daily(self, ctx: Context):
         amount = 5000
         await self.helper.add_money(ctx.author.id, ctx.guild.id, amount)
@@ -366,6 +368,7 @@ class Economy(commands.GroupCog, group_name="economy"):
         name="luck",
         description="luck_specs-description"
     )
+    @commands.cooldown(1, 3600, commands.BucketType.user)
     async def luck(self, ctx: Context):
         balance = await self.helper.get_balance(ctx.author.id, ctx.guild.id)
         minimum_balance = 1000
@@ -447,6 +450,7 @@ class Economy(commands.GroupCog, group_name="economy"):
         description="slots_specs-description",
         usage="slots_specs-usage"
     )
+    @commands.cooldown(1, 3600, commands.BucketType.user)
     async def slots(self, ctx: Context, bet: int):
         balance = await self.helper.get_balance(ctx.author.id, ctx.guild.id)
 
