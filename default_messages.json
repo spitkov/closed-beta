@@ -1,0 +1,1259 @@
+{
+    "en": {
+        "afk": {
+            "dnd": "AFK",
+            "link": {
+                "content": "Your AFK status can't contain invite links!"
+            },
+            "on": {
+                "content": "You are now AFK."
+            },
+            "off": {
+                "content": "You are no longer AFK."
+            },
+            "name": "[AKF] {nickname}"
+        },
+        "ping": {
+            "embeds": [
+                {
+                    "title": "Pong!",
+                    "fields": [
+                        {
+                            "name": "Bot latency",
+                            "value": "`{latency:.3f}s`",
+                            "inline": false
+                        },
+                        {
+                            "name": "Database ping",
+                            "value": "`{db:.3f}s`",
+                            "inline": false
+                        }
+                    ],
+                    "color": 6656243
+                }
+            ],
+            "reply": false
+        },
+        "all": [
+            "all",
+            "everything"
+        ],
+        "work": {
+            "embeds": [
+                {
+                    "title": "Work",
+                    "description": "{random}",
+                    "color": 6656243
+                }
+            ],
+            "random": [
+                "You arrived home from work and saw that **${amount}** was added to your account.",
+                "You've reached the end of a tiring day. You received **${amount}** for your hard work!",
+                "You've successfully completed your first day at work. Your reward: **${amount}**.",
+                "You've been promoted at your company, so you received a **${amount}** bonus!",
+                "You received **${amount}** dividend on your shares.",
+                "You've been successfully promoted at your workplace! You received an advance of **${amount}**",
+                "As a taxi driver, you earned **${amount}** today.",
+                "You went to the store, bought noodles, but the cashier gave you the wrong change. You received **${amount}** and a pack of noodles.",
+                "You had a hard day on the fields and earned **${amount}**."
+            ]
+        },
+        "crime": {
+            "embeds": [
+                {
+                    "title": "Crime",
+                    "description": "{random}",
+                    "color": 6656243
+                }
+            ],
+            "random": [
+                "You robbed the bank and got $**{amount}**.",
+                "You threatened the street vendor. He gave you $**{amount}** to leave him alone!",
+                "You robbed the factory, so you received $**{amount}**.",
+                "You robbed the corner store. You stole $**{amount}** and a pack of gum.",
+                "You work as a sysadmin. You were called to replace an old router with a new one, but you stole the new one, earning $**{amount}**!"
+            ]
+        },
+        "allowance": {
+            "content": "You received your daily allowance of **${amount}**."
+        },
+        "addmoney": {
+            "success": {
+                "content": "$**{amount}** has been added to {member.mention}'s account!"
+            },
+            "errors": {
+                "positive": {
+                    "content": "Only a **positive** amount can be added!"
+                }
+            }
+        },
+        "removemoney": {
+            "success": {
+                "content": "$**{amount}** has been removed from {member.mention}'s account!"
+            },
+            "errors": {
+                "positive": {
+                    "content": "Only a **positive** amount can be removed!"
+                },
+                "balance": {
+                    "content": "You can't remove more money than the user has in their balance!"
+                }
+            }
+        },
+        "deposit": {
+            "all": [
+                "all",
+                "everything"
+            ],
+            "errors": {
+                "invalid_amount": {
+                    "content": "Please enter a valid positive number!"
+                },
+                "balance": {
+                    "content": "You don't have that much cash!"
+                }
+            },
+            "success": {
+                "content": "You have successfully deposited **${amount}** into your bank account!"
+            }
+        },
+        "withdraw": {
+            "all": [
+                "all",
+                "everything"
+            ],
+            "errors": {
+                "invalid_amount": {
+                    "content": "Please enter a valid positive number!"
+                },
+                "balance": {
+                    "content": "You don't have that much money in your bank account!"
+                }
+            },
+            "success": {
+                "content": "You have successfully withdrawn **${amount}** from your bank account!"
+            }
+        },
+        "luck": {
+            "win": {
+                "embeds": [
+                    {
+                        "title": "Luck",
+                        "description": "{random}",
+                        "color": 6656243
+                    }
+                ],
+                "random": [
+                    "You bought a lottery ticket and got a full match :tada: You won $**{amount}**.",
+                    "You made a high-value bet and won. You received $**{amount}**.",
+                    "You were dealt two cards with a total value of 21 first while playing blackjack, so you won $**{amount}**.",
+                    "You found $**{amount}** on the ground while walking down the street."
+                ]
+            },
+            "lose": {
+                "embeds": [
+                    {
+                        "title": "Luck",
+                        "description": "{random}",
+                        "color": 13369344
+                    }
+                ],
+                "random": [
+                    "You bought a lottery ticket, but you didn't win anything :( You lost $**{amount}**.",
+                    "You lost $**{amount}** in a bet.",
+                    "You embezzled at your workplace. According to the court ruling, you have to pay $**{amount}** in damages.",
+                    "You paid bribes to your voters. Your loss is $**{amount}**."
+                ]
+            },
+            "errors": {
+                "balance": {
+                    "content": "You need at least $**{amount}** to play this game!"
+                }
+            }
+        },
+        "pay": {
+            "success": {
+                "content": "You have successfully transferred $**{amount}** to {member.mention}!"
+            },
+            "errors": {
+                "positive": {
+                    "content": "You can't transfer a negative amount!"
+                },
+                "balance": {
+                    "content": "You don't have that much cash!"
+                }
+            }
+        },
+        "balance": {
+            "embeds": [
+                {
+                    "title": "Balance",
+                    "fields": [
+                        {
+                            "name": "Cash",
+                            "value": "${cash}",
+                            "inline": true
+                        },
+                        {
+                            "name": "Bank",
+                            "value": "${bank}",
+                            "inline": true
+                        },
+                        {
+                            "name": "⚠️ You are in debt.",
+                            "value": "Any money you earn will be used to pay off your debt.",
+                            "inline": false
+                        }
+                    ],
+                    "color": 6656243
+                }
+            ]
+        },
+        "slots": {
+            "win": {
+                "embeds": [
+                    {
+                        "title": "Slots",
+                        "fields": [
+                            {
+                                "name": "Results",
+                                "value": "{results}",
+                                "inline": false
+                            },
+                            {
+                                "name": "Won amount",
+                                "value": "${amount}",
+                                "inline": false
+                            }
+                        ],
+                        "color": 6656243
+                    }
+                ]
+            },
+            "lose": {
+                "embeds": [
+                    {
+                        "title": "Slots",
+                        "fields": [
+                            {
+                                "name": "Results",
+                                "value": "{results}",
+                                "inline": false
+                            },
+                            {
+                                "name": "Lost amount",
+                                "value": "${amount}",
+                                "inline": false
+                            },
+                            {
+                                "name": "⚠️ You are in debt.",
+                                "value": "Any money you earn will be used to pay off your debt.",
+                                "inline": false
+                            }
+                        ],
+                        "color": 6656243
+                    }
+                ]
+            },
+            "errors": {
+                "balance": {
+                    "content": "You can't bet more than your cash balance!"
+                }
+            }
+        },
+        "leaderboard": {
+            "embeds": [
+                {
+                    "title": "Leaderboard",
+                    "fields": [
+                        {
+                            "name": "#{number} {user}",
+                            "value": "Cash: `${cash}`\nBank: `${bank}`",
+                            "inline": false
+                        },
+                        {
+                            "name": "Psst...",
+                            "value": "It seems like no one has used the economy system yet. Be the first!",
+                            "inline": false
+                        }
+                    ],
+                    "color": 6656243
+                }
+            ]
+        },
+        "shop": {
+            "list": {
+                "show": {
+                    "embeds": [
+                        {
+                            "title": "Shop",
+                            "fields": [
+                                {
+                                    "name": "{item.name} (${item.price})",
+                                    "value": "{item.role.mention}: {item.description}",
+                                    "inline": false
+                                }
+                            ],
+                            "color": 6656243
+                        }
+                    ]
+                },
+                "empty": {
+                    "content": "There are no items in the shop!"
+                }
+            },
+            "buy": {
+                "success": {
+                    "content": "You bought **{item.name}** for $**{item.price}**."
+                },
+                "errors": {
+                    "balance": {
+                        "content": "You don't have enough money to buy this item!"
+                    },
+                    "not_found": {
+                        "content": "This item doesn't exist!"
+                    },
+                    "role_not_found": {
+                        "content": "The role for this item doesn't exist! Ask an admin to remove it."
+                    }
+                }
+            },
+            "set": {
+                "success": {
+                    "content": "The item has been successfully added to the shop!"
+                },
+                "errors": {
+                    "already_item": {
+                        "content": "There is already such an item in the shop!"
+                    },
+                    "role_higher": {
+                        "content": "This role is higher than your corrent top role!"
+                    },
+                    "limit": {
+                        "content": "You have reached the maximum number of items in the shop!"
+                    }
+                }
+            },
+            "remove": {
+                "success": {
+                    "content": "The item has been successfully removed from the shop!"
+                },
+                "errors": {
+                    "not_found": {
+                        "content": "This item doesn't exist!"
+                    },
+                    "role_higher": {
+                        "content": "This role is higher than your corrent top role!"
+                    }
+                }
+            }
+        },
+        "mod": {
+            "warn": {
+                "response": {
+                    "embeds": [
+                        {
+                            "title": "Warn",
+                            "description": "Warned {warn.user.mention}.",
+                            "fields": [
+                                {
+                                    "name": "Reason",
+                                    "value": "{warn.reason}"
+                                },
+                                {
+                                    "name": "Expires",
+                                    "value": "{warn.date}"
+                                }
+                            ],
+                            "footer": {
+                                "text": "{warn.id}"
+                            }
+                        }
+                    ],
+                    "ephemeral": true
+                },
+                "notify": {
+                    "embeds": [
+                        {
+                            "title": "Warn",
+                            "description": "You have been warned in **{warn.guild}**.",
+                            "fields": [
+                                {
+                                    "name": "Reason",
+                                    "value": "{warn.reason}"
+                                },
+                                {
+                                    "name": "Expires",
+                                    "value": "{warn.length}"
+                                }
+                            ],
+                            "footer": {
+                                "text": "{warn.id}"
+                            },
+                            "color": 13369344
+                        }
+                    ]
+                },
+                "unwarned": {
+                    "embeds": [
+                        {
+                            "title": "Warn removed",
+                            "description": "Your warn in **{warn.guild}** has been removed.",
+                            "fields": [
+                                {
+                                    "name": "Original reason",
+                                    "value": "{warn.reason}"
+                                }
+                            ],
+                            "color": 6656243
+                        }
+                    ]
+                },
+                "errors": {
+                    "bot": {
+                        "content": "I'm invincible."
+                    },
+                    "hierarchy": {
+                        "content": "You can't warn a user with a higher role than you."
+                    }
+                }
+            },
+            "info": {
+                "response": {
+                    "embeds": [
+                        {
+                            "title": "Case info `{case.type.name}`",
+                            "fields": [
+                                {
+                                    "name": "Case ID",
+                                    "value": "{case.id}",
+                                    "inline": false
+                                },
+                                {
+                                    "name": "Sanctioned user",
+                                    "value": "{case.user.mention}",
+                                    "inline": false
+                                },
+                                {
+                                    "name": "Given by",
+                                    "value": "{case.moderator.mention}",
+                                    "inline": false
+                                },
+                                {
+                                    "name": "Reason",
+                                    "value": "{case.reason}",
+                                    "inline": false
+                                },
+                                {
+                                    "name": "Expires",
+                                    "value": "{case.length}",
+                                    "inline": false
+                                }
+                            ],
+                            "footer": {
+                                "text": "Case created at"
+                            },
+                            "timestamp": "{case.created.timestamp}",
+                            "color": 6656243
+                        }
+                    ]
+                },
+                "errors": {
+                    "not_found": {
+                        "content": "Case not found."
+                    }
+                }
+            },
+            "delete": {
+                "response": {
+                    "embeds": [
+                        {
+                            "title": "Case deleted",
+                            "description": "Case `{case.id}` has been deleted.",
+                            "color": 6656243
+                        }
+                    ]
+                },
+                "errors": {
+                    "not_found": {
+                        "content": "Case not found."
+                    }
+                }
+            },
+            "edit": {
+                "response": {
+                    "embeds": [
+                        {
+                            "title": "Case edited",
+                            "description": "Case `{case.id}` has been edited.",
+                            "color": 6656243,
+                            "timestamp": "{now}"
+                        }
+                    ]
+                },
+                "errors": {
+                    "not_found": {
+                        "content": "Case not found."
+                    },
+                    "invalid_time": {
+                        "content": "Invalid time format. Please use a valid time format."
+                    }
+                }
+            },
+            "list": {
+                "response": {
+                    "embeds": [
+                        {
+                            "title": "Case list",
+                            "fields": [
+                                {
+                                    "name": "{case.id} `{case.type.name}`",
+                                    "value": "Given by: {case.moderator.mention}\nReason: {case.reason}\nExpires: {case.length}",
+                                    "inline": false
+                                },
+                                {
+                                    "name": "No cases",
+                                    "value": "No cases found.",
+                                    "inline": false
+                                }
+                            ],
+                            "color": 6656243
+                        }
+                    ]
+                }
+            },
+            "mute": {
+                "response": {
+                    "embeds": [
+                        {
+                            "title": "Mute",
+                            "description": "Muted {mute.user.mention}.",
+                            "fields": [
+                                {
+                                    "name": "Reason",
+                                    "value": "{mute.reason}"
+                                },
+                                {
+                                    "name": "Expires",
+                                    "value": "{mute.length}"
+                                }
+                            ],
+                            "color": 6656243,
+                            "footer": {
+                                "text": "{mute.id}"
+                            }
+                        }
+                    ]
+                },
+                "unmuted": {
+                    "embeds": [
+                        {
+                            "title": "Unmuted",
+                            "description": "You have been unmuted in **{guild}**.",
+                            "fields": [
+                                {
+                                    "name": "Original reason",
+                                    "value": "{mute.reason}"
+                                }
+                            ],
+                            "footer": {
+                                "text": "{mute.id}"
+                            },
+                            "color": 6656243
+                        }
+                    ]
+                },
+                "notify": {
+                    "embeds": [
+                        {
+                            "title": "Mute",
+                            "description": "You have been muted in **{guild}**.",
+                            "fields": [
+                                {
+                                    "name": "Reason",
+                                    "value": "{mute.reason}"
+                                },
+                                {
+                                    "name": "Expires",
+                                    "value": "{mute.length}"
+                                }
+                            ],
+                            "footer": {
+                                "text": "{mute.id}"
+                            },
+                            "color": 13369344
+                        }
+                    ]
+                },
+                "reason": "Muted by {moderator.name}",
+                "errors": {
+                    "bot": {
+                        "content": "I'm invincible."
+                    },
+                    "hierarchy": {
+                        "content": "You can't mute a user with a higher role than you."
+                    }
+                }
+            },
+            "unmute": {
+                "response": {
+                    "embeds": [
+                        {
+                            "title": "Unmute",
+                            "description": "Unmuted {user.mention}.",
+                            "color": 6656243
+                        }
+                    ]
+                },
+                "notify": {
+                    "content": "You have been unmuted in **{guild}**."
+                },
+                "errors": {
+                    "hierarchy": {
+                        "content": "You can't unmute a user with a higher role than you."
+                    }
+                }
+            },
+            "kick": {
+                "response": {
+                    "embeds": [
+                        {
+                            "title": "Kick",
+                            "description": "Kicked {kick.user.mention} for {kick.reason}.",
+                            "color": 6656243,
+                            "footer": {
+                                "text": "{kick.id}"
+                            }
+                        }
+                    ]
+                },
+                "notify": {
+                    "embeds": [
+                        {
+                            "title": "Kick",
+                            "description": "You have been kicked from **{guild}**.",
+                            "fields": [
+                                {
+                                    "name": "Reason",
+                                    "value": "{kick.reason}"
+                                }
+                            ],
+                            "footer": {
+                                "text": "{kick.id}"
+                            },
+                            "color": 13369344
+                        }
+                    ]
+                },
+                "errors": {
+                    "bot": {
+                        "content": "I'm invincible."
+                    }
+                }
+            },
+            "ban": {
+                "response": {
+                    "embeds": [
+                        {
+                            "title": "Ban",
+                            "description": "Banned {ban.user.mention}.",
+                            "color": 6656243,
+                            "fields": [
+                                {
+                                    "name": "Reason",
+                                    "value": "{ban.reason}"
+                                },
+                                {
+                                    "name": "Expires",
+                                    "value": "{ban.length}"
+                                }
+                            ],
+                            "footer": {
+                                "text": "{ban.id}"
+                            }
+                        }
+                    ]
+                },
+                "notify": {
+                    "embeds": [
+                        {
+                            "title": "Ban",
+                            "description": "You have been banned from **{guild}**.",
+                            "fields": [
+                                {
+                                    "name": "Reason",
+                                    "value": "{ban.reason}"
+                                },
+                                {
+                                    "name": "Expires",
+                                    "value": "{ban.length}"
+                                }
+                            ],
+                            "footer": {
+                                "text": "{ban.id}"
+                            },
+                            "color": 13369344
+                        }
+                    ]
+                },
+                "errors": {
+                    "bot": {
+                        "content": "I'm invincible."
+                    },
+                    "hierarchy": {
+                        "content": "You can't ban a user with a higher role than you."
+                    }
+                }
+            },
+            "unban": {
+                "response": {
+                    "embeds": [
+                        {
+                            "title": "Unban",
+                            "description": "Unbanned {user.mention}.",
+                            "color": 6656243
+                        }
+                    ]
+                },
+                "notify": {
+                    "content": "You have been unbanned from **{guild}**."
+                }
+            }
+        },
+        "ipinfo": {
+            "embeds": [
+                {
+                    "title": "IP informations",
+                    "fields": [
+                        {
+                            "name": "Hostname",
+                            "value": "{ip.hostname}",
+                            "inline": false
+                        },
+                        {
+                            "name": "City",
+                            "value": "{ip.city}",
+                            "inline": false
+                        },
+                        {
+                            "name": "Postal",
+                            "value": "{ip.postal}",
+                            "inline": false
+                        },
+                        {
+                            "name": "Region",
+                            "value": "{ip.region}",
+                            "inline": false
+                        },
+                        {
+                            "name": "Country",
+                            "value": "{ip.country}",
+                            "inline": false
+                        },
+                        {
+                            "name": "Org",
+                            "value": "{ip.org}",
+                            "inline": false
+                        },
+                        {
+                            "name": "Timezone",
+                            "value": "{ip.timezone}",
+                            "inline": false
+                        }
+                    ],
+                    "color": 6656243
+                }
+            ]
+        },
+        "permissions": {
+            "add_reactions": "Add Reactions",
+            "administrator": "Administrator",
+            "attach_files": "Attach Files",
+            "ban_members": "Ban Members",
+            "change_nickname": "Change Nickname",
+            "connect": "Connect",
+            "create_events": "Create Events",
+            "create_expressions": "Create Expressions",
+            "create_instant_invite": "Create Instant Invite",
+            "create_polls": "Create Polls",
+            "create_private_threads": "Create Private Threads",
+            "create_public_threads": "Create Public Threads",
+            "deafen_members": "Deafen Members",
+            "embed_links": "Embed Links",
+            "external_emojis": "Use External Emojis",
+            "external_stickers": "Use External Stickers",
+            "kick_members": "Kick Members",
+            "manage_channels": "Manage Channels",
+            "manage_emojis": "Manage Emojis",
+            "manage_emojis_and_stickers": "Manage Emojis and Stickers",
+            "manage_guild": "Manage Server",
+            "manage_messages": "Manage Messages",
+            "manage_nicknames": "Manage Nicknames",
+            "manage_permissions": "Manage Permissions",
+            "manage_roles": "Manage Roles",
+            "manage_threads": "Manage Threads",
+            "manage_webhooks": "Manage Webhooks",
+            "mention_everyone": "Mention Everyone",
+            "moderate_members": "Timeout Members",
+            "move_members": "Move Members",
+            "mute_members": "Mute Members",
+            "priority_speaker": "Priority Speaker",
+            "read_message_history": "Read Message History",
+            "read_messages": "Read Messages",
+            "request_to_speak": "Request to Speak",
+            "send_messages": "Send Messages",
+            "send_messages_in_threads": "Send Messages in Threads",
+            "send_polls": "Send Polls",
+            "send_tts_messages": "Send TTS Messages",
+            "send_voice_messages": "Send Voice Messages",
+            "speak": "Speak",
+            "stream": "Go Live",
+            "use_application_commands": "Use Application Commands",
+            "use_embedded_activities": "Use Embedded Activities",
+            "use_external_apps": "Use External Applications",
+            "use_external_emojis": "Use External Emojis",
+            "use_external_sounds": "Use External Sounds",
+            "use_external_stickers": "Use External Stickers",
+            "use_soundboard": "Use Soundboard",
+            "use_voice_activation": "Use Voice Activation",
+            "view_audit_log": "View Audit Log",
+            "view_channel": "View Channel",
+            "view_creator_monetization_analytics": "View Creator Monetization Analytics",
+            "view_guild_insights": "View Server Insights"
+        },
+        "errors": {
+            "missing_required_argument": {
+                "embeds": [
+                    {
+                        "title": "Missing Argument",
+                        "description": "Correct usage:\n```{command.usage}```",
+                        "timestamp": "{now}",
+                        "fields": [
+                            {
+                                "name": "Description",
+                                "value": "{command.description}",
+                                "inline": false
+                            }
+                        ],
+                        "color": 13369344
+                    }
+                ]
+            },
+            "bot_missing_permissions": {
+                "embeds": [
+                    {
+                        "title": "Missing Permissions",
+                        "description": "The bot needs additional permissions to run this command.",
+                        "fields": [
+                            {
+                                "name": "Missing Permissions",
+                                "value": "```{permissions}```",
+                                "inline": false
+                            }
+                        ],
+                        "color": 13369344
+                    }
+                ]
+            },
+            "bad_argument": {
+                "embeds": [
+                    {
+                        "title": "Incorrect usage",
+                        "description": "Correct usage:\n```{command.usage}```",
+                        "timestamp": "{now}",
+                        "fields": [
+                            {
+                                "name": "Description",
+                                "value": "{command.description}",
+                                "inline": false
+                            }
+                        ],
+                        "color": 13369344
+                    }
+                ]
+            },
+            "missing_permissions": {
+                "embeds": [
+                    {
+                        "title": "Missing Permissions",
+                        "description": "You need additional permissions to run this command.",
+                        "fields": [
+                            {
+                                "name": "Missing Permissions",
+                                "value": "```{permissions}```",
+                                "inline": false
+                            }
+                        ],
+                        "color": 13369344
+                    }
+                ]
+            },
+            "channel_not_found": {
+                "embeds": [
+                    {
+                        "title": "Channel not found",
+                        "description": "The channel you specified was not found.",
+                        "color": 13369344
+                    }
+                ]
+            },
+            "emoji_not_found": {
+                "embeds": [
+                    {
+                        "title": "Emoji not found",
+                        "description": "The emoji you specified was not found.",
+                        "color": 13369344
+                    }
+                ]
+            },
+            "member_not_found": {
+                "embeds": [
+                    {
+                        "title": "Member not found",
+                        "description": "The member you specified was not found.",
+                        "color": 13369344
+                    }
+                ]
+            },
+            "user_not_found": {
+                "embeds": [
+                    {
+                        "title": "User not found",
+                        "description": "The user you specified was not found.",
+                        "color": 13369344
+                    }
+                ]
+            },
+            "role_not_found": {
+                "embeds": [
+                    {
+                        "title": "Role not found",
+                        "description": "The role you specified was not found.",
+                        "color": 13369344
+                    }
+                ]
+            },
+            "forbidden": {
+                "embeds": [
+                    {
+                        "title": "Forbidden",
+                        "description": "The bot got a 403 Forbidden error. Please check for role hierarchy and bot permissions.",
+                        "color": 13369344
+                    }
+                ]
+            },
+            "not_owner": {
+                "embeds": [
+                    {
+                        "title": "Not the owner",
+                        "description": "You are not an owner of this bot.",
+                        "color": 13369344
+                    }
+                ]
+            }
+        },
+        "snapshot": {
+            "strings": {
+                "server_snapshot": "Snapshot of {guild.name}",
+                "save_load_reason": "Lumin save load - {author.name}"
+            },
+            "create": {
+                "embeds": [
+                    {
+                        "title": "Snapshot",
+                        "description": "The snapshot has been created successfully.\nCode: ```{code}```",
+                        "color": 6656243
+                    }
+                ]
+            },
+            "load": {
+                "embeds": [
+                    {
+                        "title": "Snapshot",
+                        "description": "The snapshot has been loaded successfully. You can restore the old state of the server by running the **/snapshot load** command with the code: ```{code}```.",
+                        "color": 6656243
+                    }
+                ]
+            },
+            "owner_alert": {
+                "embeds": [
+                    {
+                        "title": "Snapshot load alert",
+                        "description": "{author.name} has loaded a snapshot in {guild.name}. You can restore the old state of the server by running the snapshot load command with the code `{code}`.",
+                        "color": 13369344
+                    }
+                ]
+            },
+            "not_found": {
+                "embeds": [
+                    {
+                        "title": "Snapshot not found",
+                        "description": "The snapshot you specified was not found.",
+                        "color": 13369344
+                    }
+                ]
+            }
+        }
+    },
+    "hu": {
+        "afk": {
+            "dnd": "Kérlek, ne zavarj!",
+            "link": {
+                "content": "Az AFK státuszod nem tartalmazhat meghívó linkeket!"
+            },
+            "on": {
+                "content": "AFK státusz bekapcsolva!"
+            },
+            "off": {
+                "content": "AFK státusz kikapcsolva!"
+            },
+            "name": "[AKF] {nickname}"
+        },
+        "ping": {
+            "pong": {
+                "content": "Pong..."
+            },
+            "latency": {
+                "content": null,
+                "embeds": [
+                    {
+                        "title": "Pong!",
+                        "fields": [
+                            {
+                                "name": "Bot válaszidő",
+                                "value": "`{latency:.3f}mp`",
+                                "inline": false
+                            },
+                            {
+                                "name": "Üzenetkezelési idő",
+                                "value": "`{roundtrip:.3f}mp`",
+                                "inline": false
+                            },
+                            {
+                                "name": "Adatbázis ping",
+                                "value": "`{db:.3f}mp`",
+                                "inline": false
+                            }
+                        ],
+                        "color": 6656243
+                    }
+                ]
+            }
+        },
+        "all": [
+            "mind",
+            "minden"
+        ],
+        "work": {
+            "embeds": [
+                {
+                    "title": "Munka",
+                    "description": "{random}",
+                    "color": 6656243
+                }
+            ],
+            "random": [
+                "Hazaértél a munkából, és örömmel láttad, hogy **{amount}** forintot hozzáadtak a számládhoz.",
+                "Egy fárasztó nap végéhez értél. **{amount}** forintot kaptál a szorgos munkádért!",
+                "Sikeresen teljesítettél az első munkanapodon. Jutalmad: **{amount}** Ft.",
+                "Előléptettek a cégednél, ezért **{amount}** Ft bónuszt kaptál!",
+                "Részvényeid után **{amount}** Ft osztalékot kapsz.",
+                "Sikeresen előléptettek a munkahelyeden! Így kaptál **{amount}** Ft előleget",
+                "Taxi sofőrként ma kerestél **{amount}** forintot.",
+                "Elmentél a boltba, vettél nokedlit, de rosszul adott vissza a a pénztáros. Kaptál **{amount}** forintot és egy csomag nokedlit."
+            ]
+        },
+        "crime": {
+            "embeds": [
+                {
+                    "title": "Crime",
+                    "description": "{random}",
+                    "color": 6656243
+                }
+            ],
+            "random": [
+                "Kiraboltad a bankot, és **{amount}** forintot szereztél.",
+                "Megfenyegetted az utcai árust. **{amount}** forintot adott neked, hogy békénhagyd!",
+                "Kiraboltad a gyárat, ezért kaptál **{amount}** forintot.",
+                "Kiraboltad a sarki boltot. Csentél **{amount}** forintot meg egy csomag rágót.",
+                "Rendszergazdaként dolgozol. Kihívtak, hogy cserélj le egy régi routert egy újra, te viszont elloptad az újat, ezzel szereztél **{amount}** forintot!"
+            ]
+        },
+        "allowance": {
+            "content": "Megkaptad a napi zsebpénzedet, **{amount}** forintot."
+        },
+        "addmoney": {
+            "success": {
+                "content": "**{amount}** Ft {member.mention} számlájára sikeresen jóváírásra került!"
+            },
+            "errors": {
+                "positive": {
+                    "content": "Csak **pozitív** összeget adhatsz meg!"
+                }
+            }
+        },
+        "removemoney": {
+            "success": {
+                "content": "**{amount}** Ft sikeresen levonva {member.mention} számlájáról!"
+            },
+            "errors": {
+                "positive": {
+                    "content": "Csak **pozitív** összeget vonhatsz le!"
+                },
+                "balance": {
+                    "content": "Nem vonhatsz le több pénzt, mint amennyi a felhasználó egyenlegén van!"
+                }
+            }
+        },
+        "luck": {
+            "win": {
+                "embeds": [
+                    {
+                        "title": "Szerencse",
+                        "description": "{random}",
+                        "color": 6656243
+                    }
+                ],
+                "random": [
+                    "Vettél egy lottót, és teli találatod lett :tada: Ezzel nyertél **{amount}** forintot.",
+                    "Nagy értékben tettél fogadást, és megnyerted. Ezzel kaptál **{amount}** forintot.",
+                    "Blackjackezés közben elsőnek 21 értékű 2 kártyát osztottak a kezedbe, ezzel **{amount}** forintot nyertél.",
+                    "Az utcán sétálva találtál a földön **{amount}** forintot."
+                ]
+            },
+            "lose": {
+                "embeds": [
+                    {
+                        "title": "Szerencse",
+                        "description": "{random}",
+                        "color": 13369344
+                    }
+                ],
+                "random": [
+                    "Vettél egy lottót, de semmit sem nyertél :( Ezzel buktál **{amount}** forintot.",
+                    "Fogadásban vesztettél el **{amount}** forintot.",
+                    "Sikkasztottál a munkahelyeden. A bírósági ítélet szerint **{amount}**Ft kártérítést kell kifizetned.",
+                    "Kenőpénzt fizettél a szavazóidnak. Veszteséged **{amount}**Ft."
+                ]
+            },
+            "errors": {
+                "balance": {
+                    "content": "Legalább **{amount}** forintnak kell lennie a számládon a játékhoz!"
+                }
+            }
+        },
+        "pay": {
+            "success": {
+                "content": "Sikeresen átutaltál **{amount}** forintot {member.mention} számlájára!"
+            },
+            "errors": {
+                "positive": {
+                    "content": "Nem utalhatsz át negatív összeget!"
+                },
+                "balance": {
+                    "content": "Nincs ennyi készpénzed!"
+                }
+            }
+        },
+        "balance": {
+            "embeds": [
+                {
+                    "title": "Egyenleg",
+                    "fields": [
+                        {
+                            "name": "Készpénz",
+                            "value": "${cash}",
+                            "inline": true
+                        },
+                        {
+                            "name": "Bank",
+                            "value": "${bank}",
+                            "inline": true
+                        },
+                        {
+                            "name": "⚠️ Adósságban vagy.",
+                            "value": "Az összes pénz, amit keresel, az adósságod törlesztésére lesz fordítva.",
+                            "inline": false
+                        }
+                    ],
+                    "color": 6656243
+                }
+            ]
+        },
+        "leaderboard": {
+            "embeds": [
+                {
+                    "title": "Ranglista",
+                    "fields": [
+                        {
+                            "name": "🥇 {member.name}",
+                            "value": "Cash: `${cash}`\nBank: `${bank}`",
+                            "inline": false
+                        },
+                        {
+                            "name": "🥈 {member.name}",
+                            "value": "Cash: `${cash}`\nBank: `${bank}`",
+                            "inline": false
+                        },
+                        {
+                            "name": "🥉 {member.name}",
+                            "value": "Cash: `${cash}`\nBank: `${bank}`",
+                            "inline": false
+                        },
+                        {
+                            "name": "{number} {member.name}",
+                            "value": "Cash: `${cash}`\nBank: `${bank}`",
+                            "inline": false
+                        }
+                    ],
+                    "color": 6656243
+                }
+            ]
+        },
+        "ipinfo": {
+            "embeds": [
+                {
+                    "title": "IP információk",
+                    "fields": [
+                        {
+                            "name": "Hosztnév",
+                            "value": "${ip.hostname}",
+                            "inline": false
+                        },
+                        {
+                            "name": "Város",
+                            "value": "{ip.city}",
+                            "inline": false
+                        },
+                        {
+                            "name": "Irányítószám",
+                            "value": "{ip.postal}",
+                            "inline": false
+                        },
+                        {
+                            "name": "Megye",
+                            "value": "{ip.region}",
+                            "inline": false
+                        },
+                        {
+                            "name": "Országkód",
+                            "value": "{ip.country}",
+                            "inline": false
+                        },
+                        {
+                            "name": "Szolgáltató",
+                            "value": "{ip.org}",
+                            "inline": false
+                        },
+                        {
+                            "name": "Időzóna",
+                            "value": "{ip.timezone}",
+                            "inline": false
+                        }
+                    ],
+                    "color": 6656243
+                }
+            ]
+        }
+    }
+}

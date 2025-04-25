@@ -1,0 +1,20 @@
+"""A helper for the bot's emojis."""
+
+TICK = "<:check:1270407775595528303>"
+"""Checkmark emoji."""
+CHECK = TICK
+"""Checkmark emoji."""
+X = "<:deny:1270407948643864586>"
+"""X mark emoji."""
+DENY = XMARK = X
+"""X mark emoji."""
+LOADING = "<a:loading:1268592455767293985>"
+"""Animated loading emoji."""
+WARNING = "<:warning:1270407924497383536>"
+"""Exclamation mark emoji."""
+QUESTION = "<:question:1270407912765788291>"
+"""Question mark emoji."""
+LINK = "<:link:1270407854385401896>"
+"""Link emoji."""
+HAMMER = "<:hammer:1270407901088841759>"
+"""Hammer emoji."""

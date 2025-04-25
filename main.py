@@ -1,0 +1,616 @@
+if __name__ == "__main__":
+    print("Importing modules...")
+import os
+import discord
+from discord.ext import commands, localization
+import platform
+import asyncpg
+from dotenv import load_dotenv
+import logging
+from typing import Optional, Literal, Union, AnyStr, Any, Sequence, overload, Type
+import time
+from discord import app_commands, Message, Interaction
+import asyncio
+import traceback
+from time import perf_counter
+from pathlib import Path
+from helpers import custom_response, emojis, custom_args
+from dataclasses import dataclass
+import datetime
+import random
+
+for handler in logging.root.handlers[:]:
+    # prevent double logging
+    logging.root.removeHandler(handler)
+
+discord.utils.setup_logging(level=logging.INFO, root=True)
+logger = logging.getLogger()
+if __name__ == '__main__':
+    logger.info("Modules imported, logging set up!")
+    logger.info(f"OS: {platform.system()}")
+
+load_dotenv()
+TOKEN = os.getenv("TOKEN")
+DEBUG = True
+"""Whether the bot is in debug mode or not. This controls which token to use and where to send error reports."""
+
+_slash = localization.Localization("./slash.i18n.json", default_locale="en", separator="-")
+
+if __name__ == '__main__':
+    if platform.system() != "Windows":
+        import uvloop
+        uvloop.install()
+        asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
+        logger.info("Using uvloop event loop policy")
+    else:
+        asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy()) # type: ignore
+        logger.info("Using WindowsSelector event loop policy")
+
+@dataclass
+class Command:
+    name: str
+    description: str
+    usage: str
+    prefix: str
+
+    @classmethod
+    def from_ctx(cls, ctx: commands.Context):
+        prefix = ctx.prefix.replace(ctx.me.mention, f"@{ctx.me.display_name}")
+        usage = _slash(ctx.command.usage, ctx) if ctx.command.usage else ctx.command.qualified_name
+        return cls(
+            name=ctx.command.qualified_name,
+            description=_slash(ctx.command.description, ctx) or "-",
+            usage=f"{prefix}{usage}",
+            prefix=prefix
+        )
+
+@dataclass
+class Argument:
+    name: str
+    description: str
+    default: Any
+    annotation: Any
+    required: bool
+
+    @classmethod
+    def from_param(cls, param: commands.Parameter, ctx: commands.Context):
+        return cls(
+            name=_slash(param.displayed_name or param.name, ctx),
+            description=_slash(param.description, ctx) or "-",
+            default=param.default,
+            annotation=param.annotation,
+            required=param.required
+        )
+
+class Context(commands.Context):
+    @overload
+    async def send(
+        self,
+        key: str, *,
+        content: None = None,
+        tts: bool = False,
+        embed: Optional[discord.Embed] = None,
+        file: Optional[discord.File] = None,
+        stickers: Optional[Sequence[Union[discord.GuildSticker, discord.StickerItem]]] = None,
+        delete_after: Optional[float] = None,
+        nonce: Optional[Union[str, int]] = None,
+        allowed_mentions: Optional[discord.AllowedMentions] = None,
+        reference: Optional[Union[discord.Message, discord.MessageReference, discord.PartialMessage]] = None,
+        mention_author: Optional[bool] = None,
+        view: Optional[discord.ui.View] = None,
+        suppress_embeds: bool = False,
+        ephemeral: bool = False,
+        silent: bool = False,
+        poll: Optional[discord.Poll] = None,
+        **format_kwargs: object
+    ) -> discord.Message: ...
+
+    @overload
+    async def send(
+        self,
+        key: None = None, *,
+        content: str,
+        tts: bool = False,
+        embed: Optional[discord.Embed] = None,
+        file: Optional[discord.File] = None,
+        stickers: Optional[Sequence[Union[discord.GuildSticker, discord.StickerItem]]] = None,
+        delete_after: Optional[float] = None,
+        nonce: Optional[Union[str, int]] = None,
+        allowed_mentions: Optional[discord.AllowedMentions] = None,
+        reference: Optional[Union[discord.Message, discord.MessageReference, discord.PartialMessage]] = None,
+        mention_author: Optional[bool] = None,
+        view: Optional[discord.ui.View] = None,
+        suppress_embeds: bool = False,
+        ephemeral: bool = False,
+        silent: bool = False,
+        poll: Optional[discord.Poll] = None
+    ) -> discord.Message: ...
+
+    async def send(
+        self,
+        key: Optional[str] = None,
+        *,
+        content: Optional[str] = None,
+        tts: bool = False,
+        embed: Optional[discord.Embed] = None,
+        embeds: Optional[Sequence[discord.Embed]] = None,
+        file: Optional[discord.File] = None,
+        files: Optional[Sequence[discord.File]] = None,
+        stickers: Optional[Sequence[Union[discord.GuildSticker, discord.StickerItem]]] = None,
+        delete_after: Optional[float] = None,
+        nonce: Optional[Union[str, int]] = None,
+        allowed_mentions: Optional[discord.AllowedMentions] = None,
+        reference: Optional[Union[discord.Message, discord.MessageReference, discord.PartialMessage]] = None,
+        mention_author: Optional[bool] = None,
+        view: Optional[discord.ui.View] = None,
+        suppress_embeds: bool = False,
+        ephemeral: bool = False,
+        silent: bool = False,
+        poll: Optional[discord.Poll] = None,
+        **format_kwargs: object
+    ) -> discord.Message:
+        """
+        Sends a localized or raw message by merging the arguments passed to send with a
+        localized payload (if a localization key is provided) and then delegating to
+        super().send.
+
+        Exactly one of the following must be provided:
+          - A localization key as the first positional argument (key)
+          - A raw message string via the keyword-only argument `content`
+
+        If both or neither are provided, raises a ValueError.
+        """
+        if key is not None and content is not None:
+            raise ValueError("Cannot specify both 'key' and 'content'.")
+        if key is None and content is None:
+            raise ValueError("Must specify either a localization key or a content string.")
+
+        base_args = {
+            "content": content,
+            "tts": tts,
+            "embed": embed,
+            "embeds": embeds,
+            "file": file,
+            "files": files,
+            "stickers": stickers,
+            "nonce": nonce,
+            "allowed_mentions": allowed_mentions,
+            "reference": reference,
+            "mention_author": mention_author,
+            "view": view,
+            "suppress_embeds": suppress_embeds,
+            "ephemeral": ephemeral,
+            "silent": silent,
+            "poll": poll,
+        }
+
+        locale_str = self.guild.preferred_locale if self.guild and self.guild.preferred_locale else "en"
+
+        if key is not None:
+            localized_payload = await custom_response.CustomResponse(self.bot).get_message(key, locale_str, **format_kwargs)
+        else:
+            localized_payload = content
+
+        if isinstance(localized_payload, dict):
+            base_args.update(localized_payload)
+        else:
+            base_args["content"] = localized_payload
+
+        merged_args = {k: v for k, v in base_args.items() if v is not None}
+
+        msg = await super().send(**merged_args)
+        if delete_after is not None:
+            await msg.delete(delay=delete_after)
+        return msg
+
+    async def reply(self, *args, **kwargs) -> discord.Message:
+        """
+        Behaves like send, but automatically sets reference to self.message.
+        """
+        kwargs.setdefault("reference", self.message)
+        return await self.send(*args, **kwargs)
+
+class SlashCommandLocalizer(app_commands.Translator):
+    """Localizes slash commands and their arguments using discord-localization.
+    This uses the localization set by the user, not the guild's locale."""
+    async def translate(self, string: app_commands.locale_str, locale: discord.Locale, ctx: app_commands.TranslationContext) -> Optional[str]:
+        return _slash(string.message, str(locale)) # type: ignore
+
+    async def unload(self) -> None:
+        benchmark = perf_counter()
+        logger.info("Unloading Slash Localizer...")
+        await super().unload()
+        end = perf_counter() - benchmark
+        logger.info(f"Unloaded Slash Localizer in {end:.2f}s")
+
+    async def load(self) -> None:
+        benchmark = perf_counter()
+        logger.info("Loading Slash Localizer...")
+        await super().load()
+        end = perf_counter() - benchmark
+        logger.info(f"Loaded Slash Localizer in {end:.2f}s")
+
+class MyClient(commands.AutoShardedBot):
+    """Represents the bot client. Inherits from `commands.AutoShardedBot`."""
+
+    # noinspection PyTypeChecker
+    def __init__(self):
+        loop = asyncio.new_event_loop()
+        intents = discord.Intents.all()
+        self.db: asyncpg.Pool = None
+        self.ready_event = asyncio.Event()
+        self.devs = [
+            648168353453572117, # pearoo
+            657350415511322647, # liba
+            452133888047972352, # aki26
+        ]
+        # noinspection PyTypeChecker
+        super().__init__(
+            command_prefix=self.get_prefix,
+            heartbeat_timeout=150.0,
+            intents=intents,
+            case_insensitive=False,
+            activity=discord.CustomActivity(name="Bot starting...", emoji="🟡"),
+            status=discord.Status.idle,
+            chunk_guilds_at_startup=False,
+            loop=loop,
+            member_cache_flags=discord.MemberCacheFlags.from_intents(intents),
+            max_messages=20000
+        )
+        self.custom_response = custom_response.CustomResponse(self, "main")
+
+    async def get_prefix(self, message: discord.Message) -> Union[str, list[str]]:
+        if not message.guild:
+            return "?!"
+        prefix = await self.db.fetchrow("SELECT * FROM guilds WHERE guild_id = $1", message.guild.id)
+        if not prefix:
+            return commands.when_mentioned_or("?!")(self, message)
+        else:
+            if prefix["mention"]:
+                return commands.when_mentioned_or(prefix["prefix"])(self, message)
+            else:
+                return prefix["prefix"]
+
+    async def on_guild_join(self, guild: discord.Guild):
+        row = await self.db.fetchrow("SELECT * FROM guilds WHERE guild_id = $1", guild.id)
+        if not row:
+            await self.db.execute("INSERT INTO guilds (guild_id) VALUES ($1)", guild.id)
+
+    async def get_context(
+        self,
+        origin: Union[discord.Message, discord.Interaction],
+        /,
+        *,
+        cls=Context,
+    ) -> Any: # type: ignore # PyCharm is crying because of mismatched arguments, we can disregard it
+        return await super().get_context(origin, cls=cls)
+
+    async def setup_hook(self):
+        logger.info("Running initial setup hook...")
+        benchmark = perf_counter()
+
+        await self.database_initialization()
+        await self.first_time_database()
+        await self.load_cogs()
+        await self.tree.set_translator(SlashCommandLocalizer())
+        end = perf_counter() - benchmark
+        logger.info(f"Initial setup hook complete in {end:.2f}s")
+
+    async def database_initialization(self):
+        logger.info("Connecting to database...")
+        benchmark = perf_counter()
+        # Connects to database
+        self.db = await asyncpg.create_pool(
+            host=os.getenv("DB_HOST"),
+            database="lumin_beta", # ! Replace with default database name when ran for the first time
+                                   # ! Any subsequent executions of this code must use `database="lumin"`
+            user="lumin",
+            password=os.getenv("DB_PASSWORD"),
+            port=os.getenv("DB_PORT"),
+            timeout=None,
+            max_inactive_connection_lifetime=120 # timeout is 2 mins
+        )
+        end = perf_counter() - benchmark
+        logger.info(f"Connected to database in {end:.2f}s")
+
+    async def first_time_database(self):
+        logger.info("Running first time database setup...")
+        benchmark = perf_counter()
+        database_exists = await self.db.fetchval("SELECT 1 FROM pg_database WHERE datname = 'lumin_beta'")
+        if not database_exists:
+            await self.db.execute("CREATE DATABASE lumin_beta OWNER lumin")
+            logger.info("Created database 'lumin'!")
+
+        # integer\s+default\s+nextval\('(\w+)_\w+_seq'::regclass\)\s+not\s+null\s+constraint\s+\1_\w+_pkey\s+primary\s+key,
+
+        with open("first_time.sql", encoding="utf-8") as f:
+            # "ok ok but pearoo how do i update this if i
+            # feel like updating the db structure for no
+            # particular reason"
+
+            # please just use pycharm its actually goated,
+            # if you add the db to the project and select
+            # lumin.public.tables then press Ctrl + Alt + G
+            # it will generate the SQL for you which is crazy
+            # tbh like wtf
+            await self.db.execute(f.read())
+
+        end = perf_counter() - benchmark
+        logger.info(f"First time database setup complete in {end:.2f}s, you may now comment out the execution of this method in setup_hook")
+
+    async def load_cogs(self):
+        logger.info("Loading cogs...")
+        benchmark = perf_counter()
+        # Load all cogs within the cogs folder
+        ignore: list[str] = ["join.py", "setup.py", "whitelist.py", "giveaway.py", "fun.py", "globalban.py", "handlers.py", "ipc_server.py", "itdt.py", "log.py", "nevnap.py", "poll.py", "raid.py", "report.py", "say.py", "serverstats_v2.py", "szwhite.py", "tickets.py", "topgg_cog.py", "twitch.py", "valuta.py", "yt_announcer.py", "yt.py", "main.py"]
+        allowed: list[str] = ["basic", "closedbeta", "economy", "snapshot", "status"]
+        cogs = Path("./cogs").glob("*.py")
+        for cog in cogs:
+            if cog.stem in allowed: # if you're having issues with cogs not loading, check this list
+                await self.load_extension(f"cogs.{cog.stem}")
+                logger.info(f"Loaded extension {cog.name}")
+        end = perf_counter() - benchmark
+        logger.info(f"Loaded cogs in {end:.2f}s")
+
+    async def on_ready(self):
+        if not hasattr(self, "uptime"):
+            self.uptime = discord.utils.utcnow()
+        logger.info("Bot is ready!")
+        logger.info(f"Servers: {len(self.guilds)}, Commands: {len(self.commands)}, Shards: {self.shard_count}")
+        logger.info(f"Loaded cogs: {', '.join([cog for cog in self.cogs])}")
+        logger.info(f"discord-localization v{localization.__version__}")
+
+    async def on_command_error(self, ctx: commands.Context, error: discord.errors.DiscordException):
+        if ctx.command:
+            command = Command.from_ctx(ctx)
+        match error:
+            case commands.MissingRequiredArgument():
+                error: commands.MissingRequiredArgument
+                name = _slash(error.param.name, ctx)
+                parameter = f"[{name if error.param.required else f'({name})'}]"
+                message = await self.custom_response(
+                    "errors.missing_required_argument", ctx,
+                    command=command,
+                    parameter=parameter
+                )
+
+                await ctx.send(**message)
+            case commands.BotMissingPermissions():
+                error: commands.BotMissingPermissions
+                permissions = [(await self.custom_response(f"permissions.{permission}", ctx))
+                               for permission in error.missing_permissions]
+
+                message = await self.custom_response(
+                    "errors.bot_missing_permissions", ctx,
+                    command=command,
+                    permissions=", ".join(permissions)
+                )
+
+                await ctx.send(**message)
+            case commands.BadArgument():
+                message = await self.custom_response(
+                    "errors.bad_argument", ctx,
+                    command=command
+                )
+
+                await ctx.reply(**message)
+            case commands.MissingPermissions():
+                error: commands.MissingPermissions
+                permissions = [(await self.custom_response(f"permissions.{permission}", ctx))
+                               for permission in error.missing_permissions]
+
+                message = await self.custom_response(
+                    "errors.missing_permissions", ctx,
+                    command=command,
+                    permissions=", ".join(permissions)
+                )
+
+                await ctx.reply(**message)
+            case commands.ChannelNotFound():
+                message = await self.custom_response(
+                    "errors.channel_not_found", ctx,
+                    command=command
+                )
+
+                await ctx.send(**message)
+            case commands.EmojiNotFound():
+                message = await self.custom_response(
+                    "errors.emoji_not_found", ctx,
+                    command=command
+                )
+
+                await ctx.reply(**message)
+            case commands.MemberNotFound():
+                message = await self.custom_response(
+                    "errors.member_not_found", ctx,
+                    command=command
+                )
+
+                await ctx.send(**message)
+            case commands.UserNotFound():
+                message = await self.custom_response(
+                    "errors.user_not_found", ctx,
+                    command=command
+                )
+
+                await ctx.reply(**message)
+            case commands.RoleNotFound():
+                message = await self.custom_response(
+                    "errors.role_not_found", ctx,
+                    command=command
+                )
+
+                await ctx.send(**message)
+            case discord.Forbidden():
+                message = await self.custom_response(
+                    "errors.forbidden", ctx,
+                    command=command
+                )
+
+                await ctx.reply(**message)
+            case commands.NotOwner():
+                message = await self.custom_response(
+                    "errors.not_owner", ctx,
+                    command=command
+                )
+
+                await ctx.send(**message)
+            case commands.CommandNotFound():
+                return
+            case discord.RateLimited():
+                channel: discord.TextChannel = await self.fetch_channel(1268260404677574697)
+                webhook: discord.Webhook = discord.utils.get(await channel.webhooks(), name=f"{self.user.display_name} Rate Limit")
+                if not webhook:
+                    webhook = await channel.create_webhook(name=f"{self.user.display_name} Rate Limit")
+                await webhook.send(content=f"# ⚠️ RATE LIMIT\n**Guild:** {ctx.guild.name} / {ctx.guild.id}\n**User:** {ctx.author} / {ctx.author.id}\n**Command:** {ctx.command} {'- failed' if ctx.command_failed else ''}\n**Error:** {error}")
+                raise error
+            case discord.DiscordServerError():
+                channel: discord.TextChannel = await self.fetch_channel(1268260404677574697)
+                webhook: discord.Webhook = discord.utils.get(await channel.webhooks(), name=self.user.display_name)
+                if not webhook:
+                    webhook = await channel.create_webhook(name=self.user.display_name)
+                await webhook.send(content=f"There's an issue on Discord's end.")
+                raise error
+            case _:
+                # if the error is unknown, log it
+                channel: discord.TextChannel = ctx.channel if DEBUG and ctx and ctx.channel else await self.fetch_channel(1268260404677574697)
+                stack = "".join(traceback.format_exception(type(error), error, error.__traceback__))
+                # if stack is more than 1700 characters, turn it into a .txt file and store it as an attachment
+                too_long = len(stack) > 1700
+                if too_long:
+                    with open("auto-report_stack-trace.txt", "w") as f:
+                        f.write(stack)
+                    file = discord.File(fp="auto-report_stack-trace.txt", filename="error.txt")
+                    stack = "The stack trace was too long to send in a message, so it was saved as a file."
+                webhook: discord.Webhook = discord.utils.get(await channel.webhooks(), name=f"{self.user.display_name} Errors")
+                if not webhook:
+                    webhook = await channel.create_webhook(name=f"{self.user.display_name} Errors", avatar=await ctx.me.avatar.read())
+                await webhook.send(content=f"**ID:** {ctx.message.id}\n**Guild:** {ctx.guild.name} / {ctx.guild.id}\n**User:** {ctx.author} / {ctx.author.id}\n**Command:** {ctx.command}\n```{stack}```", file=file if too_long else discord.abc.MISSING) # type: ignore
+                await ctx.reply(f"An error has occured and has been reported to the developers. Report ID: `{ctx.message.id}`", mention_author=False)
+                raise error
+
+logger.info("Starting the bot...")
+client = MyClient()
+
+@client.before_invoke
+async def before_invoke(ctx: commands.Context):
+    whitelist = [record["guild_id"] for record in await client.db.fetch("SELECT guild_id FROM closed_beta WHERE guild_id = $1", ctx.guild.id)]
+    if ctx.guild.id not in whitelist:
+        return await ctx.guild.leave()
+    is_set_up = await client.db.fetchrow("SELECT * FROM guilds WHERE guild_id = $1", ctx.guild.id)
+    if not is_set_up:
+        await client.db.execute("INSERT INTO guilds (guild_id) VALUES ($1)", ctx.guild.id)
+    try:
+        # Signals that the bot is still thinking / performing a task
+        if ctx.interaction and ctx.interaction.type == discord.InteractionType.application_command:
+            await ctx.interaction.response.defer(thinking=True) # type: ignore
+        else:
+            await ctx.message.add_reaction(emojis.LOADING)
+    except discord.HTTPException:
+        pass
+
+@client.after_invoke
+async def after_invoke(ctx: commands.Context):
+    try:
+        await ctx.message.remove_reaction(emojis.LOADING, ctx.me)
+    except discord.HTTPException:
+        pass
+
+@client.hybrid_command(name="reload", description="reload_specs-description", usage="reload_specs-usage")
+@commands.is_owner()
+@app_commands.describe(cog="reload_specs-args-cog-description")
+@app_commands.rename(cog="reload_specs-args-cog-name")
+async def reload(ctx: commands.Context, cog: str):
+    try:
+        benchmark = perf_counter()
+        await client.reload_extension(f"cogs.{cog}")
+        end = perf_counter() - benchmark
+        await ctx.reply(content=f"Reloaded extension `{cog}` in **{end:.2f}s**")
+        logger.info(f"{ctx.author.name} reloaded {cog}.py")
+    except Exception as e:
+        await ctx.reply(content=f"Failed to reload extension `{cog}`: {e}")
+
+@client.hybrid_command(name="load", description="load_specs-description", usage="load_specs-usage")
+@commands.is_owner()
+@app_commands.describe(cog="load_specs-args-cog-description")
+@app_commands.rename(cog="load_specs-args-cog-name")
+async def load(ctx: commands.Context, cog: str):
+    try:
+        benchmark = perf_counter()
+        await client.load_extension(f"cogs.{cog}")
+        end = perf_counter() - benchmark
+        await ctx.reply(content=f"Loaded extension `{cog}` in **{end:.2f}s**")
+        logger.info(f"{ctx.author.name} loaded {cog}.py")
+    except Exception as e:
+        await ctx.reply(content=f"Failed to load extension `{cog}`: {e}")
+
+@client.hybrid_command(name="unload", description="unload_specs-description", usage="unload_specs-usage")
+@commands.is_owner()
+@app_commands.describe(cog="unload_specs-args-cog-description")
+@app_commands.rename(cog="unload_specs-args-cog-name")
+async def unload(ctx: commands.Context, cog: str):
+    try:
+        benchmark = perf_counter()
+        await client.unload_extension(f"cogs.{cog}")
+        end = perf_counter() - benchmark
+        await ctx.reply(content=f"Unloaded extension `{cog}` in **{end:.2f}s**")
+        logger.info(f"{ctx.author.name} unloaded {cog}.py")
+    except Exception as e:
+        await ctx.reply(content=f"Failed to unload extension `{cog}`: {e}")
+
+# noinspection PyUnresolvedReferences
+@client.hybrid_command(name="sync", description="sync_specs-description", usage="sync_specs-usage")
+@commands.is_owner()
+@app_commands.describe(guilds="sync_specs-args-guilds-description", scope="sync_specs-args-scope-description")
+@app_commands.rename(guilds="sync_specs-args-guilds-name", scope="sync_specs-args-scope-name")
+@app_commands.choices(
+    scope=[
+        app_commands.Choice(name="sync_specs-args-scope-local", value="~"),
+        app_commands.Choice(name="sync_specs-args-scope-global", value="*"),
+        app_commands.Choice(name="sync_specs-args-scope-resync", value="^")
+    ]
+)
+async def sync(ctx: commands.Context, guilds: commands.Greedy[discord.Object] = None, scope: Optional[Literal["~", "*", "^"]] = None) -> None:
+    benchmark = time.perf_counter()
+    
+    if not guilds:
+        if scope == "~":
+            synced = await ctx.bot.tree.sync(guild=ctx.guild)
+        elif scope == "*":
+            ctx.bot.tree.copy_global_to(guild=ctx.guild)
+            synced = await ctx.bot.tree.sync(guild=ctx.guild)
+        elif scope == "^":
+            ctx.bot.tree.clear_commands(guild=ctx.guild)
+            await ctx.bot.tree.sync(guild=ctx.guild)
+            synced = []
+        else:
+            synced = await ctx.bot.tree.sync()
+
+        end = time.perf_counter() - benchmark
+        await ctx.reply(content=f"Synced **{len(synced)}** {'commands' if len(synced) != 1 else 'command'} {'globally' if scope is None else 'to the current guild'}, took **{end:.2f}s**")
+    else:
+        guilds_synced = 0
+        for guild in guilds:
+            try:
+                await ctx.bot.tree.sync(guild=guild)
+            except discord.HTTPException:
+                pass
+            else:
+                guilds_synced += 1
+
+        end = time.perf_counter() - benchmark
+        await ctx.reply(content=f"Synced the tree to **{guilds_synced}/{len(guilds)}** guilds, took **{end:.2f}s**")
+
+async def start():
+    try:
+        await client.start(TOKEN)
+    except KeyboardInterrupt:
+        logger.info("SIGINT received, bot is shutting down")
+        await client.close()
+
+if __name__ == "__main__":
+    try:
+        loop = asyncio.new_event_loop()
+        loop.run_until_complete(start())
+    except KeyboardInterrupt:
+        logger.error("KeyboardInterrupt: Bot shut down by console")
