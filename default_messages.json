@@ -994,18 +994,17 @@
                 ]
             }
         }
-    },
-    "hu": {
+    }, "hu": {
         "afk": {
-            "dnd": "Kérlek, ne zavarj!",
+            "dnd": "AFK",
             "link": {
-                "content": "Az AFK státuszod nem tartalmazhat meghívó linkeket!"
+                "content": "Az AFK státuszod nem tartalmazhat linkeket!"
             },
             "on": {
-                "content": "AFK státusz bekapcsolva!"
+                "content": "Mától AFK vagy."
             },
             "off": {
-                "content": "AFK státusz kikapcsolva!"
+                "content": "Mától nem vagy AFK."
             },
             "name": "[AKF] {nickname}"
         },
@@ -1031,8 +1030,8 @@
             "reply": false
         },
         "all": [
-            "mind",
-            "minden"
+            "all",
+            "mind"
         ],
         "work": {
             "embeds": [
@@ -1043,56 +1042,90 @@
                 }
             ],
             "random": [
-                "Hazaértél a munkából, és örömmel láttad, hogy **{amount}** forintot hozzáadtak a számládhoz.",
-                "Egy fárasztó nap végéhez értél. **{amount}** forintot kaptál a szorgos munkádért!",
-                "Sikeresen teljesítettél az első munkanapodon. Jutalmad: **{amount}** Ft.",
-                "Előléptettek a cégednél, ezért **{amount}** Ft bónuszt kaptál!",
-                "Részvényeid után **{amount}** Ft osztalékot kapsz.",
-                "Sikeresen előléptettek a munkahelyeden! Így kaptál **{amount}** Ft előleget",
-                "Taxi sofőrként ma kerestél **{amount}** forintot.",
-                "Elmentél a boltba, vettél nokedlit, de rosszul adott vissza a a pénztáros. Kaptál **{amount}** forintot és egy csomag nokedlit."
+                "Hazaértél, és láttad, hogy **{amount} Ft-al** bővült a számlád egyenlege.",
+                "Egy nehéz nap után **{amount} Ft-ot** kaptál fizetségül!",
+                "Sikeresen teljesítetted az első napod az új melóban, így **{amount} Ft-ot** kaptál.",
+                "Cégbeli előléptetésed mellé kaptál egy **{amount} Ft-os** bónuszt!",
+                "Részvényeid után **{amount} Ft-ot** kaptál.",
+                "Előléptettek a munkahelyeden, így szereztél **{amount} Ft-ot**.",
+                "Taxisofőrként **{amount} Ft-ot** szereztél ma.",
+                "Elmentél a boltba zacskós levest venni, de a kasszás többet adott vissza. Szereztél **{amount} Ft-ot** és egy csomag zacskós levest."
             ]
         },
         "crime": {
             "embeds": [
                 {
-                    "title": "Crime",
+                    "title": "Bűnözés",
                     "description": "{random}",
                     "color": 6656243
                 }
             ],
             "random": [
-                "Kiraboltad a bankot, és **{amount}** forintot szereztél.",
-                "Megfenyegetted az utcai árust. **{amount}** forintot adott neked, hogy békénhagyd!",
-                "Kiraboltad a gyárat, ezért kaptál **{amount}** forintot.",
-                "Kiraboltad a sarki boltot. Csentél **{amount}** forintot meg egy csomag rágót.",
-                "Rendszergazdaként dolgozol. Kihívtak, hogy cserélj le egy régi routert egy újra, te viszont elloptad az újat, ezzel szereztél **{amount}** forintot!"
+                "Kiraboltad a bankot, ezzel **{amount} Ft-ot** szerezve.",
+                "Megfenyegetted az utcai eladót, aki **{amount} Ft-ot** adott, hogy békén hagyd!",
+                "Kiraboltál egy akkumulátorgyárat, és a szerzeményt eladtad **{amount} Ft-ért**.",
+                "Kiraboltad a sarki boltot. Kaptál **{amount} Ft-t** és egy csomag rágógumit.",
+                "Rendszergazdai munkaköröd részeként kihívtak egy router lecserélésére, de te elloptad és eladtad az új routert, ezzel **{amount} Ft-ot** szereztél!"
             ]
         },
         "allowance": {
-            "content": "Megkaptad a napi zsebpénzedet, **{amount}** forintot."
+            "content": "Megkaptad a napi jutalmad, **{amount} Ft-ot**."
         },
         "addmoney": {
             "success": {
-                "content": "**{amount}** Ft {member.mention} számlájára sikeresen jóváírásra került!"
+                "content": "**{amount} Ft** hozzá lett adva {member.mention} fiókjához!"
             },
             "errors": {
                 "positive": {
-                    "content": "Csak **pozitív** összeget adhatsz meg!"
+                    "content": "Csak **pozitív** összeget lehet hozzáadni az egyenleghez!"
                 }
             }
         },
         "removemoney": {
             "success": {
-                "content": "**{amount}** Ft sikeresen levonva {member.mention} számlájáról!"
+                "content": "**{amount} Ft** el lett távolítva {member.mention} fiókjából!"
             },
             "errors": {
                 "positive": {
-                    "content": "Csak **pozitív** összeget vonhatsz le!"
+                    "content": "Csak **pozitív** összeget lehet levonni az egyenlegből!"
                 },
                 "balance": {
-                    "content": "Nem vonhatsz le több pénzt, mint amennyi a felhasználó egyenlegén van!"
+                    "content": "Nem tudsz több pénzt levonni valaki egyenlegéből, mint amennyi van!"
                 }
+            }
+        },
+        "deposit": {
+            "all": [
+                "all",
+                "mind"
+            ],
+            "errors": {
+                "invalid_amount": {
+                    "content": "Csak pozitív számot adhatsz meg!"
+                },
+                "balance": {
+                    "content": "Nincs ennyi készpénzed!"
+                }
+            },
+            "success": {
+                "content": "Sikeresen betettél **{amount} Ft-ot** a bankba!"
+            }
+        },
+        "withdraw": {
+            "all": [
+                "all",
+                "mind"
+            ],
+            "errors": {
+                "invalid_amount": {
+                    "content": "Csak pozitív számot adhatsz meg!"
+                },
+                "balance": {
+                    "content": "Nincs ennyi pénz a bankodban!"
+                }
+            },
+            "success": {
+                "content": "Sikeresen jóváírtál **{amount} Ft-ot** a bankodból!"
             }
         },
         "luck": {
@@ -1105,40 +1138,40 @@
                     }
                 ],
                 "random": [
-                    "Vettél egy lottót, és teli találatod lett :tada: Ezzel nyertél **{amount}** forintot.",
-                    "Nagy értékben tettél fogadást, és megnyerted. Ezzel kaptál **{amount}** forintot.",
-                    "Blackjackezés közben elsőnek 21 értékű 2 kártyát osztottak a kezedbe, ezzel **{amount}** forintot nyertél.",
-                    "Az utcán sétálva találtál a földön **{amount}** forintot."
+                    "Vettél egy lottószelvényt, és teli találatod lett! :tada: Szereztél **{amount} Ft-ot**.",
+                    "Nagyot nyertél egy fogadáson - **{amount} Ft-ot**!",
+                    "Első két kártyád összesen 21-es értékkel rendelkezett blackjackben, így nyertél **{amount} Ft-ot**.",
+                    "Az utcán sétálva találtál **{amount} Ft-ot** a földön."
                 ]
             },
             "lose": {
                 "embeds": [
                     {
-                        "title": "Szerencse",
+                        "title": "Luck",
                         "description": "{random}",
                         "color": 13369344
                     }
                 ],
                 "random": [
-                    "Vettél egy lottót, de semmit sem nyertél :( Ezzel buktál **{amount}** forintot.",
-                    "Fogadásban vesztettél el **{amount}** forintot.",
-                    "Sikkasztottál a munkahelyeden. A bírósági ítélet szerint **{amount}**Ft kártérítést kell kifizetned.",
-                    "Kenőpénzt fizettél a szavazóidnak. Veszteséged **{amount}**Ft."
+                    "Vettél egy lottószelvényt, de nem nyertél semmit :( Vesztettél **{amount} Ft-ot**.",
+                    "Vesztettél **{amount} Ft-ot** egy fogadáson.",
+                    "Loptál a munkahelyedről. A bíróság **{amount} Ft-ot** igényel kárpótlásként.",
+                    "Sikkasztásért megbírságoltak **{amount} Ft-ra**."
                 ]
             },
             "errors": {
                 "balance": {
-                    "content": "Legalább **{amount}** forintnak kell lennie a számládon a játékhoz!"
+                    "content": "Minimum **{amount} Ft-al** kell rendelkezned ehhez!"
                 }
             }
         },
         "pay": {
             "success": {
-                "content": "Sikeresen átutaltál **{amount}** forintot {member.mention} számlájára!"
+                "content": "Sikeresen adtál **{amount} Ft-ot** {member.mention} tagnak!"
             },
             "errors": {
                 "positive": {
-                    "content": "Nem utalhatsz át negatív összeget!"
+                    "content": "Csak pozitív értéket adhatsz meg!"
                 },
                 "balance": {
                     "content": "Nincs ennyi készpénzed!"
@@ -1152,23 +1185,75 @@
                     "fields": [
                         {
                             "name": "Készpénz",
-                            "value": "${cash}",
+                            "value": "{cash} Ft",
                             "inline": true
                         },
                         {
                             "name": "Bank",
-                            "value": "${bank}",
+                            "value": "${bank} Ft",
                             "inline": true
                         },
                         {
-                            "name": "⚠️ Adósságban vagy.",
-                            "value": "Az összes pénz, amit keresel, az adósságod törlesztésére lesz fordítva.",
+                            "name": "⚠️ Adósságod van.",
+                            "value": "További nyert pénzed az adósságod törlesztésére fog menni.",
                             "inline": false
                         }
                     ],
                     "color": 6656243
                 }
             ]
+        },
+        "slots": {
+            "win": {
+                "embeds": [
+                    {
+                        "title": "Slots",
+                        "fields": [
+                            {
+                                "name": "Végeredmény",
+                                "value": "{results}",
+                                "inline": false
+                            },
+                            {
+                                "name": "Nyerteség",
+                                "value": "{amount} Ft",
+                                "inline": false
+                            }
+                        ],
+                        "color": 6656243
+                    }
+                ]
+            },
+            "lose": {
+                "embeds": [
+                    {
+                        "title": "Slots",
+                        "fields": [
+                            {
+                                "name": "Végeredmény",
+                                "value": "{results}",
+                                "inline": false
+                            },
+                            {
+                                "name": "Veszítettél",
+                                "value": "${amount}",
+                                "inline": false
+                            },
+                            {
+                                "name": "⚠️ Adósságod van.",
+                                "value": "További nyert pénzed az adósságod törlesztésére fog menni.",
+                                "inline": false
+                            }
+                        ],
+                        "color": 6656243
+                    }
+                ]
+            },
+            "errors": {
+                "balance": {
+                    "content": "Nincs elég készpénzed!"
+                }
+            }
         },
         "leaderboard": {
             "embeds": [
@@ -1176,23 +1261,13 @@
                     "title": "Ranglista",
                     "fields": [
                         {
-                            "name": "🥇 {member.name}",
-                            "value": "Cash: `${cash}`\nBank: `${bank}`",
+                            "name": "#{number} {user}",
+                            "value": "Készpénz: `{cash} Ft`\nBank: `{bank} Ft`",
                             "inline": false
                         },
                         {
-                            "name": "🥈 {member.name}",
-                            "value": "Cash: `${cash}`\nBank: `${bank}`",
-                            "inline": false
-                        },
-                        {
-                            "name": "🥉 {member.name}",
-                            "value": "Cash: `${cash}`\nBank: `${bank}`",
-                            "inline": false
-                        },
-                        {
-                            "name": "{number} {member.name}",
-                            "value": "Cash: `${cash}`\nBank: `${bank}`",
+                            "name": "Psszt...",
+                            "value": "Úgy tűnik, még senki sem használta az economy rendszert. Légy te az első!",
                             "inline": false
                         }
                     ],
@@ -1200,14 +1275,453 @@
                 }
             ]
         },
+        "shop": {
+            "list": {
+                "show": {
+                    "embeds": [
+                        {
+                            "title": "Bolt",
+                            "fields": [
+                                {
+                                    "name": "{item.name} (${item.price})",
+                                    "value": "{item.role.mention}: {item.description}",
+                                    "inline": false
+                                }
+                            ],
+                            "color": 6656243
+                        }
+                    ]
+                },
+                "empty": {
+                    "content": "Nincsenek termékek a boltban!"
+                }
+            },
+            "buy": {
+                "success": {
+                    "content": "Megvetted a(z) **{item.name}** terméket **{item.price} Ft-ért**."
+                },
+                "errors": {
+                    "balance": {
+                        "content": "Nincs pénzed erre a termékre!"
+                    },
+                    "not_found": {
+                        "content": "Nem létezik ilyen termék!"
+                    },
+                    "role_not_found": {
+                        "content": "Törölték a termékhez tartozó rangot! Kérj meg egy admint, hogy távolítsa el a boltból."
+                    }
+                }
+            },
+            "set": {
+                "success": {
+                    "content": "A termék hozzá lett adva a bolthoz!"
+                },
+                "errors": {
+                    "already_item": {
+                        "content": "Már létezik ilyen termék a boltban!"
+                    },
+                    "role_higher": {
+                        "content": "Ez a rang magasabban van, mint a te rangod!"
+                    },
+                    "limit": {
+                        "content": "Elérted a maximum terméklimitet!"
+                    }
+                }
+            },
+            "remove": {
+                "success": {
+                    "content": "A termék el lett távolítva a boltból!"
+                },
+                "errors": {
+                    "not_found": {
+                        "content": "Ez a termék nem létezik!"
+                    },
+                    "role_higher": {
+                        "content": "Ez a rang magasabban van, mint a te rangod!"
+                    }
+                }
+            }
+        },
+        "mod": {
+            "warn": {
+                "response": {
+                    "embeds": [
+                        {
+                            "title": "Figyelmeztetés",
+                            "description": "{warn.user.mention} figyelmeztetve.",
+                            "fields": [
+                                {
+                                    "name": "Indok",
+                                    "value": "{warn.reason}"
+                                },
+                                {
+                                    "name": "Lejár",
+                                    "value": "{warn.date}"
+                                }
+                            ],
+                            "footer": {
+                                "text": "{warn.id}"
+                            }
+                        }
+                    ],
+                    "ephemeral": true
+                },
+                "notify": {
+                    "embeds": [
+                        {
+                            "title": "Figyelmeztetés",
+                            "description": "Figyelmeztetve lettél a(z) **{warn.guild}** szerveren.",
+                            "fields": [
+                                {
+                                    "name": "Indok",
+                                    "value": "{warn.reason}"
+                                },
+                                {
+                                    "name": "Lejár",
+                                    "value": "{warn.length}"
+                                }
+                            ],
+                            "footer": {
+                                "text": "{warn.id}"
+                            },
+                            "color": 13369344
+                        }
+                    ]
+                },
+                "unwarned": {
+                    "embeds": [
+                        {
+                            "title": "Figyelmeztetés eltávolítva",
+                            "description": "A figyelmeztetésed a(z) **{warn.guild}** szerveren el lett távolítva.",
+                            "fields": [
+                                {
+                                    "name": "Eredeti indok",
+                                    "value": "{warn.reason}"
+                                }
+                            ],
+                            "color": 6656243
+                        }
+                    ]
+                },
+                "errors": {
+                    "bot": {
+                        "content": "Engem nem figyelmeztethetsz!"
+                    },
+                    "hierarchy": {
+                        "content": "Nem figyelmeztethetsz olyan tagot, akinek a rangja magasabb nálad!"
+                    }
+                }
+            },
+            "info": {
+                "response": {
+                    "embeds": [
+                        {
+                            "title": "`{case.type.name}` információk",
+                            "fields": [
+                                {
+                                    "name": "Szankció ID",
+                                    "value": "{case.id}",
+                                    "inline": false
+                                },
+                                {
+                                    "name": "Szankcionált felhasználó",
+                                    "value": "{case.user.mention}",
+                                    "inline": false
+                                },
+                                {
+                                    "name": "Szankciót adta",
+                                    "value": "{case.moderator.mention}",
+                                    "inline": false
+                                },
+                                {
+                                    "name": "Indok",
+                                    "value": "{case.reason}",
+                                    "inline": false
+                                },
+                                {
+                                    "name": "Lejár",
+                                    "value": "{case.length}",
+                                    "inline": false
+                                }
+                            ],
+                            "footer": {
+                                "text": "Szankció megnyitva ekkor"
+                            },
+                            "timestamp": "{case.created.timestamp}",
+                            "color": 6656243
+                        }
+                    ]
+                },
+                "errors": {
+                    "not_found": {
+                        "content": "Nem található ilyen szankció."
+                    }
+                }
+            },
+            "delete": {
+                "response": {
+                    "embeds": [
+                        {
+                            "title": "Szankció",
+                            "description": "`{case.id}` szankció törölve.",
+                            "color": 6656243
+                        }
+                    ]
+                },
+                "errors": {
+                    "not_found": {
+                        "content": "Nem található ilyen szankció."
+                    }
+                }
+            },
+            "edit": {
+                "response": {
+                    "embeds": [
+                        {
+                            "title": "Szankció szerkesztve",
+                            "description": "`{case.id}` szankció adatai szerkesztve.",
+                            "color": 6656243,
+                            "timestamp": "{now}"
+                        }
+                    ]
+                },
+                "errors": {
+                    "not_found": {
+                        "content": "Nem található ilyen szankció."
+                    },
+                    "invalid_time": {
+                        "content": "Hibás időformátum."
+                    }
+                }
+            },
+            "list": {
+                "response": {
+                    "embeds": [
+                        {
+                            "title": "Szankció lista",
+                            "fields": [
+                                {
+                                    "name": "{case.id} `{case.type.name}`",
+                                    "value": "Adta: {case.moderator.mention}\nIndok: {case.reason}\nLejár: {case.length}",
+                                    "inline": false
+                                },
+                                {
+                                    "name": "Nincsenek szankciók",
+                                    "value": "Ennek a felhasználónak nincsenek szankciói.",
+                                    "inline": false
+                                }
+                            ],
+                            "color": 6656243
+                        }
+                    ]
+                }
+            },
+            "mute": {
+                "response": {
+                    "embeds": [
+                        {
+                            "title": "Némítás",
+                            "description": "{mute.user.mention} le lett némítva.",
+                            "fields": [
+                                {
+                                    "name": "Indok",
+                                    "value": "{mute.reason}"
+                                },
+                                {
+                                    "name": "Lejár",
+                                    "value": "{mute.length}"
+                                }
+                            ],
+                            "color": 6656243,
+                            "footer": {
+                                "text": "{mute.id}"
+                            }
+                        }
+                    ]
+                },
+                "unmuted": {
+                    "embeds": [
+                        {
+                            "title": "Némítás feloldva",
+                            "description": "Feloldották a némításod a(z) **{guild}** szerveren.",
+                            "fields": [
+                                {
+                                    "name": "Eredeti indok",
+                                    "value": "{mute.reason}"
+                                }
+                            ],
+                            "footer": {
+                                "text": "{mute.id}"
+                            },
+                            "color": 6656243
+                        }
+                    ]
+                },
+                "notify": {
+                    "embeds": [
+                        {
+                            "title": "Némítás",
+                            "description": "Le lettél némítva a(z) **{guild}** szerveren.",
+                            "fields": [
+                                {
+                                    "name": "Indok",
+                                    "value": "{mute.reason}"
+                                },
+                                {
+                                    "name": "Lejár",
+                                    "value": "{mute.length}"
+                                }
+                            ],
+                            "footer": {
+                                "text": "{mute.id}"
+                            },
+                            "color": 13369344
+                        }
+                    ]
+                },
+                "reason": "Némítás {moderator.name} által",
+                "errors": {
+                    "bot": {
+                        "content": "Engem nem némíthatsz le!"
+                    },
+                    "hierarchy": {
+                        "content": "Nem némíthatsz le nálad magasabb rangú tagot!"
+                    }
+                }
+            },
+            "unmute": {
+                "response": {
+                    "embeds": [
+                        {
+                            "title": "Némítás feloldva",
+                            "description": "{user.mention} némítása el lett távolítva.",
+                            "color": 6656243
+                        }
+                    ]
+                },
+                "notify": {
+                    "content": "Feloldották a némításod a(z) **{guild}** szerveren."
+                },
+                "errors": {
+                    "hierarchy": {
+                        "content": "Nem oldhatod fel egy nálad magasabb rangú tag némítását."
+                    }
+                }
+            },
+            "kick": {
+                "response": {
+                    "embeds": [
+                        {
+                            "title": "Kirúgás",
+                            "description": "{kick.user.mention} ki lett rúgva {kick.reason} indokkal.",
+                            "color": 6656243,
+                            "footer": {
+                                "text": "{kick.id}"
+                            }
+                        }
+                    ]
+                },
+                "notify": {
+                    "embeds": [
+                        {
+                            "title": "Kirúgás",
+                            "description": "Ki lettél rúgva a(z) **{guild}** szerverről.",
+                            "fields": [
+                                {
+                                    "name": "Indok",
+                                    "value": "{kick.reason}"
+                                }
+                            ],
+                            "footer": {
+                                "text": "{kick.id}"
+                            },
+                            "color": 13369344
+                        }
+                    ]
+                },
+                "errors": {
+                    "bot": {
+                        "content": "Engem nem rúghatsz ki!"
+                    }
+                }
+            },
+            "ban": {
+                "response": {
+                    "embeds": [
+                        {
+                            "title": "Kitiltás",
+                            "description": "{ban.user.mention} ki lett tiltva.",
+                            "color": 6656243,
+                            "fields": [
+                                {
+                                    "name": "Indok",
+                                    "value": "{ban.reason}"
+                                },
+                                {
+                                    "name": "Lejár",
+                                    "value": "{ban.length}"
+                                }
+                            ],
+                            "footer": {
+                                "text": "{ban.id}"
+                            }
+                        }
+                    ]
+                },
+                "notify": {
+                    "embeds": [
+                        {
+                            "title": "Kitiltás",
+                            "description": "Ki lettél tiltva a(z) **{guild}** szerverről.",
+                            "fields": [
+                                {
+                                    "name": "Indok",
+                                    "value": "{ban.reason}"
+                                },
+                                {
+                                    "name": "Lejár",
+                                    "value": "{ban.length}"
+                                }
+                            ],
+                            "footer": {
+                                "text": "{ban.id}"
+                            },
+                            "color": 13369344
+                        }
+                    ]
+                },
+                "errors": {
+                    "bot": {
+                        "content": "Engem nem tilthatsz ki!"
+                    },
+                    "hierarchy": {
+                        "content": "Nem tilthatsz ki nálad magasabb rangú tagot."
+                    }
+                }
+            },
+            "unban": {
+                "response": {
+                    "embeds": [
+                        {
+                            "title": "Kitiltás feloldása",
+                            "description": "**{user.name}** kitiltása feloldva.",
+                            "color": 6656243
+                        }
+                    ]
+                },
+                "notify": {
+                    "content": "Kitiltásod feloldották a(z) **{guild}** szerveren."
+                }
+            }
+        },
         "ipinfo": {
             "embeds": [
                 {
                     "title": "IP információk",
                     "fields": [
                         {
-                            "name": "Hosztnév",
-                            "value": "${ip.hostname}",
+                            "name": "Hostname",
+                            "value": "{ip.hostname}",
                             "inline": false
                         },
                         {
@@ -1221,17 +1735,17 @@
                             "inline": false
                         },
                         {
-                            "name": "Megye",
+                            "name": "Régió",
                             "value": "{ip.region}",
                             "inline": false
                         },
                         {
-                            "name": "Országkód",
+                            "name": "Ország",
                             "value": "{ip.country}",
                             "inline": false
                         },
                         {
-                            "name": "Szolgáltató",
+                            "name": "Org",
                             "value": "{ip.org}",
                             "inline": false
                         },
@@ -1244,6 +1758,235 @@
                     "color": 6656243
                 }
             ]
+        },
+        "permissions": {
+            "add_reactions": "Reakciók hozzáadása",
+            "administrator": "Adminisztrátor",
+            "attach_files": "Fájlok csatolása",
+            "ban_members": "Tagok kitiltása",
+            "change_nickname": "Becenév megváltoztatása",
+            "connect": "Csatlakozás",
+            "create_events": "Események létrehozása",
+            "create_expressions": "Kifejezések létrehozása",
+            "create_instant_invite": "Meghívó létrehozása",
+            "create_polls": "Szavazások létrehozása",
+            "create_private_threads": "Privát gondolatmenetek létrehozása",
+            "create_public_threads": "Nyilvános gondolatmenetek létrehozása",
+            "deafen_members": "Tagok süketítése",
+            "embed_links": "Hivatkozások beágyazása",
+            "external_emojis": "Külső emotikon használata",
+            "external_stickers": "Külső matricák használata",
+            "kick_members": "Tagok kirúgása, jóváhagyása és elutasítása",
+            "manage_channels": "Csatornák kezelése",
+            "manage_emojis": "Kifejezések létrehozása",
+            "manage_emojis_and_stickers": "Kifejezések és matricák kezelése",
+            "manage_guild": "Szerver kezelése",
+            "manage_messages": "Üzenetek kezelése",
+            "manage_nicknames": "Becenevek kezelése",
+            "manage_permissions": "Jogok kezelése",
+            "manage_roles": "Szerepek kezelése",
+            "manage_threads": "Gondolatmenetek kezelése",
+            "manage_webhooks": "Webhookok kezelése",
+            "mention_everyone": "@everyone, @here és minden rang megemlítése",
+            "moderate_members": "Tagok felfüggesztése",
+            "move_members": "Tagok áthelyezése",
+            "mute_members": "Tagok némítása",
+            "priority_speaker": "Elsőbbségi megszólaló",
+            "read_message_history": "Üzenetelőzmények visszaolvasása",
+            "read_messages": "Üzenetek olvasása",
+            "request_to_speak": "Szó kérése",
+            "send_messages": "Üzenetek küldése",
+            "send_messages_in_threads": "Üzenetek küldése gondolatmenetekben",
+            "send_polls": "Szavazások létrehozása",
+            "send_tts_messages": "Szövegfelolvasó üzenetek küldése",
+            "send_voice_messages": "Hangüzenetek küldése",
+            "speak": "Beszéd",
+            "stream": "Videó",
+            "use_application_commands": "Alkalmazásparancsok használata",
+            "use_embedded_activities": "Tevékenységek használata",
+            "use_external_apps": "Use External Applications",
+            "use_external_emojis": "Külső emotikonok használata",
+            "use_external_sounds": "Külső hangok használata",
+            "use_external_stickers": "Külső matricák használata",
+            "use_soundboard": "A Soundboard használata",
+            "use_voice_activation": "Voice Activity használata",
+            "view_audit_log": "Tevékenységnapló megtekintése",
+            "view_channel": "Csatorna megtekintése",
+            "view_creator_monetization_analytics": "Készítői monetizációs analitikák megtekintése",
+            "view_guild_insights": "A Server Insights megtekintése"
+        },
+        "errors": {
+            "missing_required_argument": {
+                "embeds": [
+                    {
+                        "title": "Hiányzó paraméter",
+                        "description": "Helyes használat:\n```{command.usage}```",
+                        "timestamp": "{now}",
+                        "fields": [
+                            {
+                                "name": "Leírás",
+                                "value": "{command.description}",
+                                "inline": false
+                            }
+                        ],
+                        "color": 13369344
+                    }
+                ]
+            },
+            "bot_missing_permissions": {
+                "embeds": [
+                    {
+                        "title": "Ehhez nincs jogom!",
+                        "description": "A botnak kellenek még jogok, hogy ezt a parancsot végrehajthassa.",
+                        "fields": [
+                            {
+                                "name": "Hiányzó jogok",
+                                "value": "```{permissions}```",
+                                "inline": false
+                            }
+                        ],
+                        "color": 13369344
+                    }
+                ]
+            },
+            "bad_argument": {
+                "embeds": [
+                    {
+                        "title": "Hibás paraméter",
+                        "description": "Helyes használat:\n```{command.usage}```",
+                        "timestamp": "{now}",
+                        "fields": [
+                            {
+                                "name": "Leírás",
+                                "value": "{command.description}",
+                                "inline": false
+                            }
+                        ],
+                        "color": 13369344
+                    }
+                ]
+            },
+            "missing_permissions": {
+                "embeds": [
+                    {
+                        "title": "Nincs jogod ehhez!",
+                        "description": "Egyéb jogok szükségesek a parancs lefuttatásához.",
+                        "fields": [
+                            {
+                                "name": "Hiányzó jogok",
+                                "value": "```{permissions}```",
+                                "inline": false
+                            }
+                        ],
+                        "color": 13369344
+                    }
+                ]
+            },
+            "channel_not_found": {
+                "embeds": [
+                    {
+                        "title": "Nincs ilyen csatorna",
+                        "description": "A megadott csatorna nem található.",
+                        "color": 13369344
+                    }
+                ]
+            },
+            "emoji_not_found": {
+                "embeds": [
+                    {
+                        "title": "Nincs ilyen emoji",
+                        "description": "A megadott emoji nem található.",
+                        "color": 13369344
+                    }
+                ]
+            },
+            "member_not_found": {
+                "embeds": [
+                    {
+                        "title": "Nincs ilyen tag",
+                        "description": "A megadott tag nem található.",
+                        "color": 13369344
+                    }
+                ]
+            },
+            "user_not_found": {
+                "embeds": [
+                    {
+                        "title": "Nincs ilyen felhasználó",
+                        "description": "A megadott felhasználó nem található.",
+                        "color": 13369344
+                    }
+                ]
+            },
+            "role_not_found": {
+                "embeds": [
+                    {
+                        "title": "Nincs ilyen rang",
+                        "description": "A megadott rang nem található.",
+                        "color": 13369344
+                    }
+                ]
+            },
+            "forbidden": {
+                "embeds": [
+                    {
+                        "title": "Tiltott",
+                        "description": "A bot 403-as (Forbidden) hibába ütközött. Kérlek, ellenőrizd a bot jogait és a rang hierarchiát.",
+                        "color": 13369344
+                    }
+                ]
+            },
+            "not_owner": {
+                "embeds": [
+                    {
+                        "title": "Nem használhatod ezt a parancsot!",
+                        "description": "Ezt a parancsot csak a bot tulajdonosai használhatják.",
+                        "color": 13369344
+                    }
+                ]
+            }
+        },
+        "snapshot": {
+            "strings": {
+                "server_snapshot": "{guild.name} Snapshot-ja",
+                "save_load_reason": "fm01 Snapshot betöltés - {author.name}"
+            },
+            "create": {
+                "embeds": [
+                    {
+                        "title": "Snapshot",
+                        "description": "A Snapshot sikeresen elkészült.\nKód: ```{code}```",
+                        "color": 6656243
+                    }
+                ]
+            },
+            "load": {
+                "embeds": [
+                    {
+                        "title": "Snapshot",
+                        "description": "A Snapshot sikeresen be lett töltve. A szerver előző állapotát a **/snapshot load** paranccsal tudod visszaállítani, ezzel a kóddal: ```{code}```.",
+                        "color": 6656243
+                    }
+                ]
+            },
+            "owner_alert": {
+                "embeds": [
+                    {
+                        "title": "Snapshot betöltés",
+                        "description": "{author.name} betöltött egy Snapshot-ot a(z) {guild.name} szerveren. A szerver előző állapotát a **/snapshot load** paranccsal tudod visszaállítani, ezzel a kóddal: ```{code}```.",
+                        "color": 13369344
+                    }
+                ]
+            },
+            "not_found": {
+                "embeds": [
+                    {
+                        "title": "Hibás Snapshot",
+                        "description": "Az általad megadott Snapshot nem található.",
+                        "color": 13369344
+                    }
+                ]
+            }
         }
     }
 }
