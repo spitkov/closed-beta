@@ -7,17 +7,16 @@ import platform
 import asyncpg
 from dotenv import load_dotenv
 import logging
-from typing import Optional, Literal, Union, AnyStr, Any, Sequence, overload, Type
+from typing import Optional, Literal, Union, Any, Sequence
 import time
-from discord import app_commands, Message, Interaction
+from discord import app_commands
 import asyncio
 import traceback
 from time import perf_counter
 from pathlib import Path
-from helpers import custom_response, emojis, custom_args
+from helpers import custom_response, emojis
 from dataclasses import dataclass
 import datetime
-import random
 
 for handler in logging.root.handlers[:]:
     # prevent double logging
@@ -36,19 +35,21 @@ DEBUG = False
 on Windows, this will be set to True."""
 if platform.system() == "Windows":
     DEBUG = True
-    TOKEN = os.getenv("DEBUG_TOKEN")
     logger.info("Running in debug mode!")
+
+if DEBUG:
+    TOKEN = os.getenv("DEBUG_TOKEN")
 
 _slash = localization.Localization("./slash.i18n.json", default_locale="en", separator="-")
 
 if __name__ == '__main__':
     if platform.system() != "Windows":
-        import uvloop
-        uvloop.install()
-        asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
+        globals().__setitem__("uvloop", __import__("uvloop"))
+        uvloop.install() # type: ignore
+        asyncio.set_event_loop_policy(uvloop.EventLoopPolicy()) # type: ignore
         logger.info("Using uvloop event loop policy")
     else:
-        asyncio.set_event_loop_policy(asyncio.DefaultEventLoopPolicy())
+        asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
         logger.info("Using default event loop policy")
 
 @dataclass
@@ -316,9 +317,13 @@ class MyClient(commands.AutoShardedBot):
         logger.info(f"Loaded cogs: {', '.join([cog for cog in self.cogs])}")
         logger.info(f"discord-localization v{localization.__version__}")
 
-    async def on_command_error(self, ctx: Context, error: Union[discord.errors.DiscordException, app_commands.AppCommandError]):
-        if ctx.command:
+    async def handle_error(self, ctx: Context, error: Union[discord.errors.DiscordException, app_commands.AppCommandError]):
+        command = None
+        if isinstance(ctx, (Context, commands.Context)):
             command = Command.from_ctx(ctx)
+        elif hasattr(ctx, "command") and ctx.command:
+            command = Command.from_ctx(ctx)
+
         match error:
             case commands.MissingRequiredArgument():
                 error: commands.MissingRequiredArgument
@@ -326,7 +331,7 @@ class MyClient(commands.AutoShardedBot):
                 parameter = f"[{name if error.param.required else f'({name})'}]"
 
                 await ctx.send("errors.missing_required_argument", command=command, parameter=parameter)
-            case commands.BotMissingPermissions(), app_commands.BotMissingPermissions():
+            case commands.BotMissingPermissions() | app_commands.BotMissingPermissions():
                 error: commands.BotMissingPermissions
                 permissions = [(await self.custom_response(f"permissions.{permission}", ctx))
                                for permission in error.missing_permissions]
@@ -334,7 +339,7 @@ class MyClient(commands.AutoShardedBot):
                 await ctx.send("errors.bot_missing_permissions", command=command, permissions=", ".join(permissions))
             case commands.BadArgument():
                 await ctx.send("errors.bad_argument", command=command)
-            case commands.MissingPermissions(), discord.app_commands.MissingPermissions():
+            case commands.MissingPermissions() | discord.app_commands.MissingPermissions():
                 error: commands.MissingPermissions
                 permissions = [(await self.custom_response(f"permissions.{permission}", ctx))
                                for permission in error.missing_permissions]
@@ -354,7 +359,7 @@ class MyClient(commands.AutoShardedBot):
                 await ctx.send("errors.forbidden", command=command)
             case commands.NotOwner():
                 await ctx.send("errors.not_owner", command=command)
-            case commands.CommandNotFound(), app_commands.CommandNotFound():
+            case commands.CommandNotFound() | app_commands.CommandNotFound():
                 return
             case discord.RateLimited():
                 channel: discord.TextChannel = await self.fetch_channel(1268260404677574697)
@@ -387,6 +392,12 @@ class MyClient(commands.AutoShardedBot):
                 await webhook.send(content=f"**ID:** {ctx.message.id}\n**Guild:** {ctx.guild.name} / {ctx.guild.id}\n**User:** {ctx.author} / {ctx.author.id}\n**Command:** {ctx.command}\n```{stack}```", file=file if too_long else discord.abc.MISSING) # type: ignore
                 await ctx.reply(f"An error has occured and has been reported to the developers. Report ID: `{ctx.message.id}`", mention_author=False)
                 raise error
+
+    async def on_command_error(self, ctx: Context, error: discord.errors.DiscordException):
+        await self.handle_error(ctx, error)
+
+    async def on_app_command_error(self, interaction: discord.Interaction, error: app_commands.AppCommandError):
+        await self.handle_error(await Context.from_interaction(interaction), error)
 
 logger.info("Starting the bot...")
 client = MyClient()
