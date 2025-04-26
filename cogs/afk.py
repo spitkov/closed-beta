@@ -18,6 +18,25 @@ class AFK(commands.Cog):
         self.client: MyClient = client
         self.custom_response: custom_response.CustomResponse = custom_response.CustomResponse(client, "basic")
 
+    @commands.Cog.listener("on_message")
+    async def check_afk(self, message: discord.Message) -> None:
+        """Listens to messages sent. If the author of the message is AFK, turn AFK off."""
+        row = await self.client.db.fetchrow("SELECT * FROM afk WHERE guild_id = $1 AND user_id = $2 AND state = TRUE", message.guild.id, message.author.id)
+        if not row:
+            return None
+
+        # Turn off AFK
+        ctx = await self.client.get_context(message)
+        await self.client.db.execute("UPDATE afk SET state = $1 WHERE user_id = $2 AND guild_id = $3", False,
+                                     ctx.author.id, ctx.guild.id)
+        try:
+            await ctx.author.edit(nick=row["previous_nick"])
+        except discord.Forbidden:
+            pass
+        await ctx.reply("afk.off")
+
+        return await self.client.process_commands(message)
+
     @commands.hybrid_command(
         name="afk",
         description="afk_specs-description",
@@ -34,7 +53,7 @@ class AFK(commands.Cog):
             reason = await self.custom_response("afk.dnd", ctx)
 
         if re.search(regex.DISCORD_INVITE, reason):
-            return await ctx.reply("afk.link")
+            return await ctx.send("afk.link")
 
         row = await self.client.db.fetchrow("SELECT * FROM afk WHERE user_id = $1 AND guild_id = $2", ctx.author.id,
                                             ctx.guild.id)
@@ -47,7 +66,7 @@ class AFK(commands.Cog):
                     nick=(await self.custom_response("afk.name", ctx, nickname=ctx.author.display_name)))
             except discord.errors.Forbidden:
                 pass
-            return await ctx.reply("afk.on")
+            return await ctx.send("afk.on")
 
         if row["state"]:
             # Turn off AFK
@@ -57,7 +76,7 @@ class AFK(commands.Cog):
                 await ctx.author.edit(nick=row["previous_nick"])
             except discord.Forbidden:
                 pass
-            return await ctx.reply("afk.off")
+            return await ctx.send("afk.off")
         else:
             # Turn on AFK
             await self.client.db.execute(
@@ -68,7 +87,7 @@ class AFK(commands.Cog):
                     nick=(await self.custom_response("afk.name", ctx, nickname=ctx.author.display_name)))
             except discord.Forbidden:
                 pass
-            return await ctx.reply("afk.on")
+            return await ctx.send("afk.on")
 
 async def setup(client: MyClient):
     await client.add_cog(AFK(client))
