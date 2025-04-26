@@ -1,7 +1,7 @@
 {
     "en": {
         "afk": {
-            "dnd": "AFK",
+            "dnd": "Away From Keyboard",
             "link": {
                 "content": "Your AFK status can't contain invite links!"
             },
@@ -1008,7 +1008,7 @@
         }
     }, "hu": {
         "afk": {
-            "dnd": "AFK",
+            "dnd": "Nincs gépnél",
             "link": {
                 "content": "Az AFK státuszod nem tartalmazhat linkeket!"
             },
