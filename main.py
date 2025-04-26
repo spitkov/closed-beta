@@ -1,7 +1,6 @@
-import helpers
-
 if __name__ == "__main__":
     print("Importing modules...")
+import helpers
 import os
 import discord
 from discord.ext import commands, localization
@@ -302,7 +301,7 @@ class MyClient(commands.AutoShardedBot):
         logger.info("Loading cogs...")
         benchmark = perf_counter()
         # Load all cogs within the cogs folder
-        allowed: list[str] = ["basic", "closedbeta", "economy", "snapshot", "status"]
+        allowed: list[str] = ["afk", "basic", "closedbeta", "economy", "snapshot", "status"]
         cogs = Path("./cogs").glob("*.py")
         for cog in cogs:
             if cog.stem in allowed: # if you're having issues with cogs not loading, check this list
