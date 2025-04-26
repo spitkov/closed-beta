@@ -8,7 +8,7 @@ from discord import app_commands
 from discord.ext import commands
 
 import main
-from helpers import custom_response
+from helpers import custom_response, CustomUser
 from helpers import regex
 from main import MyClient
 
@@ -21,9 +21,11 @@ class AFK(commands.Cog):
     @commands.Cog.listener("on_message")
     async def check_afk(self, message: discord.Message) -> None:
         """Listens to messages sent. If the author of the message is AFK, turn AFK off."""
+        if not message.guild:
+            return
         row = await self.client.db.fetchrow("SELECT * FROM afk WHERE guild_id = $1 AND user_id = $2 AND state = TRUE", message.guild.id, message.author.id)
         if not row:
-            return None
+            return
 
         # Turn off AFK
         ctx = await self.client.get_context(message)
@@ -35,7 +37,32 @@ class AFK(commands.Cog):
             pass
         await ctx.reply("afk.off")
 
-        return await self.client.process_commands(message)
+        await self.client.process_commands(message)
+
+    @commands.Cog.listener("on_message")
+    async def answer_afk_reason(self, message: discord.Message) -> None:
+        """Listens to messages. If exactly one mentioned user is AFK, reply with their AFK reason."""
+        if message.author.bot or not message.guild:
+            return
+
+        if len(message.mentions) != 1:
+            return
+
+        mentioned_user = message.mentions[0]
+
+        row = await self.client.db.fetchrow(
+            "SELECT * FROM afk WHERE guild_id = $1 AND user_id = $2 AND state = TRUE",
+            message.guild.id,
+            mentioned_user.id
+        )
+
+        if not row:
+            return
+
+        ctx = await self.client.get_context(message)
+
+        await ctx.reply("afk.reason", user=CustomUser.from_user(mentioned_user), reason=row["message"])
+        await self.client.process_commands(message)
 
     @commands.hybrid_command(
         name="afk",

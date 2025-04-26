@@ -11,6 +11,9 @@
             "off": {
                 "content": "You are no longer AFK."
             },
+            "reason": {
+                "content": "**{user.name}** is currently AFK: `{reason}`"
+            },
             "name": "[AFK] {nickname}"
         },
         "ping": {
@@ -1014,6 +1017,9 @@
             },
             "off": {
                 "content": "Mától nem vagy AFK."
+            },
+            "reason": {
+                "content": "**{user.name}** jelenleg AFK: `{reason}`"
             },
             "name": "[AFK] {nickname}"
         },
