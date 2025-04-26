@@ -11,7 +11,7 @@
             "off": {
                 "content": "You are no longer AFK."
             },
-            "name": "[AKF] {nickname}"
+            "name": "[AFK] {nickname}"
         },
         "ping": {
             "embeds": [
@@ -327,7 +327,7 @@
                         "content": "There is already such an item in the shop!"
                     },
                     "role_higher": {
-                        "content": "This role is higher than your corrent top role!"
+                        "content": "This role is higher than your current top role!"
                     },
                     "limit": {
                         "content": "You have reached the maximum number of items in the shop!"
@@ -343,7 +343,7 @@
                         "content": "This item doesn't exist!"
                     },
                     "role_higher": {
-                        "content": "This role is higher than your corrent top role!"
+                        "content": "This role is higher than your current top role!"
                     }
                 }
             }
@@ -1015,7 +1015,7 @@
             "off": {
                 "content": "Mától nem vagy AFK."
             },
-            "name": "[AKF] {nickname}"
+            "name": "[AFK] {nickname}"
         },
         "ping": {
             "embeds": [
