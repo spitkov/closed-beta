@@ -1005,6 +1005,18 @@
                     }
                 ]
             }
+        },
+        "setup": {
+            "prefix": {
+                "set": {
+                    "content": "The prefix is now `{prefix}`"
+                },
+                "errors": {
+                    "long": {
+                        "content": "The prefix can only be up to {limit} characters long!"
+                    }
+                }
+            }
         }
     }, "hu": {
         "afk": {
@@ -2010,6 +2022,18 @@
                         "color": 13369344
                     }
                 ]
+            }
+        },
+        "setup": {
+            "prefix": {
+                "set": {
+                    "content": "A prefix mától `{prefix}`"
+                },
+                "errors": {
+                    "long": {
+                        "content": "A prefix maximum {limit} karakter hosszú lehet!"
+                    }
+                }
             }
         }
     }

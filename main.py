@@ -301,7 +301,7 @@ class MyClient(commands.AutoShardedBot):
         logger.info("Loading cogs...")
         benchmark = perf_counter()
         # Load all cogs within the cogs folder
-        allowed: list[str] = ["afk", "basic", "closedbeta", "economy", "snapshot", "status"]
+        allowed: list[str] = ["afk", "basic", "closedbeta", "economy", "setup", "snapshot", "status"]
         cogs = Path("./cogs").glob("*.py")
         for cog in cogs:
             if cog.stem in allowed: # if you're having issues with cogs not loading, check this list
