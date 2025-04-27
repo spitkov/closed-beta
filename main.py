@@ -32,8 +32,8 @@ if __name__ == '__main__':
 load_dotenv()
 TOKEN = os.getenv("TOKEN")
 DEBUG = False
-"""Whether the bot is in debug mode or not. This controls which token to use and where to send error reports. If you're
-on Windows, this will be set to True."""
+"""Whether the bot is in debug mode or not. This controls which token and prefix to use and where to send error reports.
+If you're on Windows, this will be set to True automatically."""
 if platform.system() == "Windows":
     DEBUG = True
     logger.info("Running in debug mode!")
@@ -220,10 +220,10 @@ class MyClient(commands.AutoShardedBot):
 
     async def get_prefix(self, message: discord.Message) -> Union[str, list[str]]:
         if not message.guild:
-            return "?!"
+            return "?!" if not DEBUG else "!!"
         prefix = await self.db.fetchrow("SELECT * FROM guilds WHERE guild_id = $1", message.guild.id)
         if not prefix:
-            return commands.when_mentioned_or("?!")(self, message)
+            return commands.when_mentioned_or("?!" if not DEBUG else "!!")(self, message)
         else:
             if prefix["mention"]:
                 return commands.when_mentioned_or(prefix["prefix"])(self, message)
