@@ -392,6 +392,20 @@
                     "description": "The member you want to unban"
                 }
             }
+        },
+        "prefix": "prefix",
+        "prefix_specs": {
+            "description": "Edit the prefix of the bot",
+            "args": {
+                "prefix": {
+                    "name": "prefix",
+                    "description": "The prefix you want to set"
+                },
+                "mention": {
+                    "name": "mention",
+                    "description": "Whether to allow mentioning the bot as a prefix"
+                }
+            }
         }
     }
 }

@@ -4,6 +4,8 @@ from discord import app_commands
 import logging
 from typing import Literal, Optional
 
+from docutils.nodes import description
+
 import main
 from helpers import *
 
@@ -11,15 +13,15 @@ class Setup(commands.Cog):
     def __init__(self, client):
         self.client = client
 
-    @commands.hybrid_command()
+    @commands.hybrid_command(name="prefix", description="prefix_specs-description")
     @commands.has_permissions(administrator=True)
     @app_commands.rename(
-        prefix="prefix",
-        mention="mention"
+        prefix="prefix_specs-args-prefix-name",
+        mention="prefix_specs-args-mention-name"
     )
     @app_commands.describe(
-        prefix="The prefix you want to set",
-        mention="Whether to allow mentioning the bot as a prefix"
+        prefix="prefix_specs-args-prefix-description",
+        mention="prefix_specs-args-mention-description"
     )
     async def prefix(self, ctx: main.Context, prefix: str, mention: Optional[bool] = True):
         if len(prefix) > 10:
