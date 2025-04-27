@@ -29,6 +29,10 @@ class AFK(commands.Cog):
 
         # Turn off AFK
         ctx = await self.client.get_context(message)
+
+        if ctx.command.name == "afk":
+            return
+
         await self.client.db.execute("UPDATE afk SET state = $1 WHERE user_id = $2 AND guild_id = $3", False,
                                      ctx.author.id, ctx.guild.id)
         try:
@@ -37,32 +41,33 @@ class AFK(commands.Cog):
             pass
         await ctx.reply("afk.off")
 
-        await self.client.process_commands(message)
-
     @commands.Cog.listener("on_message")
     async def answer_afk_reason(self, message: discord.Message) -> None:
-        """Listens to messages. If exactly one mentioned user is AFK, reply with their AFK reason."""
-        if message.author.bot or not message.guild:
-            return
-
-        if len(message.mentions) != 1:
-            return
-
-        mentioned_user = message.mentions[0]
-
-        row = await self.client.db.fetchrow(
-            "SELECT * FROM afk WHERE guild_id = $1 AND user_id = $2 AND state = TRUE",
-            message.guild.id,
-            mentioned_user.id
-        )
-
-        if not row:
+        """Listens to messages. Replies with the AFK reason(s) if mentioned users are AFK."""
+        if message.author.bot or not message.guild or not message.mentions:
             return
 
         ctx = await self.client.get_context(message)
 
-        await ctx.reply("afk.reason", user=CustomUser.from_user(mentioned_user), reason=row["message"])
-        await self.client.process_commands(message)
+        afk_lines = []
+
+        for user in message.mentions:
+            row = await self.client.db.fetchrow(
+                "SELECT * FROM afk WHERE guild_id = $1 AND user_id = $2 AND state = TRUE",
+                message.guild.id,
+                user.id
+            )
+
+            if row and row["user_id"] != message.author.id:
+                # Use localization for each AFK user
+                text = await self.custom_response("afk.reason", ctx, user=CustomUser.from_user(user), reason=row["message"])
+                afk_lines.append(text["content"])
+
+        if not afk_lines:
+            return
+        main.logger.info(afk_lines)
+        final_message = "\n".join(afk_lines)
+        await ctx.reply(final_message)
 
     @commands.hybrid_command(
         name="afk",
