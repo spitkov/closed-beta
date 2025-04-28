@@ -202,6 +202,7 @@ class MyClient(commands.AutoShardedBot):
             648168353453572117, # pearoo
             657350415511322647, # liba
             452133888047972352, # aki26
+            1051181672508444683, # sarky
         ]
         # noinspection PyTypeChecker
         super().__init__(
