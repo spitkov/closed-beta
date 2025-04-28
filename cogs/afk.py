@@ -65,7 +65,7 @@ class AFK(commands.Cog):
 
         if not afk_lines:
             return
-        main.logger.info(afk_lines)
+
         final_message = "\n".join(afk_lines)
         await ctx.reply(final_message)
 
