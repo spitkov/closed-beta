@@ -1,5 +1,3 @@
-if __name__ == "__main__":
-    print("Importing modules...")
 import helpers
 import os
 import discord
@@ -25,9 +23,6 @@ for handler in logging.root.handlers[:]:
 
 discord.utils.setup_logging(level=logging.INFO, root=True)
 logger = logging.getLogger()
-if __name__ == '__main__':
-    logger.info("Modules imported, logging set up!")
-    logger.info(f"OS: {platform.system()}")
 
 load_dotenv()
 TOKEN = os.getenv("TOKEN")
@@ -36,18 +31,14 @@ DEBUG = False
 If you're on Windows, this will be set to True automatically."""
 if platform.system() == "Windows":
     DEBUG = True
-    logger.info("Running in debug mode!")
-
-if DEBUG:
-    TOKEN = os.getenv("DEBUG_TOKEN")
 
 _slash = localization.Localization("./slash.i18n.json", default_locale="en", separator="-")
 
 if __name__ == '__main__':
     if platform.system() != "Windows":
-        globals().__setitem__("uvloop", __import__("uvloop"))
-        uvloop.install() # type: ignore
-        asyncio.set_event_loop_policy(uvloop.EventLoopPolicy()) # type: ignore
+        import uvloop
+        uvloop.install()
+        asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
         logger.info("Using uvloop event loop policy")
     else:
         asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
@@ -528,6 +519,9 @@ async def start():
         await client.close()
 
 if __name__ == "__main__":
+    if DEBUG:
+        TOKEN = os.getenv("DEBUG_TOKEN")
+        logger.info("Running in debug mode")
     try:
         loop = asyncio.new_event_loop()
         loop.run_until_complete(start())
