@@ -1,0 +1,21 @@
+[project]
+name = "lumin"
+version = "0.1.0"
+description = "fm01 v2.0 - closed beta"
+authors = [
+  { name = "Pearoo", email = "contact@pearoo.dev" }
+]
+readme = "README.md"
+requires-python = ">=3.9"
+
+dependencies = [
+    "discord-localization>=1.1.4",
+    "discord>=2.3.2",
+    "pyyaml>=6.0.2",
+    "asyncpg>=0.30.0",
+    "python-dotenv>=1.1.0",
+    "docutils>=0.21.2",
+    "mypy>=1.15.0",
+]
+
+[tool.uv]

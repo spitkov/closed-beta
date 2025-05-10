@@ -276,7 +276,7 @@ class MyClient(commands.AutoShardedBot):
     async def first_time_database(self):
         logger.info("Running first time database setup...")
         benchmark = perf_counter()
-        database_exists = await self.db.fetchval("SELECT 1 FROM pg_database WHERE datname = 'lumin_beta'")
+        database_exists = await self.db.fetchval("SELECT 1 FROM information_schema.schemata WHERE schema_name = 'public'")
         if not database_exists:
             await self.db.execute("CREATE DATABASE lumin_beta OWNER lumin")
             logger.info("Created database 'lumin'!")
