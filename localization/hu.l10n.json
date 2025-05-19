@@ -56,7 +56,8 @@
 			"Részvényeid után **{amount} Ft-ot** kaptál.",
 			"Előléptettek a munkahelyeden, így szereztél **{amount} Ft-ot**.",
 			"Taxisofőrként **{amount} Ft-ot** szereztél ma.",
-			"Elmentél a boltba zacskós levest venni, de a kasszás többet adott vissza. Szereztél **{amount} Ft-ot** és egy csomag zacskós levest."
+			"Elmentél a boltba zacskós levest venni, de a kasszás többet adott vissza. Szereztél **{amount} Ft-ot** és egy csomag zacskós levest.",
+			"You had a hard day on the fields and earned **${amount}**."
 		]
 	},
 	"crime": {
