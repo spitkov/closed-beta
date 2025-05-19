@@ -1,41 +1,43 @@
 """A helper for a pagination class."""
 
-import discord
 from typing import Optional
-class Pagination(discord.ui.View):
-    def __init__(self, pages: list[dict], user: discord.User, timeout: Optional[int] = None):
-        self.page = 0
-        self.pages = pages
-        self.user = user
-        super().__init__(timeout=timeout)
-    
-    async def interaction_check(self, interaction: discord.Interaction) -> bool:
-        return interaction.user == self.user
-    
-    @discord.ui.button(emoji="◀️", style=discord.ButtonStyle.gray, custom_id="prev")
-    async def prev_button(self, interaction: discord.Interaction, button: discord.ui.Button):
-        if self.page > 0:
-            self.page -= 1
-        else:
-            self.page = len(self.pages) - 1
-        if len(self.pages) == 1:
-            view = None
-        else:
-            view = self
-        await interaction.edit_original_response(**self.pages[self.page], view=view)
 
-    @discord.ui.button(emoji="▶️", style=discord.ButtonStyle.gray, custom_id="next")
-    async def next_button(self, interaction: discord.Interaction, button: discord.ui.Button):
-        if self.page < len(self.pages) - 1:
-            self.page += 1
-        else:
-            self.page = 0
-        if len(self.pages) == 1:
-            view = None
-        else:
-            view = self
-        await interaction.edit_original_response(**self.pages[self.page], view=view)
-        
+import discord
+
+class Pagination(discord.ui.View):
+	def __init__(self, pages: list[dict], user: discord.User, timeout: Optional[int] = None):
+		self.page = 0
+		self.pages = pages
+		self.user = user
+		super().__init__(timeout=timeout)
+
+	async def interaction_check(self, interaction: discord.Interaction) -> bool:
+		return interaction.user == self.user
+
+	@discord.ui.button(emoji="◀️", style=discord.ButtonStyle.gray, custom_id="prev")
+	async def prev_button(self, interaction: discord.Interaction, button: discord.ui.Button):
+		if self.page > 0:
+			self.page -= 1
+		else:
+			self.page = len(self.pages) - 1
+		if len(self.pages) == 1:
+			view = None
+		else:
+			view = self
+		await interaction.edit_original_response(**self.pages[self.page], view=view)
+
+	@discord.ui.button(emoji="▶️", style=discord.ButtonStyle.gray, custom_id="next")
+	async def next_button(self, interaction: discord.Interaction, button: discord.ui.Button):
+		if self.page < len(self.pages) - 1:
+			self.page += 1
+		else:
+			self.page = 0
+		if len(self.pages) == 1:
+			view = None
+		else:
+			view = self
+		await interaction.edit_original_response(**self.pages[self.page], view=view)
+
 # Example:
 
 # put the leaderboard into pages, split by 5, and display them with pagination

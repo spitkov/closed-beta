@@ -3,7 +3,7 @@ name = "lumin"
 version = "0.1.0"
 description = "fm01 v2.0 - closed beta"
 authors = [
-  { name = "Pearoo", email = "contact@pearoo.dev" }
+    { name = "Pearoo", email = "contact@pearoo.dev" }
 ]
 readme = "README.md"
 requires-python = ">=3.9"
@@ -14,7 +14,7 @@ dependencies = [
     "pyyaml>=6.0.2",
     "asyncpg>=0.30.0",
     "python-dotenv>=1.1.0",
-    "docutils>=0.21.2"
+    "docutils-stubs>=0.0.22",
 ]
 
 [tool.setuptools]
