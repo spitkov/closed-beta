@@ -37,6 +37,8 @@ if platform.system() == "Windows":
 	DEBUG = True
 
 slash_localizations = { }
+
+# load the slash localization files and combine them into one dictionary
 for file_path in pathlib.Path("./slash_localization").glob("*.l10n.json"):
 	lang = file_path.stem.removesuffix(".l10n")
 	try:
@@ -50,7 +52,7 @@ for file_path in pathlib.Path("./slash_localization").glob("*.l10n.json"):
 	except Exception as e:
 		logger.warning(f"Failed to load {file_path}: {e}")
 
-_slash = localization.Localization(slash_localizations, default_locale="en", separator="-")
+slash_command_localization = localization.Localization(slash_localizations, default_locale="en", separator="-")
 
 if __name__ == '__main__':
 	if platform.system() != "Windows":
@@ -73,9 +75,9 @@ class Command:
 	@classmethod
 	def from_ctx(cls, ctx: commands.Context):
 		prefix = ctx.prefix.replace(ctx.me.mention, f"@{ctx.me.display_name}")
-		usage = _slash(ctx.command.usage, ctx) if ctx.command.usage else ctx.command.qualified_name
+		usage = slash_command_localization(ctx.command.usage, ctx) if ctx.command.usage else ctx.command.qualified_name
 		return cls(
-			name=ctx.command.qualified_name, description=_slash(ctx.command.description, ctx) or "-",
+			name=ctx.command.qualified_name, description=slash_command_localization(ctx.command.description, ctx) or "-",
 			usage=f"{prefix}{usage}", prefix=prefix
 		)
 
@@ -90,7 +92,7 @@ class Argument:
 	@classmethod
 	def from_param(cls, param: commands.Parameter, ctx: commands.Context):
 		return cls(
-			name=_slash(param.displayed_name or param.name, ctx), description=_slash(param.description, ctx) or "-",
+			name=slash_command_localization(param.displayed_name or param.name, ctx), description=slash_command_localization(param.description, ctx) or "-",
 			default=param.default, annotation=param.annotation, required=param.required
 		)
 
@@ -155,7 +157,7 @@ class SlashCommandLocalizer(app_commands.Translator):
 	async def translate(
 		self, string: app_commands.locale_str, locale: discord.Locale, ctx: app_commands.TranslationContext
 		) -> Optional[str]:
-		return _slash(string.message, str(locale))  # type: ignore
+		return slash_command_localization(string.message, str(locale))  # type: ignore
 
 	async def unload(self) -> None:
 		benchmark = perf_counter()
@@ -306,7 +308,7 @@ class MyClient(commands.AutoShardedBot):
 		match error:
 			case commands.MissingRequiredArgument():
 				error: commands.MissingRequiredArgument
-				name = _slash(error.param.name, ctx)
+				name = slash_command_localization(error.param.name, ctx)
 				parameter = f"[{name if error.param.required else f'({name})'}]"
 
 				await ctx.send("errors.missing_required_argument", command=command, parameter=parameter)

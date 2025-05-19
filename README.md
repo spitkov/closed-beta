@@ -1,61 +1,95 @@
 # Lumin
 
-Lumin is a Discord bot project with the purpose of updating & refactoring it's predecessor, FightMan01 bot. It's a
-multi-purpose bot, with features such as moderation, fun, and utility commands.
+[![Crowdin](https://badges.crowdin.net/project-lumin/localized.svg)](https://crowdin.com/project/project-lumin)
+![GitHub Release](https://img.shields.io/github/v/release/project-lumin/closed-beta)
+![GitHub Stars](https://img.shields.io/github/stars/project-lumin/closed-beta?style=flat)
+[![Discord](https://img.shields.io/discord/572077459189792769?label=discord
+)](https://discord.gg/s8zBYQk)
+![Top Language](https://img.shields.io/github/languages/top/project-lumin/closed-beta)
+![Commit Activity](https://img.shields.io/github/commit-activity/m/project-lumin/closed-beta)
 
-## Running the bot
+**Lumin** is a Discord bot built to replace and improve upon its predecessor, *FightMan01 bot*. It's a versatile bot featuring moderation, utility, and fun commands.
+
+## Running the Bot
 
 ### Prerequisites
 
-- Python 3.12 or above
-- PostgreSQL
-- It is recommended to use MacOS or Linux for running the bot because of **uvloop**
+- Python **3.12+**
+- **PostgreSQL**
+- Recommended OS: **Linux** or **macOS** (for optimal compatibility with `uvloop`)
 
-### Steps
+> `uvloop` is installed automatically on Linux/macOS via `pyproject.toml` dependency markers.
 
-1. Clone the repository
-2. Install the required packages using `pip install --upgrade -r requirements.txt`
-    - You can use virtual environments to keep the dependencies isolated from your system _(recommended)_
-    - If you're using anything other than Windows, you must also install `uvloop`
-3. Create a `.env` file in the root directory of the project, this needs to have 4 keys:
-    - `TOKEN`, containing your bot's token
-    - `DB_HOST`, containing the IP address for your database (can be _`localhost`_ as well)
-    - `DB_PASSWORD`, containing the password for your database
-    - `DB_PORT`, containing the port for your database
-4. Install PostgreSQL
-    - Create a user called `lumin` with the password you set in the `.env` file
-    - Create a database called `lumin` (preferably with the owner being the `lumin` user, for security purposes)
-    - If you want to 100% make sure tables are created, copy and paste the contents of `first_time.sql`
-5. Run the bot using `python main.py`
+### Setup Steps
 
-## Contributor notice
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/project-lumin/closed-beta.git
+   cd lumin
+   ```
 
-1. We are using ClickUp to assign tasks to our developers. Outsiders will never have access to this, but you are free to
-   improve on our code - send a PR and we will consider it! :3
-2. We are using a subclassed `commands.Context`, you can find the code in `main.py`. Import using `import main` and
-   refer to it using `main.Context`. This is for easier localization workflow. Read the docstring for more information.
-3. The default language is English. When adding new commands and features, you are only required to add localized
-   messages in English.
-4. We use `discord-localization`, a custom-made package, for localization purposes. You can read more
-   [here](https://pypi.org/project/discord-localization).
-5. We use NumPy-style docstrings. You should add docstrings to every function that isn't a command, unless the name of
-   the function represents its purpose (such as `load_cogs`).
-6. Helpers are used for commonly used features that aren't module-specific (e.x. `EconomyHelper` in `economy.py`).
-7. For formatting purposes, we use custom arguments that can be created from the objects they represent. For example,
-   `CustomUser` can be created from a `discord.User` using `CustomUser.from_user(<discord.User>)`. We need this so that
-   custom messages edited by server admins can't access sensitive information, but also for ease-of-use (e.x
-   `User.avatar`
-   returns a `discord.Asset`, so `CustomUser.avatar` already returns that asset's URL, because that is most likely what
-   server admins expect to see.)
-8. If you have any questions, DM **@pearoo** on Discord.
+2. **Set up the virtual environment and install dependencies**
+   ```bash
+   uv venv
+   uv pip install -e .
+   ```
 
-## Versioning & releasing
+    - This installs all dependencies from `pyproject.toml`
+    - `uvloop` will be included automatically on supported platforms
 
-Given a version number MAJOR.MINOR.PATCH:
+3. **Create a `.env` file** in the project root with the following keys:
+   ```
+   TOKEN=your-bot-token
+   DB_HOST=localhost
+   DB_PASSWORD=your-db-password
+   DB_PORT=5432
+   ```
 
-- MAJOR is updated when we introduce a breaking change (such as reworking an entire module)
-    - When MAJOR is updated, MINOR and PATCH are reset to 0
-- MINOR is updated when we update only a small set of commands
-    - When MINOR is updated, PATCH is reset to 0
-- PATCH is updated for hotfixes, BTS optimization changes, and localization updates
-- Additional labels included after the version numbers are not going to be present on the live bot
+4. **Install PostgreSQL**, then:
+    - Create a user named `lumin` with the password you defined above
+    - Create a database named `lumin`, preferably owned by the `lumin` user
+    - Optionally initialize tables by running the contents of `first_time.sql`
+
+5. **Run the bot**
+   ```bash
+   python main.py
+   ```
+
+## Contributor Notice
+
+1. We use **ClickUp** for internal task management (external contributors won’t have access).
+    - You're welcome to contribute via PRs — we’ll review and respond!
+
+2. We're subclassing `commands.Context`. You’ll find this in `main.py`:
+    - Import with `import main`, and use `main.Context`
+    - This makes localization easier — check the docstring for details
+
+3. The default language is **English**
+    - New commands/features must include English-localized messages
+
+4. Localization is handled via our custom package:  
+   👉 [`discord-localization`](https://pypi.org/project/discord-localization)
+    - Please check out our [Crowdin](https://crowdin.com/project/project-lumin) if you would like to add translations to the bot!
+
+5. We use **NumPy-style docstrings**
+    - All non-command functions should have docstrings, unless clearly self-explanatory (e.g., `load_cogs`)
+
+6. **Helpers** are used for shared, reusable logic (e.g., `EconomyHelper` in `economy.py`)
+
+7. For formatting, we use **custom argument classes** (e.g., `CustomUser`):
+    - If you're adding a new argument class, please include a `from_X` classmethod (e.g., `CustomUser.from_user()`)
+    - These help ensure editable messages are safe and intuitive (e.g., `CustomUser.avatar` returns the URL, not the raw asset)
+
+8. Questions? DM **@pearoo** on Discord.
+
+## Versioning & Releasing
+
+Version numbers follow **MAJOR.MINOR.PATCH**:
+
+- **MAJOR** → Breaking changes (e.g., full module overhauls)
+    - Resets MINOR and PATCH to `0`
+- **MINOR** → New features or updated command sets
+    - Resets PATCH to `0`
+- **PATCH** → Bugfixes, internal tweaks, or localization updates
+
+> ⚠️ Version suffixes (e.g., `-beta`, `-dev`) will **not** be present in the live bot.
