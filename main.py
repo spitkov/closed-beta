@@ -36,6 +36,9 @@ If you're on Windows, this will be set to True automatically."""
 if platform.system() == "Windows":
 	DEBUG = True
 
+if DEBUG:
+	TOKEN = os.getenv("DEBUG_TOKEN")
+
 slash_localizations = { }
 
 # load the slash localization files and combine them into one dictionary
