@@ -225,7 +225,8 @@
 				"description": "Sync locally (~), globally (*), or resync (^). If not given, syncs globally.",
 				"local": "Sync locally",
 				"global": "Sync globally",
-				"resync": "Resync"
+				"resync": "Resync",
+				"slash": "Reload slash command localizations"
 			}
 		}
 	},

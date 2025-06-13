@@ -41,23 +41,27 @@ if platform.system() == "Windows":
 if DEBUG:
 	TOKEN = os.getenv("DEBUG_TOKEN")
 
-slash_localizations = { }
+slash_command_localization: Optional[localization.Localization] = None
 
-# load the slash localization files and combine them into one dictionary
-for file_path in pathlib.Path("./slash_localization").glob("*.l10n.json"):
-	lang = file_path.stem.removesuffix(".l10n")
-	try:
-		with open(file_path, encoding="utf-8") as f:
-			data = json.load(f)
-			if not isinstance(data, dict):
-				raise ValueError(f"Expected dict in {file_path}, got {type(data).__name__}")
-			if lang not in slash_localizations:
-				slash_localizations[lang] = { }
-			slash_localizations[lang].update(data)
-	except Exception as e:
-		logger.warning(f"Failed to load {file_path}: {e}")
+def update_slash_localizations():
+	slash_localizations = { }
 
-slash_command_localization = localization.Localization(slash_localizations, default_locale="en", separator="-")
+	# load the slash localization files and combine them into one dictionary
+	for file_path in pathlib.Path("./slash_localization").glob("*.l10n.json"):
+		lang = file_path.stem.removesuffix(".l10n")
+		try:
+			with open(file_path, encoding="utf-8") as f:
+				data = json.load(f)
+				if not isinstance(data, dict):
+					raise ValueError(f"Expected dict in {file_path}, got {type(data).__name__}")
+				if lang not in slash_localizations:
+					slash_localizations[lang] = { }
+				slash_localizations[lang].update(data)
+		except Exception as e:
+			logger.warning(f"Failed to load {file_path}: {e}")
+	print(slash_localizations)
+	global slash_command_localization
+	slash_command_localization = localization.Localization(slash_localizations, default_locale="en", separator="-")
 
 if __name__ == '__main__':
 	if platform.system() != "Windows":
@@ -162,7 +166,7 @@ class SlashCommandLocalizer(app_commands.Translator):
 	async def translate(
 		self, string: app_commands.locale_str, locale: discord.Locale, ctx: app_commands.TranslationContext
 		) -> Optional[str]:
-		return slash_command_localization(string.message, str(locale))  # type: ignore
+		return slash_command_localization.translate(string.message, str(locale))
 
 	async def unload(self) -> None:
 		benchmark = perf_counter()
@@ -182,6 +186,7 @@ class MyClient(commands.AutoShardedBot):
 	"""Represents the bot client. Inherits from `commands.AutoShardedBot`."""
 
 	def __init__(self):
+		update_slash_localizations()
 		self.uptime: Optional[datetime.datetime] = None
 		self.loop: asyncio.AbstractEventLoop = asyncio.new_event_loop()
 		intents: discord.Intents = discord.Intents.all()
@@ -491,11 +496,12 @@ async def l10nreload(ctx: commands.Context, path: str = "./localization"):
 @app_commands.choices(
 	scope=[app_commands.Choice(name="sync_specs-args-scope-local", value="~"),
 		app_commands.Choice(name="sync_specs-args-scope-global", value="*"),
-		app_commands.Choice(name="sync_specs-args-scope-resync", value="^")]
+		app_commands.Choice(name="sync_specs-args-scope-resync", value="^"),
+	    app_commands.Choice(name="sync_specs-args-scope-slash", value="/")]
 )
 async def sync(
 	ctx: commands.Context, guilds: commands.Greedy[discord.Object] = None,
-	scope: Optional[Literal["~", "*", "^"]] = None
+	scope: Optional[Literal["~", "*", "^", "/"]] = None
 	) -> None:
 	tree: discord.app_commands.CommandTree[ctx.bot] = ctx.bot.tree  # type: ignore
 	benchmark = time.perf_counter()
@@ -510,7 +516,12 @@ async def sync(
 			tree.clear_commands(guild=ctx.guild)
 			await tree.sync(guild=ctx.guild)
 			synced = []
+		elif scope == "/":
+			update_slash_localizations()
+			await ctx.reply(content="Reloaded slash localizations")
+			return
 		else:
+			update_slash_localizations()
 			synced = await tree.sync()
 
 		end = time.perf_counter() - benchmark
@@ -518,6 +529,7 @@ async def sync(
 			content=f"Synced **{len(synced)}** {'commands' if len(synced) != 1 else 'command'} {'globally' if scope is None else 'to the current guild'}, took **{end:.2f}s**"
 			)
 	else:
+		update_slash_localizations()
 		guilds_synced = 0
 		for guild in guilds:
 			try:
