@@ -518,10 +518,10 @@ class Moderation(commands.GroupCog, name="mod"):
 		name="warn", description="warn_specs-description", usage="warn_specs-usage"
 	)
 	@app_commands.rename(
-		user="warn_specs-args-user-name", expires="warn_specs-args-expires-name", reason="warn_specs-args-reason-name"
+		user="warn_specs-args-member-name", expires="warn_specs-args-duration-name", reason="warn_specs-args-reason-name"
 	)
 	@app_commands.describe(
-		user="warn_specs-args-user-description", expires="warn_specs-args-expires-description",
+		user="warn_specs-args-member-description", expires="warn_specs-args-duration-description",
 		reason="warn_specs-args-reason-description"
 	)
 	@app_commands.checks.has_permissions(moderate_members=True)
@@ -588,7 +588,7 @@ class Moderation(commands.GroupCog, name="mod"):
 		)
 		await mute.create(self.client.db)
 
-		await ctx.send("mod.mute.response")
+		await ctx.send("mod.mute.response", mute=mute)
 
 		if self.case_removal.is_running():
 			self.case_removal.restart()
@@ -650,7 +650,7 @@ class Moderation(commands.GroupCog, name="mod"):
 		)
 		await kick.create(self.client.db)
 
-		await ctx.send("mod.kick.response")
+		await ctx.send("mod.kick.response", kick=kick)
 
 		if self.case_removal.is_running():
 			self.case_removal.restart()
@@ -684,7 +684,7 @@ class Moderation(commands.GroupCog, name="mod"):
 		)
 		await ban.create(self.client.db)
 
-		await ctx.send("mod.ban.response")
+		await ctx.send("mod.ban.response", ban=ban)
 
 		if self.case_removal.is_running():
 			self.case_removal.restart()
