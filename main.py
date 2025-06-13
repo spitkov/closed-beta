@@ -59,7 +59,6 @@ def update_slash_localizations():
 				slash_localizations[lang].update(data)
 		except Exception as e:
 			logger.warning(f"Failed to load {file_path}: {e}")
-	print(slash_localizations)
 	global slash_command_localization
 	slash_command_localization = localization.Localization(slash_localizations, default_locale="en", separator="-")
 
