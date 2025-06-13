@@ -364,7 +364,7 @@
 							},
 							{
 								"name": "Expires",
-								"value": "{warn.date}"
+								"value": "{warn.length}"
 							}
 						],
 						"footer": {
