@@ -4,19 +4,21 @@ import json
 import logging
 import pathlib
 import random
+import re
 from typing import Union, Any, overload
 
 import discord
 from discord.ext import localization, commands
-
+from typing import Type
 from .custom_args import *
 
 logger = logging.getLogger(__name__)
+PLACEHOLDER_REGEX = re.compile(r"^\{[\w.]+\}$")
 
 class CustomResponse:
 	"""A class to handle custom responses."""
 
-	def __init__(self, client: discord.Client, name: Optional[str] = None) -> None:
+	def __init__(self, client: discord.Client | Type[discord.Client], name: Optional[str] = None) -> None:
 		"""A custom message instance.
 
 		Parameters
@@ -59,10 +61,26 @@ class CustomResponse:
 			if data.get("embed") and not data.get("embeds"):
 				data["embeds"] = [data["embed"]]
 
+
 			data.pop("embed", None)
 
-			if data.get("embeds"):
-				data["embeds"] = [discord.Embed.from_dict(embed) for embed in data.get("embeds", [])]
+			cleaned_embeds = []
+			for embed_dict in data["embeds"]:
+				if not isinstance(embed_dict, dict):
+					continue
+				fields = embed_dict.get("fields", [])
+				cleaned_fields = []
+
+				for field in fields:
+					value = field.get("value")
+					if (value is None) or (isinstance(value, str) and value == "") or \
+						(isinstance(value, str) and PLACEHOLDER_REGEX.match(value)):
+						continue
+
+				embed_dict["fields"] = cleaned_fields
+				cleaned_embeds.append(discord.Embed.from_dict(embed_dict))
+
+			data["embeds"] = cleaned_embeds
 		return data
 
 	@overload
@@ -100,7 +118,7 @@ class CustomResponse:
 	async def get_message(
 		self, name: str, locale: Union[str, discord.Locale, discord.Guild, discord.Interaction, commands.Context], *,
 		convert_embeds: bool = True, **kwargs: Any
-	) -> Union[Any, dict, str, list, int, float, bool]:
+	) -> Union[dict, str, list, int, float, bool]:
 		"""Gets a custom message from the database, or if not found, gets the default message.
 
 		Parameters

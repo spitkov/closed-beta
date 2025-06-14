@@ -1,5 +1,3 @@
-# comment for testing gh actions
-
 import asyncio
 import datetime
 import json
@@ -64,7 +62,7 @@ def update_slash_localizations():
 
 if __name__ == '__main__':
 	if platform.system() != "Windows":
-		import uvloop
+		import uvloop  # type: ignore
 
 		uvloop.install()
 		asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
@@ -82,12 +80,14 @@ class Command:
 
 	@classmethod
 	def from_ctx(cls, ctx: commands.Context):
-		prefix = ctx.prefix.replace(ctx.me.mention, f"@{ctx.me.display_name}")
-		usage = slash_command_localization(ctx.command.usage, ctx) if ctx.command.usage else ctx.command.qualified_name
-		return cls(
-			name=ctx.command.qualified_name, description=slash_command_localization(ctx.command.description, ctx) or "-",
-			usage=f"{prefix}{usage}", prefix=prefix
-		)
+		prefix = ctx.prefix.replace(ctx.me.mention, f"@{ctx.me.display_name}") if ctx.prefix else "?!"
+		if ctx.command and slash_command_localization:
+			usage = slash_command_localization(ctx.command.usage, ctx) if ctx.command.usage else ctx.command.qualified_name
+			description = slash_command_localization(ctx.command.description, ctx)
+			return cls(
+				name=ctx.command.qualified_name, description=description if isinstance(description, str) and description else "-",
+				usage=f"{prefix}{usage}", prefix=prefix
+			)
 
 @dataclass
 class Argument:
@@ -99,13 +99,16 @@ class Argument:
 
 	@classmethod
 	def from_param(cls, param: commands.Parameter, ctx: commands.Context):
-		return cls(
-			name=slash_command_localization(param.displayed_name or param.name, ctx), description=slash_command_localization(param.description, ctx) or "-",
-			default=param.default, annotation=param.annotation, required=param.required
-		)
+		if slash_command_localization:
+			localized_name = slash_command_localization(param.displayed_name or param.name, ctx)
+			description = slash_command_localization(param.description, ctx) if param.description else "-"
+			return cls(
+				name=localized_name if isinstance(localized_name, str) else "arg", description=description if isinstance(description, str) and description else "-",
+				default=param.default, annotation=param.annotation, required=param.required
+			)
 
 class Context(commands.Context):
-	async def send(
+	async def send(  # type: ignore
 		self, key: Optional[str] = None, *, content: Optional[str] = None, tts: bool = False,
 		embed: Optional[discord.Embed] = None, embeds: Optional[Sequence[discord.Embed]] = None,
 		file: Optional[discord.File] = None, files: Optional[Sequence[discord.File]] = None,
@@ -130,7 +133,7 @@ class Context(commands.Context):
 		base_args = { "content": content, "tts": tts, "embed": embed, "embeds": embeds, "file": file, "files": files,
 			"stickers": stickers, "nonce": nonce, "allowed_mentions": allowed_mentions, "reference": reference,
 			"mention_author": mention_author, "view": view, "suppress_embeds": suppress_embeds, "ephemeral": ephemeral,
-			"silent": silent, "poll": poll, }
+			"silent": silent, "poll": poll }
 
 		locale_str = self.guild.preferred_locale if self.guild and self.guild.preferred_locale else "en"
 
@@ -163,9 +166,13 @@ class SlashCommandLocalizer(app_commands.Translator):
 	This uses the localization set by the user, not the guild's locale."""
 
 	async def translate(
-		self, string: app_commands.locale_str, locale: discord.Locale, ctx: app_commands.TranslationContext
-		) -> Optional[str]:
-		return slash_command_localization.translate(string.message, str(locale))
+		self, string: app_commands.locale_str, locale: discord.Locale, context: app_commands.TranslationContext
+		) -> str | None:
+		if slash_command_localization:
+			localized: Union[str, list[str], dict[str, Any]] = slash_command_localization.translate(string.message, str(locale))
+			if isinstance(localized, (list, dict)):
+				return None
+			return localized
 
 	async def unload(self) -> None:
 		benchmark = perf_counter()
@@ -189,7 +196,7 @@ class MyClient(commands.AutoShardedBot):
 		self.uptime: Optional[datetime.datetime] = None
 		self.loop: asyncio.AbstractEventLoop = asyncio.new_event_loop()
 		intents: discord.Intents = discord.Intents.all()
-		self.db: Optional[asyncpg.Pool] = None
+		self.db: asyncpg.Pool = None  # type: ignore
 		self.ready_event = asyncio.Event()
 		self.devs = [648168353453572117,  # pearoo
 			657350415511322647,  # liba
@@ -197,7 +204,7 @@ class MyClient(commands.AutoShardedBot):
 			1051181672508444683,  # sarky
 		]
 		super().__init__(
-			command_prefix=self.get_prefix,  # type: ignore
+			command_prefix=self.get_prefix, # type: ignore
 			heartbeat_timeout=150.0, intents=intents, case_insensitive=False,
 			activity=discord.CustomActivity(name="Bot starting...", emoji="🟡"), status=discord.Status.idle,
 			chunk_guilds_at_startup=False, loop=self.loop,
@@ -206,11 +213,13 @@ class MyClient(commands.AutoShardedBot):
 		self.custom_response = custom_response.CustomResponse(self)
 
 	async def get_prefix(self, message: discord.Message) -> Union[str, list[str]]:
+		if DEBUG:
+			return "?"
 		if not message.guild:
-			return "?!" if not DEBUG else "!!"
+			return "?!"
 		prefix = await self.db.fetchrow("SELECT * FROM guilds WHERE guild_id = $1", message.guild.id)
 		if not prefix:
-			return commands.when_mentioned_or("?!" if not DEBUG else "!!")(self, message)
+			return commands.when_mentioned_or("?!")(self, message)
 		else:
 			if prefix["mention"]:
 				return commands.when_mentioned_or(prefix["prefix"])(self, message)
@@ -222,9 +231,9 @@ class MyClient(commands.AutoShardedBot):
 		if not row:
 			await self.db.execute("INSERT INTO guilds (guild_id) VALUES ($1)", guild.id)
 
-	async def get_context(
+	async def get_context( # type: ignore # pyright is crying because of mismatched arguments, we can disregard it
 		self, origin: Union[discord.Message, discord.Interaction], /, *,
-		cls=Context, ) -> Any:  # type: ignore # PyCharm is crying because of mismatched arguments, we can disregard it
+		cls=Context, ) -> Any:
 		return await super().get_context(origin, cls=cls)
 
 	async def setup_hook(self):
@@ -285,7 +294,7 @@ class MyClient(commands.AutoShardedBot):
 		logger.info("Loading cogs...")
 		benchmark = perf_counter()
 		# Load all cogs within the cogs folder
-		allowed: list[str] = ["afk", "basic", "closedbeta", "economy", "mod", "setup", "snapshot", "status"]
+		allowed: list[str] = ["afk", "basic", "closedbeta", "economy", "log", "mod", "setup", "snapshot", "status"]
 		cogs = Path("./cogs").glob("*.py")
 		for cog in cogs:
 			if cog.stem in allowed:  # if you're having issues with cogs not loading, check this list
@@ -357,7 +366,7 @@ class MyClient(commands.AutoShardedBot):
 				return
 			case discord.RateLimited():
 				channel: discord.TextChannel = await self.fetch_channel(1268260404677574697)
-				webhook: discord.Webhook = discord.utils.get(
+				webhook: discord.Webhook | None = discord.utils.get(
 					await channel.webhooks(), name=f"{self.user.display_name} Rate Limit"
 					)
 				if not webhook:
@@ -365,13 +374,6 @@ class MyClient(commands.AutoShardedBot):
 				await webhook.send(
 					content=f"# ⚠️ RATE LIMIT\n**Guild:** {ctx.guild.name} / {ctx.guild.id}\n**User:** {ctx.author} / {ctx.author.id}\n**Command:** {ctx.command} {'- failed' if ctx.command_failed else ''}\n**Error:** {error}"
 					)
-				raise error
-			case discord.DiscordServerError():
-				channel: discord.TextChannel = await self.fetch_channel(1268260404677574697)
-				webhook: discord.Webhook = discord.utils.get(await channel.webhooks(), name=self.user.display_name)
-				if not webhook:
-					webhook = await channel.create_webhook(name=self.user.display_name)
-				await webhook.send(content=f"There's an issue on Discord's end.")
 				raise error
 			case _:
 				# if the error is unknown, log it
@@ -381,6 +383,7 @@ class MyClient(commands.AutoShardedBot):
 				stack = "".join(traceback.format_exception(type(error), error, error.__traceback__))
 				# if stack is more than 1700 characters, turn it into a .txt file and store it as an attachment
 				too_long = len(stack) > 1700
+				file: discord.File | None = None
 				if too_long:
 					with open("auto-report_stack-trace.txt", "w") as f:
 						f.write(stack)
@@ -394,8 +397,12 @@ class MyClient(commands.AutoShardedBot):
 						name=f"{self.user.display_name} Errors", avatar=await ctx.me.avatar.read()
 						)
 				await webhook.send(
-					content=f"**ID:** {ctx.message.id}\n**Guild:** {ctx.guild.name} / {ctx.guild.id}\n**User:** {ctx.author} / {ctx.author.id}\n**Command:** {ctx.command}\n```{stack}```",
-					file=file if too_long else discord.abc.MISSING
+					content=f"**ID:** {ctx.message.id}\n"
+					        f"**Guild:** {ctx.guild.name if ctx.guild else "DMs"} / {ctx.guild.id if ctx.guild else 0}\n"
+					        f"**User:** {ctx.author} / {ctx.author.id}\n"
+					        f"**Command:** {ctx.command}\n"
+					        f"```{stack}```",
+					file=file if too_long and file else discord.abc.MISSING
 					)  # type: ignore
 				await ctx.reply(
 					f"An error has occured and has been reported to the developers. Report ID: `{ctx.message.id}`",
@@ -414,13 +421,14 @@ client = MyClient()
 
 @client.before_invoke
 async def before_invoke(ctx: commands.Context):
-	whitelist = [record["guild_id"] for record in
-	             await client.db.fetch("SELECT guild_id FROM closed_beta WHERE guild_id = $1", ctx.guild.id)]
-	if ctx.guild.id not in whitelist:
-		return await ctx.guild.leave()
-	is_set_up = await client.db.fetchrow("SELECT * FROM guilds WHERE guild_id = $1", ctx.guild.id)
-	if not is_set_up:
-		await client.db.execute("INSERT INTO guilds (guild_id) VALUES ($1)", ctx.guild.id)
+	if ctx.guild:
+		whitelist = [record["guild_id"] for record in
+		             await client.db.fetch("SELECT guild_id FROM closed_beta WHERE guild_id = $1", ctx.guild.id)]
+		if ctx.guild.id not in whitelist:
+			return await ctx.guild.leave()
+		is_set_up = await client.db.fetchrow("SELECT * FROM guilds WHERE guild_id = $1", ctx.guild.id)
+		if not is_set_up:
+			await client.db.execute("INSERT INTO guilds (guild_id) VALUES ($1)", ctx.guild.id)
 	try:
 		# Signals that the bot is still thinking / performing a task
 		if ctx.interaction and ctx.interaction.type == discord.InteractionType.application_command:

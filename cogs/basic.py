@@ -15,7 +15,7 @@ class Basic(commands.Cog):
 	async def ping(self, ctx: main.Context):
 		# Database ping calculation
 		database_start = perf_counter()
-		await self.client.db.execute("SELECT guild_id FROM guilds WHERE guild_id = $1", ctx.guild.id)
+		await self.client.db.execute("SELECT 1")
 		database = perf_counter() - database_start
 
 		await ctx.send("ping", latency=float(self.client.latency), db=float(database))

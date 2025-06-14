@@ -176,3 +176,17 @@ create table if not exists closed_beta
 alter table closed_beta
     owner to lumin;
 
+create table if not exists log
+(
+    id       serial,
+    guild_id numeric              not null
+        constraint log_pk
+            unique,
+    is_on    boolean default true not null,
+    webhook  text,
+    channel  numeric
+);
+
+alter table log
+    owner to lumin;
+

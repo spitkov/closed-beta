@@ -1,4 +1,3 @@
-import re
 from typing import Optional
 
 import discord
@@ -6,9 +5,11 @@ from discord import app_commands
 from discord.ext import commands
 
 import main
-from helpers import custom_response, CustomUser, regex
+from helpers import custom_response, CustomUser, regex, CustomMember
 from main import MyClient
 
+@app_commands.guild_only()
+@commands.guild_only()
 class AFK(commands.Cog):
 	def __init__(self, client: MyClient):
 		self.client: MyClient = client
@@ -59,10 +60,10 @@ class AFK(commands.Cog):
 			if row and row["user_id"] != message.author.id:
 				# Use localization for each AFK user
 				text = await self.custom_response(
-					"afk.reason", ctx, user=CustomUser.from_user(user), reason=row["message"]
+					"afk.reason", ctx, user=CustomUser.from_user(user) if isinstance(user, discord.User) else CustomMember.from_user(user), reason=row["message"]
 					)
-				afk_lines.append(text["content"])
-
+				if isinstance(text, dict):
+					afk_lines.append(text["content"])
 		if not afk_lines:
 			return
 
@@ -82,7 +83,7 @@ class AFK(commands.Cog):
 		if not reason:
 			reason = await self.custom_response("afk.dnd", ctx)
 
-		if re.search(regex.DISCORD_INVITE, reason):
+		if regex.DISCORD_INVITE.search(reason):
 			return await ctx.send("afk.link")
 
 		row = await self.client.db.fetchrow(
