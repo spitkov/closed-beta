@@ -12,7 +12,6 @@ cogs/ipc_server.py
 cogs/itdt.py
 cogs/join.i18n.json
 cogs/join.py
-cogs/log.py
 cogs/nevnap.py
 cogs/poll.py
 cogs/raid.py
