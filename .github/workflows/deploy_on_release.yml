@@ -29,5 +29,6 @@ jobs:
           git pull origin main
           echo "Pulled successfully"
           tmux kill-session -t beta
-          tmux new -s beta 'python3.12 -OO /root/fm01beta/main.py'
+          tmux new -d -s beta 'python3.12 -OO /root/fm01beta/main.py'
+          tmux set-option -t beta remain-on-exit on
           EOF
