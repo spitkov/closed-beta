@@ -7,12 +7,10 @@ cogs/giveaway.py
 cogs/globalban.py
 cogs/globalban.i18n.json
 cogs/handlers.py
-cogs/info.py
 cogs/ipc_server.py
 cogs/itdt.py
 cogs/join.i18n.json
 cogs/join.py
-cogs/log.py
 cogs/nevnap.py
 cogs/poll.py
 cogs/raid.py
