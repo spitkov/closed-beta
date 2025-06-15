@@ -333,7 +333,7 @@ class Economy(commands.GroupCog, group_name="economy"):
 		if amount > 0:
 			await self.helper.add_money(member.id, ctx.guild.id, amount, account)
 
-			await ctx.send("addmoney.success", amount=amount, member=CustomMember.from_user(member))
+			await ctx.send("addmoney.success", amount=amount, member=CustomMember.from_member(member))
 		else:
 			await ctx.send("addmoney.errors.positive")
 
@@ -411,7 +411,7 @@ class Economy(commands.GroupCog, group_name="economy"):
 		await self.helper.add_money(member.id, ctx.guild.id, amount)
 		await self.helper.remove_money(ctx.author.id, ctx.guild.id, amount)
 
-		await ctx.send("pay.success", amount=amount, member=CustomMember.from_user(member))
+		await ctx.send("pay.success", amount=amount, member=CustomMember.from_member(member))
 
 	@app_commands.rename(
 		member="global-member"

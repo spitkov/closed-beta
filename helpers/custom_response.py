@@ -134,7 +134,7 @@ class CustomResponse:
 			case _:
 				guild_id = None
 
-		context_formatting = { "author": CustomMember.from_user(original.author) if isinstance(
+		context_formatting = { "author": CustomMember.from_member(original.author) if isinstance(
 			original, (discord.Interaction, commands.Context)
 		) else None, "guild": (CustomGuild.from_guild(original.guild) if isinstance(
 			original, (discord.Interaction, commands.Context)
