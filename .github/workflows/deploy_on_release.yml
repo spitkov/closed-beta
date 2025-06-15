@@ -33,6 +33,4 @@ jobs:
           cd /root/fm01beta
           tmux new -s beta 'source ./.venv/bin/acitvate && python3.12 -OO main.py'
           echo "Bot is running"
-          tmux set-option beta remain-on-exit on
-          echo "Session remains on exit"
           EOF
