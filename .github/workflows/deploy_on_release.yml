@@ -29,7 +29,10 @@ jobs:
           git pull origin main
           echo "Pulled successfully"
           tmux has-session -t beta 2>/dev/null && tmux kill-session -t beta
+          echo "Killed beta"
           cd /root/fm01beta
           tmux new -s beta 'source ./.venv/bin/acitvate && python3.12 -OO main.py'
-          tmux set-option -t beta remain-on-exit on
+          echo "Bot is running"
+          tmux set-option beta remain-on-exit on
+          echo "Session remains on exit"
           EOF
