@@ -28,4 +28,6 @@ jobs:
           cd /root/fm01beta
           git pull origin main
           echo "Pulled successfully"
+          cd /
+          python3.12 restart_beta.py
           EOF
