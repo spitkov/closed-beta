@@ -413,8 +413,7 @@ class CustomGuild:
 	"""Returns the guild's description, if it has one."""
 	members: Optional[int] = field(repr=False)
 	"""Returns the number of members in the guild."""
-	owner: discord.Member = field(repr=False)
-	"""Returns the guild's owner."""
+	_owner: discord.Member = field(repr=False)
 	boosts: int = field(repr=False)
 	"""Returns how many boosts the guild has."""
 	_created_at: datetime.datetime = field(repr=False)
@@ -458,7 +457,7 @@ class CustomGuild:
 		return cls(
 			name=guild.name, id=guild.id, _icon=guild.icon, _banner=guild.banner, _splash=guild.splash,
 			_discovery_splash=guild.discovery_splash, description=guild.description, members=guild.member_count,
-			owner=guild.owner, boosts=guild.premium_subscription_count, _created_at=guild.created_at,
+			_owner=guild.owner, boosts=guild.premium_subscription_count, _created_at=guild.created_at,
 			_verification_level=guild.verification_level, _default_notifications=guild.default_notifications,
 			_explicit_content_filter=guild.explicit_content_filter, _mfa_level=guild.mfa_level,
 			_system_channel=guild.system_channel, _rules_channel=guild.rules_channel,
@@ -472,6 +471,10 @@ class CustomGuild:
 			_stickers=guild.stickers, _sticker_limit=guild.sticker_limit, _bitrate_limit=guild.bitrate_limit,
 			_filesize_limit=guild.filesize_limit, _scheduled_events=guild.scheduled_events, _shard_id=guild.shard_id
 		)
+
+	@property
+	def owner(self) -> CustomMember:
+		return CustomMember.from_member(self._owner)
 
 	@property
 	def icon(self) -> Optional[str]:
@@ -581,7 +584,7 @@ class CustomGuild:
 	@property
 	def premium_subscriber_role(self) -> str:
 		"""Returns the guild's premium subscriber role."""
-		return self._premium_subscriber_role.mention
+		return self._premium_subscriber_role.mention if self._premium_subscriber_role else None
 
 	boost_role = premium_subscriber_role
 
@@ -643,9 +646,9 @@ class CustomGuild:
 		return len(self._stickers)
 
 	@property
-	def bitrate_limit(self) -> float:
+	def bitrate_limit(self) -> int:
 		"""Returns the bitrate limit of the guild."""
-		return self._bitrate_limit
+		return int(self._bitrate_limit)
 
 	bitrate = max_bitrate = bitrate_limit
 
@@ -654,7 +657,7 @@ class CustomGuild:
 		"""Returns the filesize limit of the guild in megabytes."""
 		return int(self._filesize_limit / 1048576)  # Converts bytes to megabytes
 
-	file_limit = file_size = max_file_size = filesize_limit
+	upload_limit = file_limit = file_size = max_file_size = filesize_limit
 
 	@property
 	def shard_id(self) -> int:

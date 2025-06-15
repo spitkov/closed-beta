@@ -1,7 +1,7 @@
 import discord
 from discord.ext import commands
 
-from helpers import CustomMember, CustomUser
+from helpers import CustomMember, CustomUser, CustomGuild
 from main import MyClient, Context
 
 class Info(commands.Cog):
@@ -25,6 +25,11 @@ class Info(commands.Cog):
 			await ctx.send("info.user.member", member=CustomMember.from_member(member))
 		except discord.NotFound:
 			await ctx.send("info.user.not_member", member=CustomUser.from_user(user))
+
+	@info.command(name="server", description="serverinfo-specs_description")
+	@commands.guild_only()
+	async def server(self, ctx):
+		await ctx.send("info.server", server=CustomGuild.from_guild(ctx.guild))
 
 async def setup(client: MyClient):
 	await client.add_cog(Info(client))

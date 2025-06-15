@@ -161,7 +161,7 @@ class CustomResponse:
 
 				for field in fields:
 					value = field.get("value")
-					if value == "None":
+					if value in ("None", "0"):
 						continue # skip empty fields
 					cleaned_fields.append(field)
 

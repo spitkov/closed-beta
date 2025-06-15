@@ -779,7 +779,128 @@
 						"timestamp": "{now}"
 					}
 				]
+			},
+			"not_member": {
+				"embeds": [
+					{
+						"title": "User information",
+						"fields": [
+							{
+								"name": "Username",
+								"value": "{member.username}",
+								"inline": true
+							},
+							{
+								"name": "Displayed name",
+								"value": "{member.display_name}",
+								"inline": true
+							},
+							{
+								"name": "Discriminator",
+								"value": "{member.discriminator}",
+								"inline": true
+							},
+							{
+								"name": "ID",
+								"value": "{member.id}",
+								"inline": true
+							},
+							{
+								"name": "Bot?",
+								"value": "{member.bot}"
+							},
+							{
+								"name": "Account created",
+								"value": "{member.created_at.long}"
+							}
+						],
+						"author": {
+							"name": "{member}",
+							"icon_url": "{member.avatar}",
+							"url": "https://discord.com/users/{member.id}"
+						},
+						"timestamp": "{now}"
+					}
+				]
 			}
+		},
+		"server": {
+			"embeds": [
+				{
+					"title": "Server information",
+					"fields": [
+						{
+							"name": "Description",
+							"value": "{server.description}",
+							"inline": true
+						},
+						{
+							"name": "ID",
+							"value": "{server.id}",
+							"inline": true
+						},
+						{
+							"name": "Owner",
+							"value": "{server.owner.mention}",
+							"inline": true
+						},
+						{
+							"name": "Server created at",
+							"value": "{server.created_at.long}",
+							"inline": true
+						},
+						{
+							"name": "Language",
+							"value": "{server.language}",
+							"inline": true
+						},
+						{
+							"name": "Vanity URL",
+							"value": "{server.vanity_url}",
+							"inline": true
+						},
+						{
+							"name": "Boost tier",
+							"value": "{server.boost_tier}",
+							"inline": true
+						},
+						{
+							"name": "Number of boosters",
+							"value": "{server.boosters}",
+							"inline": true
+						},
+						{
+							"name": "Boost role",
+							"value": "{server.boost_role}",
+							"inline": true
+						},
+						{
+							"name": "Roles",
+							"value": "{server.roles}",
+							"inline": true
+						},
+						{
+							"name": "Emojis",
+							"value": "{server.emojis}",
+							"inline": true
+						},
+						{
+							"name": "Bitrate limit",
+							"value": "{server.bitrate_limit} kbps",
+							"inline": true
+						},
+						{
+							"name": "Upload limit",
+							"value": "{server.upload_limit} MB"
+						}
+					],
+					"author": {
+						"name": "{server.name}",
+						"icon_url": "{server.icon}"
+					},
+					"timestamp": "{now}"
+				}
+			]
 		}
 	},
 	"permissions": {

@@ -342,6 +342,7 @@ class MyClient(commands.AutoShardedBot):
 				await ctx.send("errors.bot_missing_permissions", command=command, permissions=", ".join(permissions))
 			case commands.BadArgument():
 				await ctx.send("errors.bad_argument", command=command)
+				raise error
 			case commands.MissingPermissions() | app_commands.MissingPermissions():
 				error: commands.MissingPermissions
 				permissions = [(await self.custom_response(f"permissions.{permission}", ctx)) for permission in
