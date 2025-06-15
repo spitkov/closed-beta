@@ -722,74 +722,65 @@
 			}
 		}
 	},
-	"log": {
-		"on_message_edit": {
-			"content": {
+	"info": {
+		"user": {
+			"member": {
 				"embeds": [
 					{
-						"title": "Message edited",
+						"title": "Member information",
 						"fields": [
 							{
-								"name": "Content before",
-								"value": "{before}",
-								"inline": false
+								"name": "Username",
+								"value": "{member.username}",
+								"inline": true
 							},
 							{
-								"name": "Content after",
-								"value": "{after}",
-								"inline": false
+								"name": "Displayed name",
+								"value": "{member.display_name}",
+								"inline": true
+							},
+							{
+								"name": "Discriminator",
+								"value": "{member.discriminator}",
+								"inline": true
+							},
+							{
+								"name": "Nickname",
+								"value": "{member.nickname}",
+								"inline": true
+							},
+							{
+								"name": "ID",
+								"value": "{member.id}",
+								"inline": true
+							},
+							{
+								"name": "Bot?",
+								"value": "{member.bot}"
+							},
+							{
+								"name": "Account created",
+								"value": "{member.created_at.long}"
+							},
+							{
+								"name": "Joined at",
+								"value": "{member.joined_at.long}"
+							},
+							{
+								"name": "Roles",
+								"value": "{member.roles}"
 							}
 						],
-						"color": 6656243
+						"author": {
+							"name": "{member}",
+							"icon_url": "{member.avatar}",
+							"url": "https://discord.com/users/{member.id}"
+						},
+						"timestamp": "{now}"
 					}
 				]
 			}
 		}
-	},
-	"ipinfo": {
-		"embeds": [
-			{
-				"title": "IP informations",
-				"fields": [
-					{
-						"name": "Hostname",
-						"value": "{ip.hostname}",
-						"inline": false
-					},
-					{
-						"name": "City",
-						"value": "{ip.city}",
-						"inline": false
-					},
-					{
-						"name": "Postal",
-						"value": "{ip.postal}",
-						"inline": false
-					},
-					{
-						"name": "Region",
-						"value": "{ip.region}",
-						"inline": false
-					},
-					{
-						"name": "Country",
-						"value": "{ip.country}",
-						"inline": false
-					},
-					{
-						"name": "Org",
-						"value": "{ip.org}",
-						"inline": false
-					},
-					{
-						"name": "Timezone",
-						"value": "{ip.timezone}",
-						"inline": false
-					}
-				],
-				"color": 6656243
-			}
-		]
 	},
 	"permissions": {
 		"add_reactions": "Add Reactions",

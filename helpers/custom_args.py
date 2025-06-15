@@ -191,12 +191,10 @@ class CustomUser:
 		"""Creates a ``CustomUser`` from a ``discord.User`` object."""
 		return cls(
 			_name=f"{user.name}#{user.discriminator}" if user.discriminator != "0" else user.name, id=user.id,
-			_discriminator=user.discriminator,
-			global_name=f"{user.name}#{user.discriminator}" if user.discriminator != "0" else (
-					user.global_name or user.name), display_name=user.display_name or (
-				f"{user.name}#{user.discriminator}" if user.discriminator != "0" else (user.global_name or user.name)),
-			bot=user.bot, _color=CustomColor(user.accent_color), _avatar=user.display_avatar.url,
-			_decoration=user.avatar_decoration.url if user.avatar_decoration else "",
+			_discriminator=user.discriminator if user.discriminator != "0" else None,
+			global_name=user.global_name,
+			display_name=user.display_name, bot=user.bot, _color=CustomColor(user.accent_color),
+			_avatar=user.display_avatar.url, _decoration=user.avatar_decoration.url if user.avatar_decoration else "",
 			_banner=user.banner.url if user.banner else CustomColor(user.accent_color).image,
 			_created_at=user.created_at, mention=user.mention
 		)
@@ -252,18 +250,23 @@ class CustomMember(CustomUser):
 	_roles: list[discord.Role] = field(repr=False)
 
 	@classmethod
-	def from_user(cls, member: discord.Member):
+	def from_member(cls, member: discord.Member):
 		return cls(
-			_name=f"{member.name}#{member.discriminator}" if member.discriminator else member.name, id=member.id,
-			_discriminator=member.discriminator,
-			global_name=f"{member.name}#{member.discriminator}" if member.discriminator else (
-					member.global_name or member.name), display_name=member.display_name, _nickname=member.nick,
-			bot=member.bot, _color=CustomColor(member.color), _accent_color=CustomColor(member.accent_color),
-			_avatar=member.display_avatar.url,
+			_name=f"{member.name}#{member.discriminator}" if member.discriminator != "0" else member.name, id=member.id,
+			_discriminator=member.discriminator if member.discriminator != "0" else None, global_name=member.global_name, display_name=member.display_name,
+			_nickname=member.nick, bot=member.bot, _color=CustomColor(member.color),
+			_accent_color=CustomColor(member.accent_color), _avatar=member.display_avatar.url,
 			_decoration=member.avatar_decoration.url if member.avatar_decoration else None,
 			_banner=member.avatar_decoration.url if member.banner else None, _created_at=member.created_at,
 			_joined_at=member.joined_at, _roles=member.roles, mention=member.mention
 		)
+
+	@property
+	def nickname(self) -> str:
+		"""Returns the nickname of the member."""
+		return self._nickname
+
+	nick = nickname
 
 	@property
 	def color(self) -> CustomColor:
@@ -290,7 +293,7 @@ class CustomMember(CustomUser):
 		return ', '.join([role.mention for role in reversed(self._roles)])
 
 	def __str__(self):
-		return self.display_name
+		return self.display_name or self.name
 
 @dataclass
 class CustomRole:

@@ -334,7 +334,7 @@ class Case:
 
 	@property
 	def user(self) -> CustomUser:
-		return CustomUser.from_user(self._user) if isinstance(self._user, discord.User) else CustomMember.from_user(self._user)
+		return CustomUser.from_user(self._user) if isinstance(self._user, discord.User) else CustomMember.from_member(self._user)
 
 	@property
 	def moderator(self) -> CustomUser:
@@ -621,7 +621,7 @@ class Moderation(commands.GroupCog, name="mod"):
 				await user.edit(timed_out_until=None)
 		await user.edit(timed_out_until=None)
 
-		await ctx.send("mod.unmute.response", user=CustomMember.from_user(user))
+		await ctx.send("mod.unmute.response", user=CustomMember.from_member(user))
 
 		if self.case_removal.is_running():
 			self.case_removal.restart()
