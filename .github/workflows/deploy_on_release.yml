@@ -29,6 +29,7 @@ jobs:
           git pull origin main
           echo "Pulled successfully"
           tmux kill-session -t beta
-          tmux new -d -s beta 'python3.12 -OO /root/fm01beta/main.py'
+          cd /root/fm01beta
+          tmux new -d -s beta 'source ./.venv/bin/acitvate && python3.12 -OO main.py'
           tmux set-option -t beta remain-on-exit on
           EOF
