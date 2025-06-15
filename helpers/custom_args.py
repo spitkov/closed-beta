@@ -780,3 +780,159 @@ class CustomBOT:
 	@property
 	def programming_library(self) -> str:
 		return self._data['programming_library']
+
+@dataclass
+class CustomMessage:
+	"""A class that represents a Discord message with useful formatting properties.
+	
+	This class is designed to be used in localization strings and provides
+	easy access to message properties that are commonly used in logs.
+	"""
+	id: int
+	"""Returns the message's ID."""
+	content: str
+	"""Returns the message's content."""
+	_embeds: list[discord.Embed] = field(repr=False)
+	_attachments: list[discord.Attachment] = field(repr=False)
+	_stickers: list[discord.StickerItem] = field(repr=False)
+	_author: CustomMember = field(repr=False)
+	_channel: discord.TextChannel = field(repr=False)
+	_guild: CustomGuild = field(repr=False)
+	_created_at: datetime.datetime = field(repr=False)
+	_edited_at: Optional[datetime.datetime] = field(repr=False)
+	_pinned: bool = field(repr=False)
+	_tts: bool = field(repr=False)
+	_mention_everyone: bool = field(repr=False)
+	_mentions: list[discord.Member] = field(repr=False)
+	_role_mentions: list[discord.Role] = field(repr=False)
+	_channel_mentions: list[discord.TextChannel] = field(repr=False)
+	_reference: Optional[discord.MessageReference] = field(repr=False)
+	_flags: discord.MessageFlags = field(repr=False)
+	_components: list[discord.ui.Item] = field(repr=False)
+	_poll: Optional[discord.Poll] = field(repr=False)
+
+	@classmethod
+	def from_message(cls, message: discord.Message):
+		"""Creates a CustomMessage from a discord.Message object."""
+		return cls(
+			id=message.id,
+			content=message.content,
+			_embeds=message.embeds,
+			_attachments=message.attachments,
+			_stickers=message.stickers,
+			_author=CustomMember.from_user(message.author),
+			_channel=message.channel,
+			_guild=CustomGuild.from_guild(message.guild) if message.guild else None,
+			_created_at=message.created_at,
+			_edited_at=message.edited_at,
+			_pinned=message.pinned,
+			_tts=message.tts,
+			_mention_everyone=message.mention_everyone,
+			_mentions=message.mentions,
+			_role_mentions=message.role_mentions,
+			_channel_mentions=message.channel_mentions,
+			_reference=message.reference,
+			_flags=message.flags,
+			_components=message.components,
+			_poll=message.poll
+		)
+
+	@property
+	def embeds(self) -> int:
+		"""Returns the number of embeds in the message."""
+		return len(self._embeds)
+
+	@property
+	def attachments(self) -> int:
+		"""Returns the number of attachments in the message."""
+		return len(self._attachments)
+
+	@property
+	def stickers(self) -> int:
+		"""Returns the number of stickers in the message."""
+		return len(self._stickers)
+
+	@property
+	def author(self) -> CustomMember:
+		"""Returns the message's author."""
+		return self._author
+
+	@property
+	def channel(self) -> str:
+		"""Returns the message's channel mention."""
+		return self._channel.mention
+
+	@property
+	def guild(self) -> CustomGuild:
+		"""Returns the message's guild."""
+		return self._guild
+
+	@property
+	def created_at(self):
+		"""Returns the date the message was created as a Discord timestamp."""
+		return FormatDateTime(self._created_at, "F")
+
+	created = created_at
+
+	@property
+	def edited_at(self):
+		"""Returns the date the message was edited as a Discord timestamp."""
+		return FormatDateTime(self._edited_at, "F") if self._edited_at else None
+
+	edited = edited_at
+
+	@property
+	def pinned(self) -> bool:
+		"""Returns whether the message is pinned."""
+		return self._pinned
+
+	@property
+	def tts(self) -> bool:
+		"""Returns whether the message is TTS."""
+		return self._tts
+
+	@property
+	def mention_everyone(self) -> bool:
+		"""Returns whether the message mentions everyone."""
+		return self._mention_everyone
+
+	@property
+	def mentions(self) -> int:
+		"""Returns the number of user mentions in the message."""
+		return len(self._mentions)
+
+	@property
+	def role_mentions(self) -> int:
+		"""Returns the number of role mentions in the message."""
+		return len(self._role_mentions)
+
+	@property
+	def channel_mentions(self) -> int:
+		"""Returns the number of channel mentions in the message."""
+		return len(self._channel_mentions)
+
+	@property
+	def reference(self) -> Optional[str]:
+		"""Returns the message's reference if it exists."""
+		return self._reference.message_id if self._reference else None
+
+	@property
+	def flags(self) -> int:
+		"""Returns the message's flags as an integer."""
+		return self._flags.value
+
+	@property
+	def components(self) -> int:
+		"""Returns the number of components in the message."""
+		return len(self._components)
+
+	@property
+	def poll(self) -> bool:
+		"""Returns whether the message has a poll."""
+		return bool(self._poll)
+
+	def __str__(self):
+		return self.content
+
+	def __int__(self):
+		return self.id

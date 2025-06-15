@@ -244,8 +244,8 @@ class EconomyHelper:
 				'UPDATE economy SET bank = $1 WHERE user_id = $2 AND guild_id = $3', amount, user_id, guild_id
 				)
 
-# noinspection PyTypeChecker
 @app_commands.guild_only()
+@commands.guild_only()
 class Economy(commands.GroupCog, group_name="economy"):
 	def __init__(self, client):
 		self.client: MyClient = client
