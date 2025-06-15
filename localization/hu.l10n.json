@@ -722,6 +722,30 @@
 			}
 		}
 	},
+	"log": {
+		"on_message_edit": {
+			"content": {
+				"embeds": [
+					{
+						"title": "Message edited",
+						"fields": [
+							{
+								"name": "Content before",
+								"value": "{before}",
+								"inline": false
+							},
+							{
+								"name": "Content after",
+								"value": "{after}",
+								"inline": false
+							}
+						],
+						"color": 6656243
+					}
+				]
+			}
+		}
+	},
 	"ipinfo": {
 		"embeds": [
 			{
