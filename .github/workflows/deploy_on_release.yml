@@ -30,6 +30,6 @@ jobs:
           echo "Pulled successfully"
           tmux has-session -t beta 2>/dev/null && tmux kill-session -t beta
           cd /root/fm01beta
-          tmux new -d -s beta 'source ./.venv/bin/acitvate && python3.12 -OO main.py'
+          tmux new -s beta 'source ./.venv/bin/acitvate && python3.12 -OO main.py'
           tmux set-option -t beta remain-on-exit on
           EOF
