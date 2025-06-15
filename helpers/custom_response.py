@@ -5,7 +5,7 @@ import logging
 import pathlib
 import random
 import re
-from typing import Union, Any, overload
+from typing import Union, Any, overload, Optional, Type, Iterable, Dict, List, Tuple
 
 import discord
 from discord.ext import localization, commands
@@ -14,6 +14,95 @@ from .custom_args import *
 
 logger = logging.getLogger(__name__)
 PLACEHOLDER_REGEX = re.compile(r"^\{[\w.]+\}$")
+
+class DiffChecker:
+	"""A class to handle object differences in a localization-friendly way."""
+	
+	def __init__(self, obj1: Any, obj2: Any, keys: Iterable[str], *, 
+				 key_formatter: Optional[callable] = None,
+				 value_formatter: Optional[callable] = None):
+		"""Initialize the diff checker.
+		
+		Parameters
+		----------
+		obj1: Any
+			The first object to compare
+		obj2: Any
+			The second object to compare
+		keys: Iterable[str]
+			The keys to look for during comparison
+		key_formatter: Optional[callable]
+			A function to format the keys for localization
+		value_formatter: Optional[callable]
+			A function to format the values for localization
+		"""
+		self.obj1 = obj1
+		self.obj2 = obj2
+		self.keys = keys
+		self.key_formatter = key_formatter or (lambda x: x)
+		self.value_formatter = value_formatter or (lambda x: x)
+		
+	def get_diffs(self) -> Dict[str, Dict[str, Any]]:
+		"""Get the differences between the objects.
+		
+		Returns
+		-------
+		Dict[str, Dict[str, Any]]
+			A dictionary of differences with before/after values
+		"""
+		return {
+			self.key_formatter(key): {
+				"before": self.value_formatter(getattr(self.obj1, key, None)),
+				"after": self.value_formatter(getattr(self.obj2, key, None))
+			}
+			for key in self.keys
+			if getattr(self.obj1, key, None) != getattr(self.obj2, key, None)
+		}
+	
+	def get_formatted_diffs(self, template: str = "{key}: {before} → {after}") -> List[str]:
+		"""Get formatted differences ready for localization.
+		
+		Parameters
+		----------
+		template: str
+			The template to use for formatting each difference
+			
+		Returns
+		-------
+		List[str]
+			A list of formatted difference strings
+		"""
+		diffs = self.get_diffs()
+		return [
+			template.format(
+				key=key,
+				before=diff["before"],
+				after=diff["after"]
+			)
+			for key, diff in diffs.items()
+		]
+	
+	def get_localization_dict(self, prefix: str = "") -> Dict[str, Dict[str, Any]]:
+		"""Get a dictionary ready for localization.
+		
+		Parameters
+		----------
+		prefix: str
+			A prefix to add to the keys
+			
+		Returns
+		-------
+		Dict[str, Dict[str, Any]]
+			A dictionary with keys and values ready for localization
+		"""
+		diffs = self.get_diffs()
+		return {
+			f"{prefix}{key}": {
+				"before": diff["before"],
+				"after": diff["after"]
+			}
+			for key, diff in diffs.items()
+		}
 
 class CustomResponse:
 	"""A class to handle custom responses."""
@@ -56,16 +145,15 @@ class CustomResponse:
 			The original data, but with usable `discord.Embed`s.
 		"""
 		if isinstance(data, dict) and (data.get("embed") or data.get("embeds")):
-			if len(data["embeds"]) > 10:
+			if len(data.get("embeds", [])) > 10:
 				raise ValueError(f"The maximum number of embeds is 10. You have {len(data['embeds'])} embeds.")
 			if data.get("embed") and not data.get("embeds"):
 				data["embeds"] = [data["embed"]]
 
-
 			data.pop("embed", None)
 
 			cleaned_embeds = []
-			for embed_dict in data["embeds"]:
+			for embed_dict in data.get("embeds", []):
 				if not isinstance(embed_dict, dict):
 					continue
 				fields = embed_dict.get("fields", [])
@@ -73,15 +161,16 @@ class CustomResponse:
 
 				for field in fields:
 					value = field.get("value")
-					if (value is None) or (isinstance(value, str) and value == "") or \
-						(isinstance(value, str) and PLACEHOLDER_REGEX.match(value)):
-						continue
+					if value == "None":
+						continue # skip empty fields
+					cleaned_fields.append(field)
 
 				embed_dict["fields"] = cleaned_fields
 				cleaned_embeds.append(discord.Embed.from_dict(embed_dict))
 
 			data["embeds"] = cleaned_embeds
 		return data
+
 
 	@overload
 	def update_localizations(self, data: dict):

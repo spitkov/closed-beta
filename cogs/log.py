@@ -1,8 +1,10 @@
 import sys
+from typing import Iterable
 
 from discord import app_commands
 
 from helpers import *
+from helpers.custom_response import DiffChecker
 from main import MyClient, Context
 
 class LogCommands(commands.GroupCog, name="log"):
@@ -35,11 +37,7 @@ class LogCommands(commands.GroupCog, name="log"):
 		)
 		await ctx.send(content="log.toggle.on")
 
-	@log_toggle.group(name="module")
-	async def log_module(self, ctx: Context):
-		...
-
-	@log_module.command(name="add")
+	@log_toggle.command(name="add")
 	async def log_module_add(self, ctx: Context, module: str):
 		if module == "all":
 			await self.client.db.execute(
@@ -53,7 +51,7 @@ class LogCommands(commands.GroupCog, name="log"):
 
 		await ctx.send("log.module.add")
 
-	@log_module.command(name="remove")
+	@log_toggle.command(name="remove")
 	async def log_module_remove(self, ctx: Context, module: str):
 		if module == "all":
 			await self.client.db.execute(
@@ -88,20 +86,40 @@ class LogListeners(commands.Cog):
 	# DONE:
 
 	async def get_webhook(self, guild_id: int) -> Optional[discord.Webhook]:
+		"""
+		Retreives the webhook associated with the given ``guild_id``
+
+		Parameters
+		----------
+		guild_id: `int`
+			The guild's ID
+
+		Returns
+		-------
+		Optional[`discord.Webhook`]
+			The webhook associated with the given ``guild_id``
+		"""
 		webhook = await self.client.db.fetchval("SELECT webhook FROM log WHERE guild_id = $1", guild_id)
 		if not webhook:
 			return None
 		return discord.Webhook.from_url(webhook, client=self.client)
 
-	async def send_webhook(self, guild_id: int, key: Optional[str] = None, **kwargs):
-		if not self.log_check(guild_id):
+	async def send_webhook(self, guild_id: int, event: str, **kwargs):
+		"""
+		Sends a message to a guild's logging webhook.
+
+		Parameters
+		----------
+		kwargs
+			Kwargs that will be passed during localization
+		"""
+		if not await self.log_check(guild_id):
 			return
 
-		if not key:
-			# automatically retreive the name of the function that calls this function and use it as the key
-			key = f"log.{sys._getframe(1).f_code.co_name}"  # type: ignore
+		# automatically retreive the name of the function that calls this function and use it as the key
+		key = f"log.{sys._getframe(1).f_code.co_name}.{event}"  # type: ignore
 
-		webhook = await self.get_webhook(guild_id)
+		webhook: Optional[discord.Webhook] = await self.get_webhook(guild_id)  # type: ignore
 		if not webhook:
 			return
 
@@ -122,31 +140,38 @@ class LogListeners(commands.Cog):
 	async def log_check(self, guild: discord.Guild):
 		...
 
-	async def log_check(self, guild: Union[int, discord.Guild]):
+	async def log_check(self, guild: Union[int, discord.Guild]) -> bool:
+		"""
+		Returns whether or not the guild should receive log messages
+
+		Parameters
+		----------
+		guild: Union[`int`, `discord.Guild`]
+			The guild to check
+
+		Returns
+		-------
+		`bool`
+			Whether or not the guild should receive log messages
+		"""
 		if isinstance(guild, int):
 			guild_id = guild
 		elif isinstance(guild, discord.Guild):
 			guild_id = guild.id
-		return self.client.db.fetchval(
-			f"SELECT is_on FROM log WHERE guild_id = $1 AND {sys._getframe(1).f_code.co_name} IN modules", # type: ignore
+
+		# retreive calling function name
+		func_name = sys._getframe(1).f_code.co_name  # type: ignore
+
+		result = await self.client.db.fetchval(
+			"SELECT is_on FROM log WHERE guild_id = $1",
 			guild_id
 		)
-
-	@commands.Cog.listener()
-	async def on_automod_rule_create(self, rule: discord.AutoModRule):
-		await self.send_webhook(rule.guild.id, rule=rule)
-
-	@commands.Cog.listener()
-	async def on_automod_rule_update(self, rule: discord.AutoModRule):
-		await self.send_webhook(rule.guild.id, rule=rule)
-
-	@commands.Cog.listener()
-	async def on_message_delete(self, message: discord.Message):
-		await self.send_webhook(message.guild.id, message=message)
+		return result
 
 	@commands.Cog.listener()
 	async def on_message_edit(self, before: discord.Message, after: discord.Message):
-		await self.send_webhook(before.guild.id, before=before, after=after)
+		if before.content != after.content:
+			await self.send_webhook(before.guild.id, "content", before=before.content, after=after.content)
 
 async def setup(client: MyClient) -> None:
 	await client.add_cog(LogCommands(client))
