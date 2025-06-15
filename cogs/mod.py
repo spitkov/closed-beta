@@ -334,7 +334,7 @@ class Case:
 
 	@property
 	def user(self) -> CustomUser:
-		return CustomUser.from_user(self._user) if isinstance(self._user, discord.User) else CustomMember.from_user(self._user)
+		return CustomUser.from_user(self._user) if isinstance(self._user, discord.User) else CustomMember.from_member(self._user)
 
 	@property
 	def moderator(self) -> CustomUser:
