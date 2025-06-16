@@ -303,9 +303,9 @@ class MyClient(commands.AutoShardedBot):
 		benchmark = perf_counter()
 
 		# Load all cogs within the cogs folder
-		allowed: list[str] = ["afk", "basic", "closedbeta", "economy", "mod", "setup", "snapshot", "status"]
+		allowed: list[str] = ["afk", "basic", "closedbeta", "economy", "info", "mod", "setup", "snapshot", "status"]
 		if DEBUG:
-			allowed.extend(("log", "info"))
+			allowed.extend(("log",))
 
 		cogs = Path("./cogs").glob("*.py")
 		for cog in cogs:
