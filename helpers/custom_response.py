@@ -10,99 +10,12 @@ from typing import Union, Any, overload, Optional, Type, Iterable, Dict, List, T
 import discord
 from discord.ext import localization, commands
 from typing import Type
+
+from helpers import emojis
 from .custom_args import *
 
 logger = logging.getLogger(__name__)
 PLACEHOLDER_REGEX = re.compile(r"^\{[\w.]+\}$")
-
-class DiffChecker:
-	"""A class to handle object differences in a localization-friendly way."""
-	
-	def __init__(self, obj1: Any, obj2: Any, keys: Iterable[str], *, 
-				 key_formatter: Optional[callable] = None,
-				 value_formatter: Optional[callable] = None):
-		"""Initialize the diff checker.
-		
-		Parameters
-		----------
-		obj1: Any
-			The first object to compare
-		obj2: Any
-			The second object to compare
-		keys: Iterable[str]
-			The keys to look for during comparison
-		key_formatter: Optional[callable]
-			A function to format the keys for localization
-		value_formatter: Optional[callable]
-			A function to format the values for localization
-		"""
-		self.obj1 = obj1
-		self.obj2 = obj2
-		self.keys = keys
-		self.key_formatter = key_formatter or (lambda x: x)
-		self.value_formatter = value_formatter or (lambda x: x)
-		
-	def get_diffs(self) -> Dict[str, Dict[str, Any]]:
-		"""Get the differences between the objects.
-		
-		Returns
-		-------
-		Dict[str, Dict[str, Any]]
-			A dictionary of differences with before/after values
-		"""
-		return {
-			self.key_formatter(key): {
-				"before": self.value_formatter(getattr(self.obj1, key, None)),
-				"after": self.value_formatter(getattr(self.obj2, key, None))
-			}
-			for key in self.keys
-			if getattr(self.obj1, key, None) != getattr(self.obj2, key, None)
-		}
-	
-	def get_formatted_diffs(self, template: str = "{key}: {before} → {after}") -> List[str]:
-		"""Get formatted differences ready for localization.
-		
-		Parameters
-		----------
-		template: str
-			The template to use for formatting each difference
-			
-		Returns
-		-------
-		List[str]
-			A list of formatted difference strings
-		"""
-		diffs = self.get_diffs()
-		return [
-			template.format(
-				key=key,
-				before=diff["before"],
-				after=diff["after"]
-			)
-			for key, diff in diffs.items()
-		]
-	
-	def get_localization_dict(self, prefix: str = "") -> Dict[str, Dict[str, Any]]:
-		"""Get a dictionary ready for localization.
-		
-		Parameters
-		----------
-		prefix: str
-			A prefix to add to the keys
-			
-		Returns
-		-------
-		Dict[str, Dict[str, Any]]
-			A dictionary with keys and values ready for localization
-		"""
-		diffs = self.get_diffs()
-		return {
-			f"{prefix}{key}": {
-				"before": diff["before"],
-				"after": diff["after"]
-			}
-			for key, diff in diffs.items()
-		}
 
 class CustomResponse:
 	"""A class to handle custom responses."""
@@ -163,6 +76,10 @@ class CustomResponse:
 					value = field.get("value")
 					if value in ("None", "0"):
 						continue # skip empty fields
+					if value == "True":
+						field["value"] = emojis.CHECK
+					if value == "False":
+						field["value"] = emojis.XMARK
 					cleaned_fields.append(field)
 
 				embed_dict["fields"] = cleaned_fields
@@ -224,6 +141,7 @@ class CustomResponse:
 		Union[dict, str, list, int, float, bool]
 			The message payload.
 		"""
+		from main import DEBUG
 		original = locale
 
 		if isinstance(locale, (discord.Interaction, commands.Context)):
@@ -248,6 +166,9 @@ class CustomResponse:
 		) and hasattr(original, "guild") else CustomGuild.from_guild(original) if isinstance(
 			original, discord.Guild
 		) else None), "now": datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%fZ") }
+
+		if DEBUG:
+			self.load_localizations("../localization")
 
 		payload = localization.Localization(self.localizations, default_locale="en").localize(
 			name, locale, **kwargs, random=r"{random}", **context_formatting

@@ -901,6 +901,162 @@
 					"timestamp": "{now}"
 				}
 			]
+		},
+		"role": {
+			"embeds": [
+				{
+					"title": "Role information",
+					"fields": [
+						{
+							"name": "Name",
+							"value": "{role.name}",
+							"inline": true
+						},
+						{
+							"name": "ID",
+							"value": "{role.id}",
+							"inline": true
+						},
+						{
+							"name": "Position",
+							"value": "{role.position}",
+							"inline": true
+						},
+						{
+							"name": "Hoisted?",
+							"value": "{role.hoist}",
+							"inline": true
+						},
+						{
+							"name": "Managed by integration?",
+							"value": "{role.managed}",
+							"inline": true
+						},
+						{
+							"name": "Mentionable by everyone?",
+							"value": "{role.mentionable}",
+							"inline": true
+						},
+						{
+							"name": "Bot role?",
+							"value": "{role.bot}",
+							"inline": true
+						},
+						{
+							"name": "Role created",
+							"value": "{role.created}",
+							"inline": true
+						},
+						{
+							"name": "Members",
+							"value": "{role.members}",
+							"inline": true
+						},
+						{
+							"name": "Permissions",
+							"value": "```{role.permissions}```",
+							"inline": false
+						}
+					]
+				}
+			]
+		},
+		"ip": {
+			"embeds": [
+				{
+					"title": "IP information",
+					"fields": [
+						{
+							"name": "Hostname",
+							"value": "{ip.hostname}",
+							"inline": true
+						},
+						{
+							"name": "City",
+							"value": "{ip.city}",
+							"inline": true
+						},
+						{
+							"name": "Postal code",
+							"value": "{ip.postal}",
+							"inline": true
+						},
+						{
+							"name": "Region",
+							"value": "{ip.region}",
+							"inline": true
+						},
+						{
+							"name": "Country",
+							"value": "{ip.country}",
+							"inline": true
+						},
+						{
+							"name": "Organization",
+							"value": "{ip.org}",
+							"inline": true
+						},
+						{
+							"name": "Timezone",
+							"value": "{ip.timezone}",
+							"inline": true
+						}
+					]
+				}
+			]
+		},
+		"bot": {
+			"embeds": [
+				{
+					"title": "Bot information",
+					"description": "Invite **{bot.name}** to your server [here!](https://fightman01bot.hu/invite)\nWebsite: https://fightman01bot.hu/",
+					"fields": [
+						{
+							"name": "VPS",
+							"value": "{bot.provider}",
+							"inline": true
+						},
+						{
+							"name": "CPU",
+							"value": "{bot.processor}\nUsage: {bot.processor.usage}%\n",
+							"inline": true
+						},
+						{
+							"name": "Memory (max/used)",
+							"value": "{bot.memory}",
+							"inline": true
+						},
+						{
+							"name": "Disk",
+							"value": "{bot.disk}",
+							"inline": true
+						},
+						{
+							"name": "Network (sent/received)",
+							"value": "{bot.network}",
+							"inline": true
+						},
+						{
+							"name": "discord.py",
+							"value": "v{bot.library_version}",
+							"inline": true
+						},
+						{
+							"name": "System uptime",
+							"value": "{bot.boot_time}"
+						}
+					],
+					"author": {
+						"name": "{bot.name}",
+						"icon_url": "{bot.avatar}",
+						"url": "https://fightman01bot.hu/"
+					},
+					"thumbnail": {
+						"url": "{bot.avatar}"
+					},
+					"timestamp": "{now}"
+				}
+			]
 		}
 	},
 	"permissions": {

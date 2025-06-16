@@ -15,7 +15,10 @@ dependencies = [
     "asyncpg>=0.30.0",
     "python-dotenv>=1.1.0",
     "docutils-stubs>=0.0.22",
-    "uvloop; sys_platform == 'linux' or sys_platform == 'darwin'"
+    "uvloop; sys_platform == 'linux' or sys_platform == 'darwin'",
+    "aiodns>=3.5.0",
+    "psutil>=7.0.0",
+    "py-cpuinfo>=9.0.0",
 ]
 
 [tool.setuptools]
