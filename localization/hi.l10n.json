@@ -779,7 +779,284 @@
 						"timestamp": "{now}"
 					}
 				]
+			},
+			"not_member": {
+				"embeds": [
+					{
+						"title": "User information",
+						"fields": [
+							{
+								"name": "Username",
+								"value": "{member.username}",
+								"inline": true
+							},
+							{
+								"name": "Displayed name",
+								"value": "{member.display_name}",
+								"inline": true
+							},
+							{
+								"name": "Discriminator",
+								"value": "{member.discriminator}",
+								"inline": true
+							},
+							{
+								"name": "ID",
+								"value": "{member.id}",
+								"inline": true
+							},
+							{
+								"name": "Bot?",
+								"value": "{member.bot}"
+							},
+							{
+								"name": "Account created",
+								"value": "{member.created_at.long}"
+							}
+						],
+						"author": {
+							"name": "{member}",
+							"icon_url": "{member.avatar}",
+							"url": "https://discord.com/users/{member.id}"
+						},
+						"timestamp": "{now}"
+					}
+				]
 			}
+		},
+		"server": {
+			"embeds": [
+				{
+					"title": "Server information",
+					"fields": [
+						{
+							"name": "Description",
+							"value": "{server.description}",
+							"inline": true
+						},
+						{
+							"name": "ID",
+							"value": "{server.id}",
+							"inline": true
+						},
+						{
+							"name": "Owner",
+							"value": "{server.owner.mention}",
+							"inline": true
+						},
+						{
+							"name": "Server created at",
+							"value": "{server.created_at.long}",
+							"inline": true
+						},
+						{
+							"name": "Language",
+							"value": "{server.language}",
+							"inline": true
+						},
+						{
+							"name": "Vanity URL",
+							"value": "{server.vanity_url}",
+							"inline": true
+						},
+						{
+							"name": "Boost tier",
+							"value": "{server.boost_tier}",
+							"inline": true
+						},
+						{
+							"name": "Number of boosters",
+							"value": "{server.boosters}",
+							"inline": true
+						},
+						{
+							"name": "Boost role",
+							"value": "{server.boost_role}",
+							"inline": true
+						},
+						{
+							"name": "Roles",
+							"value": "{server.roles}",
+							"inline": true
+						},
+						{
+							"name": "Emojis",
+							"value": "{server.emojis}",
+							"inline": true
+						},
+						{
+							"name": "Bitrate limit",
+							"value": "{server.bitrate_limit} kbps",
+							"inline": true
+						},
+						{
+							"name": "Upload limit",
+							"value": "{server.upload_limit} MB"
+						}
+					],
+					"author": {
+						"name": "{server.name}",
+						"icon_url": "{server.icon}"
+					},
+					"timestamp": "{now}"
+				}
+			]
+		},
+		"role": {
+			"embeds": [
+				{
+					"title": "Role information",
+					"fields": [
+						{
+							"name": "Name",
+							"value": "{role.name}",
+							"inline": true
+						},
+						{
+							"name": "ID",
+							"value": "{role.id}",
+							"inline": true
+						},
+						{
+							"name": "Position",
+							"value": "{role.position}",
+							"inline": true
+						},
+						{
+							"name": "Hoisted?",
+							"value": "{role.hoist}",
+							"inline": true
+						},
+						{
+							"name": "Managed by integration?",
+							"value": "{role.managed}",
+							"inline": true
+						},
+						{
+							"name": "Mentionable by everyone?",
+							"value": "{role.mentionable}",
+							"inline": true
+						},
+						{
+							"name": "Bot role?",
+							"value": "{role.bot}",
+							"inline": true
+						},
+						{
+							"name": "Role created",
+							"value": "{role.created}",
+							"inline": true
+						},
+						{
+							"name": "Members",
+							"value": "{role.members}",
+							"inline": true
+						},
+						{
+							"name": "Permissions",
+							"value": "```{role.permissions}```",
+							"inline": false
+						}
+					]
+				}
+			]
+		},
+		"ip": {
+			"embeds": [
+				{
+					"title": "IP information",
+					"fields": [
+						{
+							"name": "Hostname",
+							"value": "{ip.hostname}",
+							"inline": true
+						},
+						{
+							"name": "City",
+							"value": "{ip.city}",
+							"inline": true
+						},
+						{
+							"name": "Postal code",
+							"value": "{ip.postal}",
+							"inline": true
+						},
+						{
+							"name": "Region",
+							"value": "{ip.region}",
+							"inline": true
+						},
+						{
+							"name": "Country",
+							"value": "{ip.country}",
+							"inline": true
+						},
+						{
+							"name": "Organization",
+							"value": "{ip.org}",
+							"inline": true
+						},
+						{
+							"name": "Timezone",
+							"value": "{ip.timezone}",
+							"inline": true
+						}
+					]
+				}
+			]
+		},
+		"bot": {
+			"embeds": [
+				{
+					"title": "Bot information",
+					"description": "Invite **{bot.name}** to your server [here!](https://fightman01bot.hu/invite)\nWebsite: https://fightman01bot.hu/",
+					"fields": [
+						{
+							"name": "VPS",
+							"value": "{bot.provider}",
+							"inline": true
+						},
+						{
+							"name": "CPU",
+							"value": "{bot.processor}\nUsage: {bot.processor.usage}%\n",
+							"inline": true
+						},
+						{
+							"name": "Memory (max/used)",
+							"value": "{bot.memory}",
+							"inline": true
+						},
+						{
+							"name": "Disk",
+							"value": "{bot.disk}",
+							"inline": true
+						},
+						{
+							"name": "Network (sent/received)",
+							"value": "{bot.network}",
+							"inline": true
+						},
+						{
+							"name": "discord.py",
+							"value": "v{bot.library_version}",
+							"inline": true
+						},
+						{
+							"name": "System uptime",
+							"value": "{bot.boot_time}"
+						}
+					],
+					"author": {
+						"name": "{bot.name}",
+						"icon_url": "{bot.avatar}",
+						"url": "https://fightman01bot.hu/"
+					},
+					"thumbnail": {
+						"url": "{bot.avatar}"
+					},
+					"timestamp": "{now}"
+				}
+			]
 		}
 	},
 	"permissions": {
