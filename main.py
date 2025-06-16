@@ -5,6 +5,7 @@ import logging
 import os
 import pathlib
 import platform
+import socket
 import time
 import traceback
 from dataclasses import dataclass
@@ -12,6 +13,7 @@ from pathlib import Path
 from time import perf_counter
 from typing import Optional, Literal, Union, Any, Sequence
 
+import aiohttp
 import asyncpg
 import discord
 from discord import app_commands
@@ -212,6 +214,11 @@ class MyClient(commands.AutoShardedBot):
 		)
 		self.custom_response = custom_response.CustomResponse(self)
 
+	async def request(self, url: str):
+		async with self.session as session:
+			async with session.get(url) as response:
+				return await response.json()
+
 	async def get_prefix(self, message: discord.Message) -> Union[str, list[str]]:
 		if DEBUG:
 			return "?"
@@ -244,6 +251,7 @@ class MyClient(commands.AutoShardedBot):
 		await self.first_time_database()
 		await self.load_cogs()
 		await self.tree.set_translator(SlashCommandLocalizer())
+		self.session = aiohttp.ClientSession(connector=aiohttp.TCPConnector(resolver=aiohttp.AsyncResolver(), family=socket.AF_INET))
 		end = perf_counter() - benchmark
 		logger.info(f"Initial setup hook complete in {end:.2f}s")
 
@@ -295,9 +303,9 @@ class MyClient(commands.AutoShardedBot):
 		benchmark = perf_counter()
 
 		# Load all cogs within the cogs folder
-		allowed: list[str] = ["afk", "basic", "closedbeta", "economy", "mod", "setup", "snapshot", "status"]
+		allowed: list[str] = ["afk", "basic", "closedbeta", "economy", "info", "mod", "setup", "snapshot", "status"]
 		if DEBUG:
-			allowed.extend(("log", "info"))
+			allowed.extend(("log",))
 
 		cogs = Path("./cogs").glob("*.py")
 		for cog in cogs:
@@ -342,6 +350,7 @@ class MyClient(commands.AutoShardedBot):
 				await ctx.send("errors.bot_missing_permissions", command=command, permissions=", ".join(permissions))
 			case commands.BadArgument():
 				await ctx.send("errors.bad_argument", command=command)
+				raise error
 			case commands.MissingPermissions() | app_commands.MissingPermissions():
 				error: commands.MissingPermissions
 				permissions = [(await self.custom_response(f"permissions.{permission}", ctx)) for permission in

@@ -4,7 +4,6 @@ from typing import Iterable
 from discord import app_commands
 
 from helpers import *
-from helpers.custom_response import DiffChecker
 from main import MyClient, Context
 
 class LogCommands(commands.GroupCog, name="log"):

@@ -327,7 +327,7 @@ class Economy(commands.GroupCog, group_name="economy"):
 	@app_commands.checks.has_permissions(administrator=True)
 	@commands.has_permissions(administrator=True)
 	async def addmoney(
-		self, ctx: Context, member: discord.Member, amount: discord.app_commands.Range[int, 1],
+		self, ctx: Context, member: discord.Member, amount: commands.Range[int, 1],
 		account: Literal["cash", "bank"] = "cash"
 		):
 		if amount > 0:

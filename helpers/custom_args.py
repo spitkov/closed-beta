@@ -1,9 +1,17 @@
 """Custom arguments to make user-specified responses easier to configure"""
 import datetime
+import os
+import platform
+import re
+import subprocess
 from dataclasses import dataclass, field
 from typing import Union, Optional, Literal, Sequence
+from cpuinfo import get_cpu_info
 
 import discord
+import psutil
+
+from main import MyClient
 
 class CustomColor:
 	"""Custom colors for formatting purposes.
@@ -282,15 +290,21 @@ class CustomMember(CustomUser):
 	joined = joined_at
 
 	@property
-	def roles(self) -> str:
-		"""Returns the """
+	def roles(self) -> Optional[str]:
+		"""Returns the roles the user has (excluding @everyone)"""
 		self._roles.pop(0)
-		return ', '.join([role.mention for role in self._roles])
+		roles_string = ', '.join([role.mention for role in self._roles])
+		if len(roles_string) > 512:
+			return None
+		return roles_string
 
 	@property
-	def roles_reverse(self) -> str:
+	def roles_reverse(self) -> Optional[str]:
 		self._roles.pop(0)
-		return ', '.join([role.mention for role in reversed(self._roles)])
+		roles_string = ', '.join([role.mention for role in reversed(self._roles)])
+		if len(roles_string) > 512:
+			return None
+		return roles_string
 
 	def __str__(self):
 		return self.display_name or self.name
@@ -323,6 +337,7 @@ class CustomRole:
 	"""Returns a string that mentions the role."""
 	_members: list[discord.Member] = field(repr=False)
 	_purchaseable: bool = field(repr=False)
+	_permissions: discord.Permissions = field(repr=False)
 
 	@classmethod
 	def from_role(cls, role: discord.Role):
@@ -333,8 +348,12 @@ class CustomRole:
 			_color=CustomColor(role.color),
 			icon=role.display_icon.url or role.display_icon if role.display_icon else None, _created_at=role.created_at,
 			mention=role.mention, _members=role.members,
-			_purchaseable=role.tags.is_available_for_purchase() if role.tags else False
+			_purchaseable=role.tags.is_available_for_purchase() if role.tags else False, _permissions=role.permissions
 		)
+
+	@property
+	def members(self) -> int:
+		return len(self._members)
 
 	@property
 	def everyone(self) -> bool:
@@ -393,11 +412,18 @@ class CustomRole:
 
 	created = created_at
 
+	@property
+	def permissions(self):
+		"""Returns the role's permissions."""
+		return ", ".join([str(perm[0]).upper() for perm in self._permissions if perm[1]])[:1024]
+
 	def __str__(self):
 		return self.name
 
 	def __int__(self):
 		return self.id
+
+	# TODO: we need to add permissions somehow... no idea how, though
 
 @dataclass
 class CustomGuild:
@@ -413,8 +439,7 @@ class CustomGuild:
 	"""Returns the guild's description, if it has one."""
 	members: Optional[int] = field(repr=False)
 	"""Returns the number of members in the guild."""
-	owner: discord.Member = field(repr=False)
-	"""Returns the guild's owner."""
+	_owner: discord.Member = field(repr=False)
 	boosts: int = field(repr=False)
 	"""Returns how many boosts the guild has."""
 	_created_at: datetime.datetime = field(repr=False)
@@ -458,7 +483,7 @@ class CustomGuild:
 		return cls(
 			name=guild.name, id=guild.id, _icon=guild.icon, _banner=guild.banner, _splash=guild.splash,
 			_discovery_splash=guild.discovery_splash, description=guild.description, members=guild.member_count,
-			owner=guild.owner, boosts=guild.premium_subscription_count, _created_at=guild.created_at,
+			_owner=guild.owner, boosts=guild.premium_subscription_count, _created_at=guild.created_at,
 			_verification_level=guild.verification_level, _default_notifications=guild.default_notifications,
 			_explicit_content_filter=guild.explicit_content_filter, _mfa_level=guild.mfa_level,
 			_system_channel=guild.system_channel, _rules_channel=guild.rules_channel,
@@ -472,6 +497,10 @@ class CustomGuild:
 			_stickers=guild.stickers, _sticker_limit=guild.sticker_limit, _bitrate_limit=guild.bitrate_limit,
 			_filesize_limit=guild.filesize_limit, _scheduled_events=guild.scheduled_events, _shard_id=guild.shard_id
 		)
+
+	@property
+	def owner(self) -> CustomMember:
+		return CustomMember.from_member(self._owner)
 
 	@property
 	def icon(self) -> Optional[str]:
@@ -581,7 +610,7 @@ class CustomGuild:
 	@property
 	def premium_subscriber_role(self) -> str:
 		"""Returns the guild's premium subscriber role."""
-		return self._premium_subscriber_role.mention
+		return self._premium_subscriber_role.mention if self._premium_subscriber_role else None
 
 	boost_role = premium_subscriber_role
 
@@ -643,9 +672,9 @@ class CustomGuild:
 		return len(self._stickers)
 
 	@property
-	def bitrate_limit(self) -> float:
+	def bitrate_limit(self) -> int:
 		"""Returns the bitrate limit of the guild."""
-		return self._bitrate_limit
+		return int(self._bitrate_limit)
 
 	bitrate = max_bitrate = bitrate_limit
 
@@ -654,7 +683,7 @@ class CustomGuild:
 		"""Returns the filesize limit of the guild in megabytes."""
 		return int(self._filesize_limit / 1048576)  # Converts bytes to megabytes
 
-	file_limit = file_size = max_file_size = filesize_limit
+	upload_limit = file_limit = file_size = max_file_size = filesize_limit
 
 	@property
 	def shard_id(self) -> int:
@@ -677,109 +706,173 @@ class CustomGuild:
 	def __len__(self):
 		return self.members
 
-class CustomIP:
+class IPAddress:
 	def __init__(self, data: dict[str, str]):
 		self._data = data
 
-		for key in ['hostname', 'city', 'postal', 'region', 'country', 'org', 'timezone', 'loc']:
-			if key not in self._data:
-				self._data[key] = '❌'
-
 	@property
 	def ip(self) -> str:
-		return self._data['ip']
+		return self._data.get("ip")
 
 	@property
 	def code(self) -> str:
-		return self._data['country']
+		return self._data.get("country")
 
 	country = code
 
 	@property
 	def hostname(self) -> str:
-		return self._data['hostname']
+		return self._data.get("hostname")
 
 	@property
 	def city(self) -> str:
-		return self._data['city']
+		return self._data.get("city")
 
 	@property
 	def region(self) -> str:
-		return self._data['region']
+		return self._data.get("region")
 
 	@property
 	def postal(self) -> str:
-		return self._data['postal']
+		return self._data.get("postal")
 
 	@property
 	def timezone(self) -> str:
-		return self._data['timezone']
+		return self._data.get("timezone")
 
 	@property
 	def organization(self) -> str:
-		return self._data['org']
+		return self._data.get("org")
 
 	org = organization
 
 	@property
 	def loc(self) -> str:
-		return self._data['loc']
+		return self._data.get("loc")
 
-class CustomBOT:
-	def __init__(self, data: dict[str, str]):
-		self._data = data
+class CPU:
+	@property
+	def name(self):
+		return get_cpu_info().get("brand_raw")
 
 	@property
-	def host_name(self) -> str:
-		return self._data['host_name']
+	def usage(self):
+		return psutil.cpu_percent()
 
 	@property
-	def host_contact(self) -> str:
-		return self._data['host_contact']
+	def threads(self):
+		return psutil.cpu_count()
+
+	def __str__(self):
+		return self.name
+
+	cores = count = threads
+
+class RAM:
+	def __init__(self):
+		self._memory = psutil.virtual_memory()
 
 	@property
-	def memory_usage(self) -> str:
-		return self._data['memory_usage']
+	def current(self):
+		return round(self._memory.total / 1073741824, 2)
 
 	@property
-	def memory_str(self) -> str:
-		return self._data['memory_str']
+	def available(self):
+		return round(self._memory.available / 1073741824, 2)
 
 	@property
-	def disk_usage(self) -> str:
-		return self._data['disk_usage']
+	def usage(self):
+		return f"{self.current} GB / {self.available} GB"
+
+	def __str__(self):
+		return self.usage
+
+class VPSProvider:
+	@property
+	def name(self):
+		return "Bladehost VPS"
 
 	@property
-	def boot_time(self) -> str:
-		return self._data['boot_time']
+	def url(self):
+		return "https://www.bladehost.eu/"
+
+	def __str__(self):
+		return f"[{self.name}]({self.url})"
+
+class Disk:
+	def __init__(self):
+		self._disk = psutil.disk_usage("/")
 
 	@property
-	def network_io(self) -> str:
-		return self._data['network_io']
+	def percent(self):
+		return self._disk.percent
 
 	@property
-	def cpu_percent(self) -> str:
-		return self._data['cpu_percent']
+	def total(self):
+		return self._disk.total / 1073741824
 
 	@property
-	def cpu_count(self) -> str:
-		return self._data['cpu_count']
+	def used(self):
+		return self._disk.total / 1073741824
 
 	@property
-	def cpu_name(self) -> str:
-		return self._data['cpu_name']
+	def free(self):
+		return self._disk.total / 1073741824
+
+	def __str__(self):
+		return f"{self.percent}%"
+
+class Network:
+	def __init__(self):
+		self._network = psutil.net_io_counters()
 
 	@property
-	def cpu_frequency(self) -> str:
-		return self._data['cpu_frequency']
+	def sent(self):
+		return round(self._network.bytes_sent / 1073741824, 2)
 
 	@property
-	def os_name(self) -> str:
-		return self._data['os_name']
+	def received(self):
+		return round(self._network.bytes_recv / 1073741824, 2)
+
+	def __str__(self):
+		return f"{self.sent} GB / {self.received} GB"
+
+class BotInfo:
+	def __init__(self, client: discord.Client):
+		self.avatar = client.user.avatar.url
+		self.name = client.user.name
 
 	@property
-	def programming_library(self) -> str:
-		return self._data['programming_library']
+	def provider(self):
+		return VPSProvider()
+
+	@property
+	def processor(self):
+		return CPU()
+
+	cpu = processor
+
+	@property
+	def memory(self):
+		return RAM()
+
+	ram = memory
+
+	@property
+	def disk(self):
+		return Disk()
+
+	@property
+	def boot_time(self):
+		return FormatDateTime(datetime.datetime.fromtimestamp(psutil.boot_time()), "R")
+
+	@property
+	def network(self):
+		return Network()
+
+	@property
+	def library_version(self):
+		return discord.__version__
 
 @dataclass
 class CustomMessage:
