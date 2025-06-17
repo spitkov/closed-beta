@@ -210,7 +210,13 @@ class MyClient(commands.AutoShardedBot):
 			heartbeat_timeout=150.0, intents=intents, case_insensitive=False,
 			activity=discord.CustomActivity(name="Bot starting...", emoji="🟡"), status=discord.Status.idle,
 			chunk_guilds_at_startup=False, loop=self.loop,
-			member_cache_flags=discord.MemberCacheFlags.from_intents(intents), max_messages=20000
+			member_cache_flags=discord.MemberCacheFlags.from_intents(intents), max_messages=20000,
+			allowed_contexts=app_commands.AppCommandContext(
+				guild=True,
+				dm_channel=True,
+				private_channel=True
+			),
+			allowed_installs=app_commands.AppInstallationType(guild=True, user=True)
 		)
 		self.custom_response = custom_response.CustomResponse(self)
 
@@ -255,6 +261,18 @@ class MyClient(commands.AutoShardedBot):
 		end = perf_counter() - benchmark
 		logger.info(f"Initial setup hook complete in {end:.2f}s")
 
+	@staticmethod
+	async def db_connection_init(connection: asyncpg.connection.Connection):
+		await connection.set_type_codec(
+			"jsonb", encoder=json.dumps, decoder=json.loads, schema="pg_catalog"
+		)
+		await connection.set_type_codec(
+			"json",
+			encoder=json.dumps,
+			decoder=json.loads,
+			schema="pg_catalog"
+		)
+
 	async def database_initialization(self):
 		logger.info("Connecting to database...")
 		benchmark = perf_counter()
@@ -263,7 +281,7 @@ class MyClient(commands.AutoShardedBot):
 			host=os.getenv("DB_HOST"), database="lumin_beta",
 			# ! Replace with default database name when ran for the first time
 			# ! Any subsequent executions of this code must use `database="lumin"`
-			user="lumin", password=os.getenv("DB_PASSWORD"), port=os.getenv("DB_PORT"), timeout=None,
+			user="lumin", password=os.getenv("DB_PASSWORD"), port=os.getenv("DB_PORT"), timeout=None, init=self.db_connection_init,
 			max_inactive_connection_lifetime=120  # timeout is 2 mins
 		)
 		end = perf_counter() - benchmark

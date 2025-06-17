@@ -1,17 +1,11 @@
 """Custom arguments to make user-specified responses easier to configure"""
 import datetime
-import os
-import platform
-import re
-import subprocess
 from dataclasses import dataclass, field
 from typing import Union, Optional, Literal, Sequence
 from cpuinfo import get_cpu_info
-
+from emoji import demojize
 import discord
 import psutil
-
-from main import MyClient
 
 class CustomColor:
 	"""Custom colors for formatting purposes.
@@ -26,7 +20,7 @@ class CustomColor:
 	>>> color
 	#FF0000
 
-	>>> color.image
+	>>> color.image  # type: ignore
 	'https://dummyimage.com/500x500/FF0000/000000&text=+'
 	"""
 
@@ -106,7 +100,7 @@ class FormatDateTime:
 		>>> FormatDateTime(datetime.datetime.now(), "F").time
 		22:57
 		"""
-		return Formattable(self, style="t")
+		return Formattable(self, style="f")
 
 	@property
 	def seconds(self) -> Formattable:
@@ -117,7 +111,7 @@ class FormatDateTime:
 		>>> FormatDateTime(datetime.datetime.now(), "F").seconds
 		22:57:43
 		"""
-		return Formattable(self, style="T")
+		return Formattable(self, style="f")
 
 	@property
 	def date(self) -> Formattable:
@@ -898,10 +892,10 @@ class CustomMessage:
 	_mention_everyone: bool = field(repr=False)
 	_mentions: list[discord.Member] = field(repr=False)
 	_role_mentions: list[discord.Role] = field(repr=False)
-	_channel_mentions: list[discord.TextChannel] = field(repr=False)
+	_channel_mentions: list[discord.abc.GuildChannel | discord.Thread] = field(repr=False)
 	_reference: Optional[discord.MessageReference] = field(repr=False)
 	_flags: discord.MessageFlags = field(repr=False)
-	_components: list[discord.ui.Item] = field(repr=False)
+	_components: list[discord.ActionRow | discord.ui.Button | discord.SelectMenu | discord.ui.TextInput] = field(repr=False)
 	_poll: Optional[discord.Poll] = field(repr=False)
 
 	@classmethod
@@ -923,7 +917,7 @@ class CustomMessage:
 			_mention_everyone=message.mention_everyone,
 			_mentions=message.mentions,
 			_role_mentions=message.role_mentions,
-			_channel_mentions=message.channel_mentions,
+			_channel_mentions=message.channel_mentions,  # type: ignore
 			_reference=message.reference,
 			_flags=message.flags,
 			_components=message.components,
@@ -1029,3 +1023,746 @@ class CustomMessage:
 
 	def __int__(self):
 		return self.id
+
+
+
+@dataclass
+class CustomCategoryChannel:
+	name: str
+	"""Returns the category's name."""
+	_guild: discord.Guild
+	id: int
+	"""Returns the category's ID."""
+	position: int
+	"""Returns the category's position."""
+	nsfw: bool
+	"""Returns the category's nsfw status."""
+	_channels: list[discord.abc.GuildChannel]
+	_text_channels: list[discord.TextChannel]
+	_voice_channels: list[discord.VoiceChannel]
+	_stage_channels: list[discord.StageChannel]
+	_forums: list[discord.ForumChannel]
+	_created_at: datetime.datetime
+	_jump_url: str
+	mention: str
+	"""Returns the category's mention string."""
+	_overwrites: dict[discord.Role | discord.Member | discord.Object, discord.PermissionOverwrite]
+	permissions_synced: bool
+	"""Returns whether or not the permissions are synced to the parent category."""
+
+	@classmethod
+	def from_category(cls, category: discord.CategoryChannel):
+		return cls(
+			name=category.name,
+			_guild=category.guild,
+			id=category.id,
+			position=category.position,
+			nsfw=category.nsfw,
+			_channels=category.channels,
+			_text_channels=category.text_channels,
+			_voice_channels=category.voice_channels,
+			_stage_channels=category.stage_channels,
+			_forums=category.forums,
+			_created_at=category.created_at,
+			_jump_url=category.jump_url,
+			mention=category.mention,
+			_overwrites=category.overwrites,
+			permissions_synced=category.permissions_synced,
+		)
+
+	@property
+	def guild(self) -> CustomGuild:
+		"""Returns the category's guild."""
+		return CustomGuild.from_guild(self._guild)
+
+	@property
+	def channels(self) -> int:
+		"""Returns the number of channels in the category."""
+		return len(self._channels)
+
+	@property
+	def text_channels(self) -> int:
+		"""Returns the number of text channels in the category."""
+		return len(self._text_channels)
+
+	@property
+	def voice_channels(self) -> int:
+		"""Returns the number of voice channels in the category."""
+		return len(self._voice_channels)
+
+	@property
+	def stage_channels(self) -> int:
+		"""Returns the number of stage channels in the category."""
+		return len(self._stage_channels)
+
+	@property
+	def forums(self) -> int:
+		"""Returns the number of forums in the category."""
+		return len(self._forums)
+
+	@property
+	def created_at(self) -> FormatDateTime:
+		"""Returns the category's creation date."""
+		return FormatDateTime(self._created_at, "f")
+
+	created = created_at
+
+	@property
+	def jump_url(self) -> str:
+		"""Returns the category's jump URL."""
+		return self._jump_url
+
+	url = jump_url
+
+	@property
+	def overwrites(self) -> int:
+		"""Returns the number of overwrites in the category."""
+		return len(self._overwrites)
+
+	def __str__(self) -> str:
+		return self.name
+
+@dataclass
+class CustomTextChannel:
+	name: str
+	"""Returns the channel's name."""
+	_guild: discord.Guild
+	id: int
+	"""Returns the channel's id."""
+	topic: Optional[str]
+	"""Returns the channel's topic."""
+	position: int
+	"""Returns the channel's position."""
+	_slowmode_delay: int
+	nsfw: bool
+	"""Returns the channel's nsfw status."""
+	_default_auto_archive_duration: int
+	_default_thread_slowmode_delay: int
+	_members: list[discord.Member]
+	_threads: list[discord.Thread]
+	news: bool
+	"""Returns the channel's news status."""
+	_category: discord.CategoryChannel
+	_created_at: datetime.datetime
+	_jump_url: str
+	mention: str
+	"""Returns the channel's mention string."""
+	_overwrites: dict[discord.Role | discord.Member | discord.Object, discord.PermissionOverwrite]
+	permissions_synced: bool
+	"""Returns whether or not the permissions are synced to the parent category."""
+
+	@classmethod
+	def from_channel(cls, channel: discord.TextChannel):
+		return cls(
+			name=channel.name,
+			_guild=channel.guild,
+			id=channel.id,
+			topic=channel.topic,
+			position=channel.position,
+			_slowmode_delay=channel.slowmode_delay,
+			nsfw=channel.nsfw,
+			_default_auto_archive_duration=channel.default_auto_archive_duration,
+			_default_thread_slowmode_delay=channel.default_thread_slowmode_delay,
+			_members=channel.members,
+			_threads=channel.threads,
+			news=channel.is_news(),
+			_category=channel.category,
+			_created_at=channel.created_at,
+			_jump_url=channel.jump_url,
+			mention=channel.mention,
+			_overwrites=channel.overwrites,
+			permissions_synced=channel.permissions_synced,
+		)
+
+	@property
+	def guild(self) -> CustomGuild:
+		"""Returns the channel's guild."""
+		return CustomGuild.from_guild(self._guild)
+
+	@property
+	def slowmode(self) -> int:
+		"""Returns the slowmode delay in seconds."""
+		return self._slowmode_delay
+
+	slowmode_delay = slowmode
+
+	@property
+	def auto_archive(self) -> int:
+		"""Returns how long threads have to be inactive to be archived in minutes."""
+		return self._default_auto_archive_duration
+
+	@property
+	def thread_slowmode(self) -> int:
+		"""Returns the channel's thread slowmode delay in minutes."""
+		return self._slowmode_delay
+
+	thread_slowmode_delay = thread_slowmode
+
+	@property
+	def members(self):
+		"""Returns how many members can see the channel."""
+		return len(self._members)
+
+	@property
+	def threads(self):
+		"""Returns how many threads are in the channel."""
+		return len(self._threads)
+
+	@property
+	def category(self) -> Optional[CustomCategoryChannel]:
+		"""Returns the channel's category."""
+		return CustomCategoryChannel.from_category(self._category) if self._category else None
+
+	@property
+	def created_at(self) -> FormatDateTime:
+		"""Returns the channel's creation date."""
+		return FormatDateTime(self._created_at, "f")
+
+	created = created_at
+
+	@property
+	def url(self) -> str:
+		"""Returns the channel's jump URL."""
+		return self._jump_url
+
+	jump_url = url
+
+	@property
+	def overwrites(self) -> int:
+		"""Returns the number of channel overwrites."""
+		return len(self._overwrites)
+
+	def __str__(self) -> str:
+		return self.name
+
+@dataclass
+class CustomVoiceChannel:
+	name: str
+	"""Returns the channel's name."""
+	_guild: discord.Guild
+	id: int
+	"""Returns the channel's id."""
+	nsfw: bool
+	"""Returns the channel's nsfw status."""
+	position: int
+	"""Returns the channel's position."""
+	bitrate: int
+	"""Returns the channel's bitrate."""
+	user_limit: int
+	"""Returns the channel's user limit."""
+	_rtc_region: Optional[str]
+	_slowmode_delay: int
+	_category: Optional[discord.CategoryChannel]
+	_created_at: datetime.datetime
+	_jump_url: str
+	mention: str
+	"""Returns the channel's mention string."""
+	_overwrites: dict[discord.Role | discord.Member | discord.Object, discord.PermissionOverwrite]
+	permissions_synced: bool
+	"""Returns whether or not the permissions are synced to the parent category."""
+	_scheduled_events: list[discord.ScheduledEvent]
+
+	@classmethod
+	def from_channel(cls, channel: discord.VoiceChannel):
+		return cls(
+			name=channel.name,
+			_guild=channel.guild,
+			id=channel.id,
+			nsfw=channel.nsfw,
+			position=channel.position,
+			bitrate=int(channel.bitrate / 1000),
+			user_limit=channel.user_limit,
+			_rtc_region=channel.rtc_region,
+			_slowmode_delay=channel.slowmode_delay,
+			_category=channel.category,
+			_created_at=channel.created_at,
+			_jump_url=channel.jump_url,
+			mention=channel.mention,
+			_overwrites=channel.overwrites,
+			permissions_synced=channel.permissions_synced,
+			_scheduled_events=channel.scheduled_events,
+		)
+
+	@property
+	def guild(self):
+		"""Returns the channel's guild."""
+		return CustomGuild.from_guild(self._guild)
+
+	@property
+	def rtc_region(self):
+		"""Returns the channel's RTC region."""
+		return self._rtc_region
+
+	region = rtc_region
+
+	@property
+	def slowmode_delay(self) -> int:
+		"""Returns the channel's slowmode delay in seconds."""
+		return self._slowmode_delay
+
+	slowmode = slowmode_delay
+
+	@property
+	def category(self) -> Optional[CustomCategoryChannel]:
+		"""Returns the channel's category."""
+		return CustomCategoryChannel.from_category(self._category) if self._category else None
+
+	@property
+	def created_at(self) -> FormatDateTime:
+		"""Returns the channel's creation date."""
+		return FormatDateTime(self._created_at, "f")
+
+	created = created_at
+
+	@property
+	def jump_url(self) -> str:
+		"""Returns the channel's jump URL."""
+		return self._jump_url
+
+	url = jump_url
+
+	@property
+	def overwrites(self) -> int:
+		"""Returns the number of channel overwrites."""
+		return len(self._overwrites)
+
+	@property
+	def scheduled_events(self) -> int:
+		"""Returns the number of scheduled events in the channel."""
+		return len(self._scheduled_events)
+
+	def __str__(self) -> str:
+		return self.name
+
+@dataclass
+class CustomStageChannel:
+	name: str
+	"""Returns the stage channel's name."""
+	_guild: discord.Guild
+	id: int
+	nsfw: bool
+	"""Returns the stage channel's nsfw status."""
+	topic: Optional[str]
+	"""Returns the stage channel's topic."""
+	position: int
+	"""Returns the stage channel's position."""
+	_bitrate: int
+	user_limit: int
+	"""Returns the stage channel's user limit."""
+	_rtc_region: str
+	"""Returns the stage channel's RTC region."""
+	_slowmode_delay: int
+	_requesting_to_speak: list[discord.Member]
+	_speakers: list[discord.Member]
+	_listeners: list[discord.Member]
+	_moderators: list[discord.Member]
+	_category: Optional[discord.CategoryChannel]
+	_created_at: datetime.datetime
+	_jump_url: str
+	_members: list[discord.Member]
+	mention: str
+	"""Returns the stage channel's mention string."""
+	_overwrites: dict[discord.Role | discord.Member | discord.Object, discord.PermissionOverwrite]
+	permissions_synced: bool
+	"""Returns whether or not the permissions are synced to the parent category."""
+	_scheduled_events: list[discord.ScheduledEvent]
+
+	@classmethod
+	def from_channel(cls, channel: discord.StageChannel):
+		return cls(
+			name=channel.name,
+			_guild=channel.guild,
+			id=channel.id,
+			nsfw=channel.nsfw,
+			topic=channel.topic,
+			position=channel.position,
+			_bitrate=channel.bitrate,
+			user_limit=channel.user_limit,
+			_rtc_region=channel.rtc_region,
+			_slowmode_delay=channel.slowmode_delay,
+			_requesting_to_speak=channel.requesting_to_speak,
+			_speakers=channel.speakers,
+			_listeners=channel.listeners,
+			_moderators=channel.moderators,
+			_category=channel.category,
+			_created_at=channel.created_at,
+			_jump_url=channel.jump_url,
+			_members=channel.members,
+			mention=channel.mention,
+			_overwrites=channel.overwrites,
+			permissions_synced=channel.permissions_synced,
+			_scheduled_events=channel.scheduled_events,
+		)
+
+	@property
+	def guild(self) -> CustomGuild:
+		"""Returns the stage channel's guild."""
+		return CustomGuild.from_guild(self._guild)
+
+	@property
+	def bitrate(self) -> int:
+		"""Returns the stage channel's bitrate in kbps."""
+		return int(self._bitrate / 1000)
+
+	@property
+	def rtc_region(self) -> str:
+		"""Returns the stage channel's RTC region."""
+		return self._rtc_region
+
+	region = rtc_region
+
+	@property
+	def slowmode_delay(self) -> int:
+		"""Returns the channel's slowmode delay in seconds."""
+		return self._slowmode_delay
+
+	slowmode = slowmode_delay
+
+	@property
+	def requesting_to_speak(self) -> int:
+		"""Returns the number of requesting speakers."""
+		return len(self._requesting_to_speak)
+
+	@property
+	def speakers(self) -> int:
+		"""Returns the number of speakers."""
+		return len(self._speakers)
+
+	@property
+	def listeners(self) -> int:
+		return len(self._listeners)
+
+	@property
+	def moderators(self) -> int:
+		"""Returns the number of moderators."""
+		return len(self._moderators)
+
+	@property
+	def category(self) -> Optional[CustomCategoryChannel]:
+		"""Returns the channel's category.'"""
+		return CustomCategoryChannel.from_category(self._category) if self._category else None
+
+	@property
+	def created_at(self) -> FormatDateTime:
+		"""Returns the channel's creation date.'"""
+		return FormatDateTime(self._created_at, "f")
+
+	created = created_at
+
+	@property
+	def jump_url(self) -> str:
+		"""Returns the channel's jump URL.'"""
+		return self._jump_url
+
+	url = jump_url
+
+	@property
+	def members(self) -> int:
+		"""Returns the number of members that can see this channel."""
+		return len(self._members)
+
+	@property
+	def overwrites(self) -> int:
+		"""Returns the number of channel overwrites."""
+		return len(self._overwrites)
+
+	@property
+	def scheduled_events(self) -> int:
+		"""Returns the number of scheduled events in the channel."""
+		return len(self._scheduled_events)
+
+	events = scheduled_events
+
+	def __str__(self) -> str:
+		return self.name
+
+@dataclass
+class CustomPartialEmoji:
+	_name: Optional[str]
+	animated: bool
+	id: Optional[int]
+	_created_at: Optional[datetime.datetime]
+	_url: Optional[str]
+	_is_unicode: bool
+	display: str
+
+	@classmethod
+	def from_emoji(cls, emoji: discord.PartialEmoji):
+		return cls(
+			_name=emoji.name,
+			animated=emoji.animated,
+			id=emoji.id,
+			_created_at=emoji.created_at,
+			_url=emoji.url,
+			_is_unicode=emoji.is_unicode_emoji(),
+			display=str(emoji)
+		)
+
+	@property
+	def name(self) -> str:
+		if self._is_unicode:
+			name = demojize(self._name)
+			return name.strip(":")
+		return self._name
+
+	def __str__(self) -> str:
+		return self.display
+
+	@property
+	def created_at(self) -> FormatDateTime:
+		return FormatDateTime(self._created_at, "f") if self._created_at else None
+
+	created = created_at
+
+	@property
+	def url(self) -> Optional[str]:
+		codepoints = "-".join(f"{ord(code):x}" for code in self._name)
+		return self._url if self._url != "" else f"https://cdn.jsdelivr.net/gh/twitter/twemoji@latest/assets/72x72/{codepoints}.png"
+
+@dataclass
+class CustomEmoji(CustomPartialEmoji):
+	managed: bool
+	_roles: list[discord.Role]
+	_guild: discord.Guild
+	_is_application_owned: bool
+
+	@classmethod
+	def from_emoji(cls, emoji: discord.Emoji):
+		return cls(
+			_name=emoji.name,
+			id=emoji.id,
+			animated=emoji.animated,
+			managed=emoji.managed,
+			_created_at=emoji.created_at,
+			_url=emoji.url,
+			_roles=emoji.roles,
+			_guild=emoji.guild,
+			_is_application_owned=emoji.is_application_owned(),
+			_is_unicode=False
+		)
+
+	@property
+	def name(self) -> str:
+		return self._name
+
+	@property
+	def roles(self) -> bool:
+		"""Returns whether or not this emoji is specific to a role or multiple or roles."""
+		return len(self._roles) != 0
+
+	__str__ = name
+
+	@property
+	def guild(self) -> CustomGuild:
+		return CustomGuild.from_guild(self._guild)
+
+	@property
+	def is_application_owned(self) -> bool:
+		"""Returns whether or not this emoji is only usable by a bot."""
+		return self._is_application_owned
+
+	application_owned = bot_owned = is_application_owned
+
+@dataclass
+class CustomForumChannel:
+	name: str
+	"""Returns the forum channel's name."""
+	_guild: discord.Guild
+	id: int
+	"""Returns the forum channel's ID."""
+	topic: str
+	"""Returns the forum channel's topic."""
+	position: int
+	"""Returns the forum channel's position."""
+	_slowmode_delay: int
+	nsfw: bool
+	"""Returns the forum channel's nsfw status."""
+	_default_auto_archive_duration: int
+	_default_thread_slowmode_delay: int
+	_default_reaction_emoji: Optional[discord.PartialEmoji]
+	_members: list[discord.Member]
+	_threads: list[discord.Thread]
+	_available_tags: Sequence[discord.ForumTag]
+	media: bool
+	"""Returns whether or not the channel is a media channel."""
+	_category: Optional[discord.CategoryChannel]
+	_created_at: datetime.datetime
+	_jump_url: str
+	mention: str
+	"""Returns a string to mention the channel."""
+	_overwrites: dict[discord.Role | discord.Member | discord.Object, discord.PermissionOverwrite]
+	permissions_synced: bool
+	"""Returns whether or not the permissions are synced to the parent category."""
+
+	@classmethod
+	def from_channel(cls, channel: discord.ForumChannel):
+		return cls(
+			name=channel.name,
+			_guild=channel.guild,
+			id=channel.id,
+			topic=channel.topic,
+			position=channel.position,
+			_slowmode_delay=channel.slowmode_delay,
+			nsfw=channel.nsfw,
+			_default_auto_archive_duration=channel.default_auto_archive_duration,
+			_default_thread_slowmode_delay=channel.default_thread_slowmode_delay,
+			_default_reaction_emoji=channel.default_reaction_emoji,
+			_members=channel.members,
+			_threads=channel.threads,
+			_available_tags=channel.available_tags,
+			media=channel.is_media(),
+			_category=channel.category,
+			_created_at=channel.created_at,
+			_jump_url=channel.jump_url,
+			mention=channel.mention,
+			_overwrites=channel.overwrites,
+			permissions_synced=channel.permissions_synced,
+		)
+
+	@property
+	def guild(self) -> CustomGuild:
+		return CustomGuild.from_guild(self._guild)
+
+	@property
+	def slowmode_delay(self) -> int:
+		"""Returns the channel's slowmode delay in seconds."""
+		return self._slowmode_delay
+
+	slowmode = slowmode_delay
+
+	@property
+	def default_auto_archive_duration(self) -> int:
+		"""Returns the channel's default auto-archive duration in seconds."""
+		return self._default_auto_archive_duration
+
+	auto_archive_duration = auto_archive = default_auto_archive_duration
+
+	@property
+	def default_thread_slowmode_delay(self) -> int:
+		"""Returns the channel's default thread slowmode delay in seconds."""
+		return self._default_thread_slowmode_delay
+
+	thread_slowmode = default_thread_slowmode_delay
+
+	@property
+	def default_reaction_emoji(self) -> Optional[CustomPartialEmoji]:
+		return CustomPartialEmoji.from_emoji(self._default_reaction_emoji) if self._default_reaction_emoji else None
+
+	@property
+	def members(self) -> int:
+		"""Returns the number of members that can see this channel."""
+		return len(self._members)
+
+	@property
+	def threads(self) -> int:
+		"""Returns the number of threads (forum posts) in the channel."""
+		return len(self._threads)
+
+	@property
+	def available_tags(self) -> int:
+		"""Returns the number of available tags."""
+		return len(self._available_tags)
+
+	tags = available_tags
+
+	@property
+	def category(self) -> Optional[CustomCategoryChannel]:
+		"""Returns the channel's category."""
+		return CustomCategoryChannel.from_category(self._category) if self._category else None
+
+	@property
+	def created_at(self) -> FormatDateTime:
+		"""Returns the channel's creation date."""
+		return FormatDateTime(self._created_at, "f")
+
+	created = created_at
+
+	@property
+	def jump_url(self) -> str:
+		"""Returns the channel's URL."""
+		return self._jump_url
+
+	url = jump_url
+
+	@property
+	def overwrites(self) -> int:
+		"""Returns the number of channel overwrites."""
+		return len(self._overwrites)
+
+	def __str__(self) -> str:
+		return self.name
+
+@dataclass
+class CustomTemplate:
+	name: str
+	_guild: discord.Guild
+	_author: discord.User
+	_created_at: datetime.datetime
+	code: str
+	roles: int
+	channels: int
+	uses: int
+	description: Optional[str]
+	_updated_at: Optional[datetime.datetime]
+	_is_dirty: Optional[bool]
+	url: Optional[str]
+
+	@classmethod
+	async def from_dict(cls, client: discord.Client, data: dict):
+		return cls(
+			name=data["name"],
+			_guild=await client.fetch_guild(data["guild_id"]),
+			_author=await client.fetch_user(data["author_id"]),
+			_created_at=data["date"],
+			code=data["code"],
+			roles=len(data["payload"].get("roles", [])),
+			channels=len(data["payload"].get("channels", [])),
+			uses=0,
+			description=None,
+			_updated_at=None,
+			_is_dirty=None,
+			url=None
+		)
+
+	@classmethod
+	def from_template(cls, template: discord.Template):
+		return cls(
+			name=template.name,
+			_guild=template.source_guild,
+			_author=template.creator,
+			_created_at=template.created_at,
+			code=template.code,
+			roles=0,
+			channels=0,
+			uses=template.uses,
+			description=template.description,
+			_updated_at=template.updated_at,
+			_is_dirty=template.is_dirty,
+			url=template.url
+		)
+
+	@property
+	def guild(self) -> CustomGuild:
+		return CustomGuild.from_guild(self._guild) if self._guild else None
+
+	@property
+	def author(self) -> CustomUser:
+		return CustomUser.from_user(self._author) if self._author else None
+
+	@property
+	def created_at(self) -> FormatDateTime:
+		return FormatDateTime(self._created_at, "f")
+
+	created = created_at
+
+	@property
+	def updated_at(self) -> Optional[FormatDateTime]:
+		return FormatDateTime(self._updated_at, "f") if self._updated_at else None
+
+	updated = updated_at
+
+	@property
+	def is_dirty(self) -> bool:
+		return self._is_dirty
+
+	unsynced = dirty = is_dirty
