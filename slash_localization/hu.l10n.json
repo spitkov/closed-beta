@@ -410,102 +410,102 @@
 	},
 	"info": "info",
 	"info_specs": {
-		"usage": "info [thing]",
-		"description": "Get information about a user, channel, role, or emoji.",
+		"usage": "info [dolog]",
+		"description": "Felhasználó, csatorna, rang, vagy emoji információk.",
 		"args": {
 			"argument": {
-				"name": "thing",
-				"description": "The thing you'd like to get information of"
+				"name": "dolog",
+				"description": "A dolog, amiről szeretnél információt"
 			}
 		}
 	},
 	"bot": "bot",
 	"botinfo_specs": {
-		"description": "Information about the bot"
+		"description": "Bot információk"
 	},
-	"channel": "channel",
+	"channel": "csatorna",
 	"chinfo_specs": {
-		"usage": "info channel (channel)",
-		"description": "Information about a channel",
+		"usage": "info channel (csatorna)",
+		"description": "Csatorna információk",
 		"args": {
 			"channel": {
-				"name": "channel",
-				"description": "The channel you'd like information of"
+				"name": "csatorna",
+				"description": "A csatorna, amiről információt szeretnél"
 			}
 		}
 	},
 	"emoji": "emoji",
 	"emojiinfo_specs": {
 		"usage": "info emoji [emoji]",
-		"description": "Information about an emoji",
+		"description": "Emoji információk",
 		"args": {
 			"emoji": {
 				"name": "emoji",
-				"description": "The emoji you'd like information of"
+				"description": "Az emoji, amiről információt szeretnél"
 			}
 		}
 	},
 	"ip": "ip",
 	"ipinfo_specs": {
 		"usage": "info ip [ip]",
-		"description": "Information about an IP address",
+		"description": "IP cím információk",
 		"args": {
 			"ip": {
 				"name": "ip",
-				"description": "The IP address you'd like information of"
+				"description": "Az IP, amiről információt szeretnél"
 			}
 		}
 	},
-	"pokemon": "pokemon",
+	"pokemon": "pokémon",
 	"pokeinfo_specs": {
-		"usage": "info pokemon [pokemon]",
-		"description": "Information about a Pokémon",
+		"usage": "info pokemon [pokémon]",
+		"description": "Pokémon információk",
 		"args": {
 			"pokemon": {
-				"name": "pokemon",
-				"description": "The pokémon you'd like information of"
+				"name": "pokémon",
+				"description": "A pokémon, amiről információt szeretnél"
 			}
 		}
 	},
-	"role": "role",
+	"role": "rang",
 	"roleinfo_specs": {
-		"usage": "info role (role)",
-		"description": "Information about a role",
+		"usage": "info role (rang)",
+		"description": "Rang információk",
 		"args": {
 			"role": {
-				"name": "role",
-				"description": "The role you'd like information of (default: your top role)"
+				"name": "rang",
+				"description": "A rang, amiről információt szeretnél"
 			}
 		}
 	},
-	"server": "server",
+	"server": "szerver",
 	"serverinfo_specs": {
-		"description": "Information about the server"
+		"description": "Szerver információk"
 	},
 	"user": "user",
 	"userinfo_specs": {
-		"usage": "info user (user|member)",
-		"description": "Information about a user or a member",
+		"usage": "info user (felhasználó|tag)",
+		"description": "Információ egy felhasznáróról vagy szervertagról",
 		"args": {
 			"user": {
-				"name": "user",
-				"description": "The user you'd like information of (default: you!)"
+				"name": "felhasználó",
+				"description": "A felhasználó, akiről információt szeretnél (alap: te!)"
 			}
 		}
 	},
-	"template": "template",
+	"template": "sablon",
 	"tmplteinfo_specs": {
-		"usage": "info template [template|snapshot]",
-		"description": "Information about a template or fm01 snapshot",
+		"usage": "info template [sablon|snapshot]",
+		"description": "Információk egy Discord sablonról vagy fm01 snapshotról",
 		"args": {
 			"tmpl": {
-				"name": "template",
-				"description": "The template you'd like information of"
+				"name": "sablon",
+				"description": "A sablon, amiről információt szeretnél"
 			}
 		}
 	},
 	"l10n_reload": "l10n_reload",
 	"l10n_reload_specs": {
-		"description": "Reload localization files (dev-only)"
+		"description": "Lokalizációs fájlok újratöltése (fejlesztői parancs)"
 	}
 }
