@@ -1057,6 +1057,392 @@
 					"timestamp": "{now}"
 				}
 			]
+		},
+		"emoji": {
+			"custom_emoji": {
+				"embeds": [
+					{
+						"title": "Emoji information",
+						"fields": [
+							{
+								"name": "Name",
+								"value": "{emoji.name}",
+								"inline": true
+							},
+							{
+								"name": "ID",
+								"value": "{emoji.id}",
+								"inline": true
+							},
+							{
+								"name": "Animated?",
+								"value": "{emoji.animated}",
+								"inline": true
+							},
+							{
+								"name": "Created",
+								"value": "{emoji.created}",
+								"inline": true
+							},
+							{
+								"name": "Limited to role?",
+								"value": "{emoji.roles}",
+								"inline": true
+							},
+							{
+								"name": "Server",
+								"value": "{emoji.guild}",
+								"inline": true
+							},
+							{
+								"name": "Bot owned?",
+								"value": "{emoji.bot_owned}",
+								"inline": true
+							}
+						],
+						"author": {
+							"name": "{emoji.name}",
+							"icon_url": "{emoji.url}"
+						}
+					}
+				]
+			},
+			"unicode_emoji": {
+				"embeds": [
+					{
+						"title": "Emoji information",
+						"fields": [
+							{
+								"name": "Name",
+								"value": "{emoji.name}",
+								"inline": true
+							},
+							{
+								"name": "ID",
+								"value": "{emoji.id}",
+								"inline": true
+							},
+							{
+								"name": "Animated?",
+								"value": "{emoji.animated}",
+								"inline": true
+							},
+							{
+								"name": "Created",
+								"value": "{emoji.created}",
+								"inline": true
+							}
+						],
+						"thumbnail": {
+							"url": "{emoji.url}"
+						}
+					}
+				]
+			}
+		},
+		"channel": {
+			"text": {
+				"embeds": [
+					{
+						"title": "Text channel information",
+						"fields": [
+							{
+								"name": "ID",
+								"value": "{channel.id}",
+								"inline": true
+							},
+							{
+								"name": "Topic",
+								"value": "{channel.topic}",
+								"inline": false
+							},
+							{
+								"name": "Category",
+								"value": "{channel.category.name}",
+								"inline": true
+							},
+							{
+								"name": "Slowmode (seconds)",
+								"value": "{channel.slowmode}",
+								"inline": true
+							},
+							{
+								"name": "NSFW?",
+								"value": "{channel.nsfw}",
+								"inline": true
+							},
+							{
+								"name": "Members",
+								"value": "{channel.members}",
+								"inline": true
+							},
+							{
+								"name": "Threads",
+								"value": "{channel.threads}",
+								"inline": true
+							},
+							{
+								"name": "News channel?",
+								"value": "{channel.news}",
+								"inline": true
+							},
+							{
+								"name": "Created",
+								"value": "{channel.created}",
+								"inline": true
+							},
+							{
+								"name": "Permission overwrites",
+								"value": "{channel.overwrites}",
+								"inline": true
+							},
+							{
+								"name": "Permissions synced to category?",
+								"value": "{channel.permissions_synced}",
+								"inline": true
+							}
+						],
+						"author": {
+							"name": "#{channel.name}",
+							"url": "{channel.url}"
+						}
+					}
+				]
+			},
+			"voice": {
+				"embeds": [
+					{
+						"title": "Voice channel information",
+						"fields": [
+							{
+								"name": "ID",
+								"value": "{channel.id}",
+								"inline": true
+							},
+							{
+								"name": "Category",
+								"value": "{channel.category.name}",
+								"inline": true
+							},
+							{
+								"name": "Slowmode (seconds)",
+								"value": "{channel.slowmode}",
+								"inline": true
+							},
+							{
+								"name": "NSFW?",
+								"value": "{channel.nsfw}",
+								"inline": true
+							},
+							{
+								"name": "Region",
+								"value": "{channel.region}",
+								"inline": true
+							},
+							{
+								"name": "Bitrate (kbps)",
+								"value": "{channel.bitrate}",
+								"inline": true
+							},
+							{
+								"name": "User limit",
+								"value": "{channel.user_limit}",
+								"inline": true
+							},
+							{
+								"name": "Created",
+								"value": "{channel.created}",
+								"inline": true
+							},
+							{
+								"name": "Permission overwrites",
+								"value": "{channel.overwrites}",
+								"inline": true
+							},
+							{
+								"name": "Permissions synced to category?",
+								"value": "{channel.permissions_synced}",
+								"inline": true
+							},
+							{
+								"name": "Scheduled events",
+								"value": "{channel.scheduled_events}",
+								"inline": true
+							},
+							{
+								"name": "Mention",
+								"value": "`{channel.mention}`",
+								"inline": true
+							}
+						],
+						"author": {
+							"name": "🔊 {channel.name}",
+							"url": "{channel.url}"
+						}
+					}
+				]
+			},
+			"stage": {
+				"embeds": [
+					{
+						"title": "Stage channel information",
+						"fields": [
+							{
+								"name": "ID",
+								"value": "{channel.id}",
+								"inline": true
+							},
+							{
+								"name": "Topic",
+								"value": "{channel.topic}",
+								"inline": false
+							},
+							{
+								"name": "Category",
+								"value": "{channel.category.name}",
+								"inline": true
+							},
+							{
+								"name": "Slowmode (seconds)",
+								"value": "{channel.slowmode}",
+								"inline": true
+							},
+							{
+								"name": "NSFW?",
+								"value": "{channel.nsfw}",
+								"inline": true
+							},
+							{
+								"name": "Members",
+								"value": "{channel.members}",
+								"inline": true
+							},
+							{
+								"name": "Speakers",
+								"value": "{channel.speakers}",
+								"inline": true
+							},
+							{
+								"name": "Listeners",
+								"value": "{channel.listeners}",
+								"inline": true
+							},
+							{
+								"name": "Requesting to Speak",
+								"value": "{channel.requesting_to_speak}",
+								"inline": true
+							},
+							{
+								"name": "Stage moderators",
+								"value": "{channel.moderators}",
+								"inline": true
+							},
+							{
+								"name": "Created",
+								"value": "{channel.created}",
+								"inline": true
+							},
+							{
+								"name": "Permission overwrites",
+								"value": "{channel.overwrites}",
+								"inline": true
+							},
+							{
+								"name": "Permissions synced to category?",
+								"value": "{channel.permissions_synced}",
+								"inline": true
+							}
+						],
+						"author": {
+							"name": "🎙️ {channel.name}",
+							"url": "{channel.url}"
+						}
+					}
+				]
+			},
+			"forum": {
+				"embeds": [
+					{
+						"title": "Forum channel information",
+						"fields": [
+							{
+								"name": "ID",
+								"value": "{channel.id}",
+								"inline": true
+							},
+							{
+								"name": "Topic",
+								"value": "{channel.topic}",
+								"inline": false
+							},
+							{
+								"name": "Category",
+								"value": "{channel.category.name}",
+								"inline": true
+							},
+							{
+								"name": "Slowmode (seconds)",
+								"value": "{channel.slowmode}",
+								"inline": true
+							},
+							{
+								"name": "NSFW?",
+								"value": "{channel.nsfw}",
+								"inline": true
+							},
+							{
+								"name": "Members",
+								"value": "{channel.members}",
+								"inline": true
+							},
+							{
+								"name": "Posts",
+								"value": "{channel.threads}",
+								"inline": true
+							},
+							{
+								"name": "Inactivity duration (minutes)",
+								"value": "{channel.default_auto_archive_duration}",
+								"inline": true
+							},
+							{
+								"name": "Default slowmode for posts (seconds)",
+								"value": "{channel.default_thread_slowmode_delay}",
+								"inline": true
+							},
+							{
+								"name": "Default reaction",
+								"value": "{channel.default_reaction_emoji}",
+								"inline": true
+							},
+							{
+								"name": "Media channel?",
+								"value": "{channel.media}",
+								"inline": true
+							},
+							{
+								"name": "Created",
+								"value": "{channel.created}",
+								"inline": true
+							},
+							{
+								"name": "Permission overwrites",
+								"value": "{channel.overwrites}",
+								"inline": true
+							},
+							{
+								"name": "Permissions synced to category?",
+								"value": "{channel.permissions_synced}",
+								"inline": true
+							}
+						],
+						"author": {
+							"name": "#{channel.name}",
+							"url": "{channel.url}"
+						}
+					}
+				]
+			}
 		}
 	},
 	"permissions": {

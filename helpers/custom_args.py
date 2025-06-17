@@ -3,7 +3,7 @@ import datetime
 from dataclasses import dataclass, field
 from typing import Union, Optional, Literal, Sequence
 from cpuinfo import get_cpu_info
-
+from emoji import demojize
 import discord
 import psutil
 
@@ -100,7 +100,7 @@ class FormatDateTime:
 		>>> FormatDateTime(datetime.datetime.now(), "F").time
 		22:57
 		"""
-		return Formattable(self, style="t")
+		return Formattable(self, style="f")
 
 	@property
 	def seconds(self) -> Formattable:
@@ -111,7 +111,7 @@ class FormatDateTime:
 		>>> FormatDateTime(datetime.datetime.now(), "F").seconds
 		22:57:43
 		"""
-		return Formattable(self, style="T")
+		return Formattable(self, style="f")
 
 	@property
 	def date(self) -> Formattable:
@@ -1103,7 +1103,7 @@ class CustomCategoryChannel:
 	@property
 	def created_at(self) -> FormatDateTime:
 		"""Returns the category's creation date."""
-		return FormatDateTime(self._created_at, "T")
+		return FormatDateTime(self._created_at, "f")
 
 	created = created_at
 
@@ -1118,6 +1118,9 @@ class CustomCategoryChannel:
 	def overwrites(self) -> int:
 		"""Returns the number of overwrites in the category."""
 		return len(self._overwrites)
+
+	def __str__(self) -> str:
+		return self.name
 
 @dataclass
 class CustomTextChannel:
@@ -1213,7 +1216,7 @@ class CustomTextChannel:
 	@property
 	def created_at(self) -> FormatDateTime:
 		"""Returns the channel's creation date."""
-		return FormatDateTime(self._created_at, "T")
+		return FormatDateTime(self._created_at, "f")
 
 	created = created_at
 
@@ -1228,6 +1231,9 @@ class CustomTextChannel:
 	def overwrites(self) -> int:
 		"""Returns the number of channel overwrites."""
 		return len(self._overwrites)
+
+	def __str__(self) -> str:
+		return self.name
 
 @dataclass
 class CustomVoiceChannel:
@@ -1249,7 +1255,6 @@ class CustomVoiceChannel:
 	_category: Optional[discord.CategoryChannel]
 	_created_at: datetime.datetime
 	_jump_url: str
-	_members: list[discord.Member]
 	mention: str
 	"""Returns the channel's mention string."""
 	_overwrites: dict[discord.Role | discord.Member | discord.Object, discord.PermissionOverwrite]
@@ -1265,14 +1270,13 @@ class CustomVoiceChannel:
 			id=channel.id,
 			nsfw=channel.nsfw,
 			position=channel.position,
-			bitrate=channel.bitrate,
+			bitrate=int(channel.bitrate / 1000),
 			user_limit=channel.user_limit,
 			_rtc_region=channel.rtc_region,
 			_slowmode_delay=channel.slowmode_delay,
 			_category=channel.category,
 			_created_at=channel.created_at,
 			_jump_url=channel.jump_url,
-			_members=channel.members,
 			mention=channel.mention,
 			_overwrites=channel.overwrites,
 			permissions_synced=channel.permissions_synced,
@@ -1306,7 +1310,7 @@ class CustomVoiceChannel:
 	@property
 	def created_at(self) -> FormatDateTime:
 		"""Returns the channel's creation date."""
-		return FormatDateTime(self._created_at, "T")
+		return FormatDateTime(self._created_at, "f")
 
 	created = created_at
 
@@ -1326,6 +1330,9 @@ class CustomVoiceChannel:
 	def scheduled_events(self) -> int:
 		"""Returns the number of scheduled events in the channel."""
 		return len(self._scheduled_events)
+
+	def __str__(self) -> str:
+		return self.name
 
 @dataclass
 class CustomStageChannel:
@@ -1422,6 +1429,10 @@ class CustomStageChannel:
 		return len(self._speakers)
 
 	@property
+	def listeners(self) -> int:
+		return len(self._listeners)
+
+	@property
 	def moderators(self) -> int:
 		"""Returns the number of moderators."""
 		return len(self._moderators)
@@ -1434,7 +1445,7 @@ class CustomStageChannel:
 	@property
 	def created_at(self) -> FormatDateTime:
 		"""Returns the channel's creation date.'"""
-		return FormatDateTime(self._created_at, "T")
+		return FormatDateTime(self._created_at, "f")
 
 	created = created_at
 
@@ -1462,31 +1473,51 @@ class CustomStageChannel:
 
 	events = scheduled_events
 
+	def __str__(self) -> str:
+		return self.name
+
 @dataclass
 class CustomPartialEmoji:
-	name: Optional[str]
+	_name: Optional[str]
 	animated: bool
 	id: Optional[int]
-	_created_at: datetime.datetime
+	_created_at: Optional[datetime.datetime]
 	_url: Optional[str]
+	_is_unicode: bool
+	display: str
 
 	@classmethod
 	def from_emoji(cls, emoji: discord.PartialEmoji):
 		return cls(
-			name=emoji.name,
+			_name=emoji.name,
 			animated=emoji.animated,
 			id=emoji.id,
 			_created_at=emoji.created_at,
 			_url=emoji.url,
+			_is_unicode=emoji.is_unicode_emoji(),
+			display=str(emoji)
 		)
 
 	@property
+	def name(self) -> str:
+		if self._is_unicode:
+			name = demojize(self._name)
+			return name.strip(":")
+		return self._name
+
+	def __str__(self) -> str:
+		return self.display
+
+	@property
 	def created_at(self) -> FormatDateTime:
-		return FormatDateTime(self._created_at, "T")
+		return FormatDateTime(self._created_at, "f") if self._created_at else None
+
+	created = created_at
 
 	@property
 	def url(self) -> Optional[str]:
-		return self._url if self._url != "" else None
+		codepoints = "-".join(f"{ord(code):x}" for code in self._name)
+		return self._url if self._url != "" else f"https://cdn.jsdelivr.net/gh/twitter/twemoji@latest/assets/72x72/{codepoints}.png"
 
 @dataclass
 class CustomEmoji(CustomPartialEmoji):
@@ -1498,7 +1529,7 @@ class CustomEmoji(CustomPartialEmoji):
 	@classmethod
 	def from_emoji(cls, emoji: discord.Emoji):
 		return cls(
-			name=emoji.name,
+			_name=emoji.name,
 			id=emoji.id,
 			animated=emoji.animated,
 			managed=emoji.managed,
@@ -1507,12 +1538,19 @@ class CustomEmoji(CustomPartialEmoji):
 			_roles=emoji.roles,
 			_guild=emoji.guild,
 			_is_application_owned=emoji.is_application_owned(),
+			_is_unicode=False
 		)
+
+	@property
+	def name(self) -> str:
+		return self._name
 
 	@property
 	def roles(self) -> bool:
 		"""Returns whether or not this emoji is specific to a role or multiple or roles."""
 		return len(self._roles) != 0
+
+	__str__ = name
 
 	@property
 	def guild(self) -> CustomGuild:
@@ -1635,7 +1673,9 @@ class CustomForumChannel:
 	@property
 	def created_at(self) -> FormatDateTime:
 		"""Returns the channel's creation date."""
-		return FormatDateTime(self._created_at, "T")
+		return FormatDateTime(self._created_at, "f")
+
+	created = created_at
 
 	@property
 	def jump_url(self) -> str:
@@ -1648,3 +1688,6 @@ class CustomForumChannel:
 	def overwrites(self) -> int:
 		"""Returns the number of channel overwrites."""
 		return len(self._overwrites)
+
+	def __str__(self) -> str:
+		return self.name
