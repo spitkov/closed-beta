@@ -395,6 +395,7 @@
 	},
 	"prefix": "prefix",
 	"prefix_specs": {
+		"usage": "prefix [prefix]",
 		"description": "Bot prefixének szerkesztése (alapértelmezett: ?!)",
 		"args": {
 			"prefix": {
@@ -406,5 +407,105 @@
 				"description": "Engedélyezed a bot megemlítését prefixként?"
 			}
 		}
+	},
+	"info": "info",
+	"info_specs": {
+		"usage": "info [thing]",
+		"description": "Get information about a user, channel, role, or emoji.",
+		"args": {
+			"argument": {
+				"name": "thing",
+				"description": "The thing you'd like to get information of"
+			}
+		}
+	},
+	"bot": "bot",
+	"botinfo_specs": {
+		"description": "Information about the bot"
+	},
+	"channel": "channel",
+	"chinfo_specs": {
+		"usage": "info channel (channel)",
+		"description": "Information about a channel",
+		"args": {
+			"channel": {
+				"name": "channel",
+				"description": "The channel you'd like information of"
+			}
+		}
+	},
+	"emoji": "emoji",
+	"emojiinfo_specs": {
+		"usage": "info emoji [emoji]",
+		"description": "Information about an emoji",
+		"args": {
+			"emoji": {
+				"name": "emoji",
+				"description": "The emoji you'd like information of"
+			}
+		}
+	},
+	"ip": "ip",
+	"ipinfo_specs": {
+		"usage": "info ip [ip]",
+		"description": "Information about an IP address",
+		"args": {
+			"ip": {
+				"name": "ip",
+				"description": "The IP address you'd like information of"
+			}
+		}
+	},
+	"pokemon": "pokemon",
+	"pokeinfo_specs": {
+		"usage": "info pokemon [pokemon]",
+		"description": "Information about a Pokémon",
+		"args": {
+			"pokemon": {
+				"name": "pokemon",
+				"description": "The pokémon you'd like information of"
+			}
+		}
+	},
+	"role": "role",
+	"roleinfo_specs": {
+		"usage": "info role (role)",
+		"description": "Information about a role",
+		"args": {
+			"role": {
+				"name": "role",
+				"description": "The role you'd like information of (default: your top role)"
+			}
+		}
+	},
+	"server": "server",
+	"serverinfo_specs": {
+		"description": "Information about the server"
+	},
+	"user": "user",
+	"userinfo_specs": {
+		"usage": "info user (user|member)",
+		"description": "Information about a user or a member",
+		"args": {
+			"user": {
+				"name": "user",
+				"description": "The user you'd like information of (default: you!)"
+			}
+		}
+	},
+	"template": "template",
+	"tmplteinfo_specs": {
+		"usage": "info template [template|snapshot]",
+		"description": "Information about a template or fm01 snapshot",
+		"args": {
+			"tmpl": {
+				"name": "template",
+				"description": "The template you'd like information of"
+			}
+		}
+	},
+	"l10n_reload": "l10n_reload",
+	"l10n_reload_specs": {
+		"description": "Reload localization files (dev-only)"
 	}
 }
