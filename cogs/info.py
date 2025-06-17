@@ -16,7 +16,13 @@ class Info(commands.Cog):
 	def __init__(self, client: MyClient):
 		self.client = client
 
-	@commands.hybrid_group(name="info", description="info-specs_description")
+	@commands.hybrid_group(name="info", description="info_specs-description")
+	@app_commands.rename(
+		argument="info_specs-args-argument-name"
+	)
+	@app_commands.describe(
+		argument="info_specs-args-argument-description"
+	)
 	async def info(
 		self,
 		ctx: Context,
@@ -34,7 +40,13 @@ class Info(commands.Cog):
 		else:
 			raise commands.BadArgument
 
-	@info.command(name="user", fallback="userinfo-specs_fallback", description="userinfo-specs_description")
+	@info.command(name="user", description="userinfo_specs-description")
+	@app_commands.rename(
+		user="userinfo_specs-args-user-name"
+	)
+	@app_commands.describe(
+		user="userinfo_specs-args-user-description"
+	)
 	async def user(self, ctx: Context, user: discord.Member | discord.User | None = None):
 		user = user or ctx.author
 
@@ -52,20 +64,27 @@ class Info(commands.Cog):
 		except discord.NotFound:
 			await ctx.send("info.user.not_member", member=CustomUser.from_user(user))
 
-	@info.command(name="server", description="serverinfo-specs_description")
+	@info.command(name="server", description="serverinfo_specs-description")
+
 	@commands.guild_only()
 	async def server(self, ctx: Context):
 		await ctx.send("info.server", server=CustomGuild.from_guild(ctx.guild))
 
-	@info.command(name="role", description="roleinfo-specs_description")
+	@info.command(name="role", description="roleinfo_specs-description")
 	@commands.guild_only()
+	@app_commands.rename(
+		role="roleinfo_specs-args-role-name"
+	)
+	@app_commands.describe(
+		role="roleinfo_specs-args-role-description"
+	)
 	async def role(self, ctx: Context, role: Optional[discord.Role] = None):
 		role = role or ctx.author.top_role
 		if not role:
 			raise commands.BadArgument("role")
 		await ctx.send("info.role", role=CustomRole.from_role(role))
 
-	@info.command(name="ip", description="ipinfo-specs_description")
+	@info.command(name="ip", description="ipinfo_specs-description")
 	async def ip(self, ctx: Context, ip_addr: str):
 		try:
 			ip_json = await self.client.request(f"https://ipinfo.io/{ip_addr}/json")
@@ -74,11 +93,17 @@ class Info(commands.Cog):
 		ip = IPAddress(ip_json)
 		await ctx.send("info.ip", ip=ip)
 
-	@info.command(name="bot", description="botinfo-specs_description")
+	@info.command(name="bot", description="botinfo_specs-description")
 	async def bot(self, ctx: Context):
 		await ctx.send("info.bot", bot=BotInfo(self.client))
 
-	@info.command(name="emoji", description="emojiinfo-specs_description")
+	@info.command(name="emoji", description="emojiinfo_specs-description")
+	@app_commands.rename(
+		emoji="emojiinfo_specs-args-emoji-name"
+	)
+	@app_commands.describe(
+		emoji="emojiinfo_specs-args-emoji-description"
+	)
 	async def emoji(self, ctx: Context, emoji: str):
 		try:
 			emoji = await commands.EmojiConverter().convert(ctx, emoji)
@@ -91,8 +116,14 @@ class Info(commands.Cog):
 		else:
 			raise commands.BadArgument("emoji")
 
-	@info.command(name="channel", description="channelinfo-specs_description")
+	@info.command(name="channel", description="chinfo_specs-description")
 	@commands.guild_only()
+	@app_commands.rename(
+		channel="chinfo_specs-args-channel-name"
+	)
+	@app_commands.describe(
+		channel="chinfo_specs-args-channel-description"
+	)
 	async def channel(self, ctx: Context, channel: discord.abc.GuildChannel):
 		if isinstance(channel, discord.TextChannel):
 			await ctx.send("info.channel.text", channel=CustomTextChannel.from_channel(channel))
@@ -107,7 +138,13 @@ class Info(commands.Cog):
 		else:
 			raise commands.BadArgument("channel")
 
-	@info.command(name="pokemon", description="pokeinfo-specs_description")
+	@info.command(name="pokemon", description="pokeinfo_specs-description")
+	@app_commands.rename(
+		pokemon_name="pokeinfo_specs-args-pokemon-name"
+	)
+	@app_commands.describe(
+		pokemon_name="pokeinfo_specs-args-pokemon-description"
+	)
 	async def pokemon(self, ctx: Context, pokemon_name: str):
 		try:
 			pokemon = await asyncio.get_event_loop().run_in_executor(None, lambda: pypokedex.get(name=pokemon_name))  # type: ignore
@@ -118,7 +155,13 @@ class Info(commands.Cog):
 
 		await ctx.send("info.pokemon", pokemon=pokemon)
 
-	@info.command(name="template", description="templateinfo-specs_description")
+	@info.command(name="template", description="tmplteinfo_specs-description")
+	@app_commands.rename(
+		template="tmplteinfo_specs-args-tmpl-name"
+	)
+	@app_commands.describe(
+		template="tmplteinfo_specs-args-tmpl-description"
+	)
 	async def template(self, ctx: Context, template: str):
 		regex = DISCORD_TEMPLATE.search(template)
 		if regex:
