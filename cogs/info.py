@@ -1,9 +1,13 @@
+import asyncio
+
 import discord
+from discord import app_commands
+import pypokedex
+import requests
 from discord.ext import commands
 from emoji import EMOJI_DATA
 from helpers.custom_args import *
 from main import MyClient, Context
-
 class Info(commands.Cog):
 	def __init__(self, client: MyClient):
 		self.client = client
@@ -84,6 +88,7 @@ class Info(commands.Cog):
 			raise commands.BadArgument("emoji")
 
 	@info.command(name="channel", description="channelinfo-specs_description")
+	@commands.guild_only()
 	async def channel(self, ctx: Context, channel: discord.abc.GuildChannel):
 		if isinstance(channel, discord.TextChannel):
 			await ctx.send("info.channel.text", channel=CustomTextChannel.from_channel(channel))
@@ -97,6 +102,17 @@ class Info(commands.Cog):
 			await ctx.send("info.channel.stage", channel=CustomStageChannel.from_channel(channel))
 		else:
 			raise commands.BadArgument("channel")
+
+	@info.command(name="pokemon", description="pokeinfo-specs_description")
+	async def pokemon(self, ctx: Context, pokemon_name: str):
+		try:
+			pokemon = await asyncio.get_event_loop().run_in_executor(None, lambda: pypokedex.get(name=pokemon_name))  # type: ignore
+		except requests.HTTPError:
+			raise commands.BadArgument("pokemon")
+		pokemon.type = "\n".join(pokemon.types)
+		pokemon.image = f"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/{pokemon.dex}.png"
+
+		await ctx.send("info.pokemon", pokemon=pokemon)
 
 async def setup(client: MyClient):
 	await client.add_cog(Info(client))

@@ -1443,6 +1443,43 @@
 					}
 				]
 			}
+		},
+		"pokemon": {
+			"embeds": [
+				{
+					"title": "Pokemon information",
+					"fields": [
+						{
+							"name": "Dex",
+							"value": "{pokemon.dex}",
+							"inline": true
+						},
+						{
+							"name": "Type(s)",
+							"value": "{pokemon.type}",
+							"inline": true
+						},
+						{
+							"name": "Base HP",
+							"value": "{pokemon.base_stats.hp}",
+							"inline": true
+						},
+						{
+							"name": "Base Attack",
+							"value": "{pokemon.base_stats.attack}",
+							"inline": true
+						},
+						{
+							"name": "Base Defense",
+							"value": "{pokemon.base_stats.defense}",
+							"inline": true
+						}
+					],
+					"thumbnail": {
+						"url": "{pokemon.image}"
+					}
+				}
+			]
 		}
 	},
 	"permissions": {

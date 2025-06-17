@@ -210,7 +210,13 @@ class MyClient(commands.AutoShardedBot):
 			heartbeat_timeout=150.0, intents=intents, case_insensitive=False,
 			activity=discord.CustomActivity(name="Bot starting...", emoji="🟡"), status=discord.Status.idle,
 			chunk_guilds_at_startup=False, loop=self.loop,
-			member_cache_flags=discord.MemberCacheFlags.from_intents(intents), max_messages=20000
+			member_cache_flags=discord.MemberCacheFlags.from_intents(intents), max_messages=20000,
+			allowed_contexts=app_commands.AppCommandContext(
+				guild=True,
+				dm_channel=True,
+				private_channel=True
+			),
+			allowed_installs=app_commands.AppInstallationType(guild=True, user=True)
 		)
 		self.custom_response = custom_response.CustomResponse(self)
 
