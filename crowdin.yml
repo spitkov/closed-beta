@@ -1,3 +1,5 @@
 files:
   - source: /localization/en.l10n.json
     translation: /localization/%two_letters_code%.l10n.json
+  - source: /slash_localization/en.l10n.json
+    translation: /slash_localization/%two_letters_code%.l10n.json
