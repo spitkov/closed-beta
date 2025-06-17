@@ -364,7 +364,7 @@
 							},
 							{
 								"name": "Lejár",
-								"value": "{warn.date}"
+								"value": "{warn.length}"
 							}
 						],
 						"footer": {
