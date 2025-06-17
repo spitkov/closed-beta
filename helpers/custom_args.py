@@ -668,7 +668,7 @@ class CustomGuild:
 	@property
 	def bitrate_limit(self) -> int:
 		"""Returns the bitrate limit of the guild."""
-		return int(self._bitrate_limit)
+		return int(self._bitrate_limit / 1000)
 
 	bitrate = max_bitrate = bitrate_limit
 
