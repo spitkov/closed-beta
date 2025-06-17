@@ -74,7 +74,7 @@ class CustomResponse:
 
 				for field in fields:
 					value = field.get("value")
-					if value in ("None", "0"):
+					if value in ("None", "0", ""):
 						continue # skip empty fields
 					if value == "True":
 						field["value"] = emojis.CHECK

@@ -1,4 +1,6 @@
 import asyncio
+import json
+import re
 
 import discord
 from discord import app_commands
@@ -6,6 +8,8 @@ import pypokedex
 import requests
 from discord.ext import commands
 from emoji import EMOJI_DATA
+
+from helpers.regex import DISCORD_TEMPLATE
 from helpers.custom_args import *
 from main import MyClient, Context
 class Info(commands.Cog):
@@ -113,6 +117,29 @@ class Info(commands.Cog):
 		pokemon.image = f"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/{pokemon.dex}.png"
 
 		await ctx.send("info.pokemon", pokemon=pokemon)
+
+	@info.command(name="template", description="templateinfo-specs_description")
+	async def template(self, ctx: Context, template: str):
+		regex = DISCORD_TEMPLATE.search(template)
+		if regex:
+			template_code = regex.group(1)
+		elif re.fullmatch(r"[a-zA-Z0-9]{5,}", template):
+			template_code = template
+		else:
+			template_code = None
+
+		if template_code:
+			try:
+				template_obj = await self.client.fetch_template(template_code)
+				await ctx.send("info.template", template=CustomTemplate.from_template(template_obj))
+				return
+			except discord.NotFound:
+				pass
+
+		template_code = await self.client.db.fetchrow("SELECT * FROM snapshots WHERE code = $1", template.lower())
+		if template_code:
+			return await ctx.send("info.template", template=await CustomTemplate.from_dict(self.client, template_code))
+		raise commands.BadArgument("template")
 
 async def setup(client: MyClient):
 	await client.add_cog(Info(client))

@@ -1480,6 +1480,69 @@
 					}
 				}
 			]
+		},
+		"template": {
+			"embeds": [
+				{
+					"title": "Template information",
+					"fields": [
+						{
+							"name": "Name",
+							"value": "{template.name}",
+							"inline": true
+						},
+						{
+							"name": "Server",
+							"value": "{template.guild.name}",
+							"inline": true
+						},
+						{
+							"name": "Created by",
+							"value": "{template.author}",
+							"inline": true
+						},
+						{
+							"name": "Created at",
+							"value": "{template.created}",
+							"inline": true
+						},
+						{
+							"name": "Roles",
+							"value": "{template.roles}",
+							"inline": true
+						},
+						{
+							"name": "Channels",
+							"value": "{template.channels}",
+							"inline": true
+						},
+						{
+							"name": "Uses",
+							"value": "{template.uses}",
+							"inline": true
+						},
+						{
+							"name": "Updated at",
+							"value": "{template.updated}",
+							"inline": true
+						},
+						{
+							"name": "Unsynced?",
+							"value": "{template.unsynced}"
+						},
+						{
+							"name": "Code",
+							"value": "{template.code}",
+							"inline": true
+						},
+						{
+							"name": "Description",
+							"value": "{template.description}",
+							"inline": false
+						}
+					]
+				}
+			]
 		}
 	},
 	"permissions": {
