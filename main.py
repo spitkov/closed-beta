@@ -453,10 +453,6 @@ client = MyClient()
 @client.before_invoke
 async def before_invoke(ctx: commands.Context):
 	if ctx.guild:
-		whitelist = [record["guild_id"] for record in
-		             await client.db.fetch("SELECT guild_id FROM closed_beta WHERE guild_id = $1", ctx.guild.id)]
-		if ctx.guild.id not in whitelist:
-			return await ctx.guild.leave()
 		is_set_up = await client.db.fetchrow("SELECT * FROM guilds WHERE guild_id = $1", ctx.guild.id)
 		if not is_set_up:
 			await client.db.execute("INSERT INTO guilds (guild_id) VALUES ($1)", ctx.guild.id)
