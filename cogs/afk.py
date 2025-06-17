@@ -30,7 +30,7 @@ class AFK(commands.Cog):
 		# Turn off AFK
 		ctx = await self.client.get_context(message)
 
-		if ctx.command.name == "afk":
+		if ctx.command and ctx.command.name == "afk":
 			return
 
 		await self.client.db.execute(
