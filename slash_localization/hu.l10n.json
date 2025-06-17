@@ -1,409 +1,409 @@
 {
 	"global": {
-		"member": "member",
-		"amount": "amount",
-		"account": "account",
-		"cash": "cash",
+		"member": "gjndogfvjrdesn",
+		"amount": "ghnjmdolkifv",
+		"account": "fiók",
+		"cash": "készpénz",
 		"bank": "bank",
-		"user": "user",
-		"role": "role",
-		"price": "price",
-		"description": "description",
+		"user": "felhasználó",
+		"role": "rang",
+		"price": "ár",
+		"description": "leírás",
 		"item": "item"
 	},
 	"ping": "ping",
 	"ping_specs": {
-		"description": "Check bot and database latency"
+		"description": "Bot és adatbázis válaszidő megtekintése"
 	},
 	"afk": "afk",
 	"afk_specs": {
-		"description": "Set an AFK status",
-		"usage": "afk (reason)",
+		"description": "AFK státusz beállítása",
+		"usage": "afk (indok)",
 		"args": {
 			"reason": {
-				"name": "reason",
-				"description": "The reason for being AFK"
+				"name": "indok",
+				"description": "Az AFK indoklása"
 			}
 		}
 	},
 	"work": "work",
 	"work_specs": {
-		"description": "Earn money by working ($300-$1500)"
+		"description": "Szerezz pénzt munkával (300 Ft-1500 Ft)"
 	},
 	"crime": "crime",
 	"crime_specs": {
-		"description": "Earn money by committing crime virtually ($500-$2000)"
+		"description": "Szerezz pénzt virtuális bűncselekménnyel (500 Ft-2000 Ft)"
 	},
 	"daily": "daily",
 	"daily_specs": {
-		"description": "Daily allowance ($5000)"
+		"description": "Napi juttatás (5000 Ft)"
 	},
 	"addmoney": "addmoney",
 	"addmoney_specs": {
-		"description": "Add money to a user's balance",
-		"usage": "addmoney [member] [amount] (account)",
+		"description": "Pénz hozzáadása egy felhasználó egyenlegéhez",
+		"usage": "addmoney [tag] [mennyiség] (fiók)",
 		"args": {
 			"member": {
-				"description": "The member you want to give money to"
+				"description": "A tag, akinek szeretnél pénzt adni"
 			},
 			"amount": {
-				"description": "The amount to add to the user's balance"
+				"description": "Mennyi pénzt szeretnél adni neki?"
 			},
 			"account": {
-				"description": "Account to use"
+				"description": "A fiók, amihez hozzáadod a pénzt"
 			}
 		}
 	},
 	"removemoney": "removemoney",
 	"removemoney_specs": {
-		"description": "Remove money from a user's balance",
-		"usage": "removemoney [member] [amount] (account)",
+		"description": "Vegyél el pénzt egy felhasználótól",
+		"usage": "removemoney [tag] [mennyiség] (fiók)",
 		"args": {
 			"member": {
-				"description": "The member you want to remove money from"
+				"description": "A tag, akitől szeretnél pénzt elvenni"
 			},
 			"amount": {
-				"description": "The amount to remove from the user's balance"
+				"description": "Mennyi pénzt szeretnél elvenni a tagtól?"
 			},
 			"account": {
-				"description": "Account to use"
+				"description": "A fiók, ahonnan elveszed a pénzt"
 			}
 		}
 	},
-	"luck": "luck",
+	"luck": "szerencse",
 	"luck_specs": {
-		"description": "Try your luck (wins/loses $200-$1000)"
+		"description": "Próbálj szerencsét (nyer/veszít 200 Ft-1000 Ft)"
 	},
 	"pay": "pay",
 	"pay_specs": {
-		"description": "Give money to another member",
-		"usage": "pay [member] [amount]",
+		"description": "Adj pénzt egy másik tagnak",
+		"usage": "pay [tag] [mennyiség]",
 		"args": {
 			"member": {
-				"description": "The member to give money to"
+				"description": "A tag, akinek pénzt szeretnél adni"
 			},
 			"amount": {
-				"description": "The amount to give to the member"
+				"description": "A pénz mennyisége"
 			}
 		}
 	},
 	"leaderboard": "leaderboard",
 	"leaderboard_specs": {
-		"description": "A leaderboard of the richest users on the server"
+		"description": "Egy ranglista a leggazdagabb felhasználókról"
 	},
 	"balance": "balance",
 	"balance_specs": {
-		"description": "Check your (or someone else's) balance",
-		"usage": "balance (member)",
+		"description": "Egyenleg megtekintése",
+		"usage": "balance (tag)",
 		"args": {
 			"member": {
-				"description": "The member whose balance you want to check"
+				"description": "A felhasználó, akinek szeretnéd az egyenlegét megtekinteni"
 			}
 		}
 	},
 	"slots": "slots",
 	"slots_specs": {
-		"description": "Slots game (win [4%] or lose [96%] double your bet)",
-		"usage": "slots [amount]",
+		"description": "Slots játék (nyerd [4%] vagy veszítsd [96%] 2x a tétet)",
+		"usage": "slots [mennyiség]",
 		"args": {
 			"bet": {
-				"name": "bet",
-				"description": "The amount of money you want to bet"
+				"name": "tét",
+				"description": "A pénz, amit tétre raksz"
 			}
 		}
 	},
 	"deposit": "deposit",
 	"deposit_specs": {
-		"description": "Deposit money into your bank account",
-		"usage": "deposit [amount]",
+		"description": "Pénz letétele a bankba",
+		"usage": "deposit [mennyiség]",
 		"args": {
 			"amount": {
-				"description": "The amount of money you want to deposit"
+				"description": "A mennyiség, amit szeretnél letenni"
 			}
 		}
 	},
 	"withdraw": "withdraw",
 	"withdraw_specs": {
-		"description": "Withdraw money from your bank account",
-		"usage": "withdraw [amount]",
+		"description": "Pénz jóváírása a bankodból",
+		"usage": "withdraw [mennyiség]",
 		"args": {
 			"amount": {
-				"description": "The amount of money you want to withdraw"
+				"description": "A mennyiség, amit szeretnél jóváírni"
 			}
 		}
 	},
-	"shop": "shop",
+	"shop": "bolt",
 	"shop_specs": {
-		"description": "View the server's item shop",
-		"fallback": "view"
+		"description": "Szerver bolt megtekintése",
+		"fallback": "lista"
 	},
-	"buy": "buy",
+	"buy": "vásárlás",
 	"buy_specs": {
-		"name": "buy",
-		"description": "Buy an item from the shop",
+		"name": "vásárlás",
+		"description": "Item vásárlása a boltból",
 		"usage": "shop buy [item]",
 		"args": {
 			"item": {
 				"name": "item",
-				"description": "The item you want to buy"
+				"description": "Az item, amit szeretnél megvenni"
 			}
 		}
 	},
 	"set_item": "set_item",
 	"set_item_specs": {
-		"description": "Set an item in the shop",
-		"usage": "shop set_item [item] [price] [description] [role]",
+		"description": "Item hozzáadása a bolthoz",
+		"usage": "shop set_item [név] [ár] [leírás] [rang]",
 		"args": {
 			"item": {
-				"description": "The name of the item"
+				"description": "Az item neve"
 			},
 			"price": {
-				"description": "The price of the item"
+				"description": "Az item ára"
 			},
 			"description": {
-				"description": "The description of the item"
+				"description": "Az item leírása"
 			},
 			"role": {
-				"description": "The role required to buy the item"
+				"description": "A rang, amit kap a vásárló"
 			}
 		}
 	},
 	"remove_item": "remove_item",
 	"remove_item_specs": {
-		"description": "Remove an item from the shop",
-		"usage": "shop remove_item [item]",
+		"description": "Item eltávolítása a boltból",
+		"usage": "shop remove_item [név]",
 		"args": {
 			"item": {
-				"description": "The name of the item to remove"
+				"description": "Az item neve, amit el szeretnél távolítani"
 			}
 		}
 	},
 	"reload": "reload",
 	"reload_specs": {
-		"description": "Reloads a cog (dev-only)",
+		"description": "Cog újratöltése (fejlesztői parancs)",
 		"usage": "reload [cog]",
 		"args": {
 			"cog": {
 				"name": "cog",
-				"description": "The cog to reload"
+				"description": "Az újratöltendő cog"
 			}
 		}
 	},
 	"load": "load",
 	"load_specs": {
-		"description": "Loads a cog (dev-only)",
+		"description": "Cog betöltése (fejlesztői parancs)",
 		"usage": "load [cog]",
 		"args": {
 			"cog": {
 				"name": "cog",
-				"description": "The cog to load"
+				"description": "A betöltendő cog"
 			}
 		}
 	},
 	"unload": "unload",
 	"unload_specs": {
-		"description": "Unloads a cog (dev-only)",
+		"description": "Cog kivétele (fejlesztői parancs)",
 		"usage": "unload [cog]",
 		"args": {
 			"cog": {
 				"name": "cog",
-				"description": "The cog to unload"
+				"description": "A kivevendő cog"
 			}
 		}
 	},
 	"sync": "sync",
 	"sync_specs": {
-		"description": "Sync the command tree. (dev-only)",
-		"usage": "sync (guilds...) (scope[~/*/^])",
+		"description": "Parancsok szinkronizálása (fejlesztői parancs)",
+		"usage": "sync (szerverek...) (scope[~/*/^])",
 		"args": {
 			"guilds": {
-				"name": "guilds",
-				"description": "The guilds IDs to sync the command tree in, separated by spaces"
+				"name": "szerverek",
+				"description": "A szerverek ID-je, ahova szeretnél szinkronizálni, szóközzel elválasztva"
 			},
 			"scope": {
 				"name": "scope",
-				"description": "Sync locally (~), globally (*), or resync (^). If not given, syncs globally.",
-				"local": "Sync locally",
-				"global": "Sync globally",
-				"resync": "Resync",
-				"slash": "Reload slash command localizations"
+				"description": "Lokális (~), globális (*), vagy újra (^) szinkronizálás. Alap: globális",
+				"local": "Lokális szinkronizálás",
+				"global": "Globális szinkronizálás",
+				"resync": "Újraszinkronizálás",
+				"slash": "Slash commandok lokalizációjának újratöltése"
 			}
 		}
 	},
 	"snapshot": "snapshot",
 	"snapshot_specs": {
-		"description": "Create a snapshot of the server",
+		"description": "Készíts egy snapshotot a szerverről",
 		"fallback": "create"
 	},
 	"ss_load_specs": {
-		"description": "Load a snapshot of the server",
+		"description": "Tölts be egy snapshotot a szerverre",
 		"usage": "snapshot load [snapshot]",
 		"args": {
 			"code": {
-				"name": "code",
-				"description": "The code of the snapshot you want load"
+				"name": "kód",
+				"description": "A snapshot kódja"
 			}
 		}
 	},
 	"warn": "warn",
 	"warn_specs": {
-		"description": "Warn a member",
-		"usage": "warn [member] (duration) (reason)",
+		"description": "Figyelmeztess egy tagot",
+		"usage": "warn [tag] (hossz) (indok)",
 		"args": {
 			"member": {
-				"name": "member",
-				"description": "The member you want to warn"
+				"name": "tag",
+				"description": "A tag, akit figyelmeztetni szeretnél"
 			},
 			"duration": {
-				"name": "duration",
-				"description": "The duration of the warning (ex. 1d5h)"
+				"name": "hossz",
+				"description": "A figyelmeztetés hossza (pl. 1d5h)"
 			},
 			"reason": {
-				"name": "reason",
-				"description": "The reason for the warning"
+				"name": "indok",
+				"description": "A figyelmeztetés oka"
 			}
 		}
 	},
-	"case": "case",
+	"case": "eset",
 	"caseinfo_specs": {
-		"description": "Get case information",
-		"usage": "case [case_id]",
+		"description": "Eset információk",
+		"usage": "case [eset_id]",
 		"fallback": "info",
 		"args": {
 			"case_id": {
-				"name": "case_id",
-				"description": "The case ID you want information about"
+				"name": "eset_id",
+				"description": "Az eset ID-je, amiről információt szeretnél"
 			}
 		}
 	},
 	"casedel_specs": {
-		"description": "Delete a case",
-		"usage": "case delete [case_id]",
+		"description": "Eset törlése",
+		"usage": "case delete [eset_id]",
 		"args": {
 			"case_id": {
-				"name": "case_id",
-				"description": "The case ID you want to delete"
+				"name": "eset_id",
+				"description": "Az eset ID-je, amit törölni szeretnél"
 			}
 		}
 	},
 	"caseedit_specs": {
-		"description": "Edit a case",
-		"usage": "case edit [case_id] [field] [value]",
+		"description": "Eset szerkesztése",
+		"usage": "case edit [eset_id] [mező] [érték]",
 		"args": {
 			"case_id": {
-				"name": "case_id",
-				"description": "The case ID you want to edit"
+				"name": "eset_id",
+				"description": "Az eset ID-je, amit szerkeszteni szeretnél"
 			},
 			"value": {
-				"name": "value",
-				"description": "The value that you want to edit",
-				"reason": "reason",
-				"expires": "expires",
-				"message": "message"
+				"name": "érték",
+				"description": "Az érték, amit szerkeszteni szeretnél",
+				"reason": "indok",
+				"expires": "lejárat",
+				"message": "üzenet"
 			},
 			"nvalue": {
-				"name": "new_value",
-				"description": "The new value of the field"
+				"name": "új_érték",
+				"description": "A mező új értéke"
 			}
 		}
 	},
-	"list": "list",
+	"list": "lista",
 	"caselist_specs": {
-		"description": "List all cases for a user or yourself",
-		"usage": "case list (user)",
+		"description": "Esetek listázása egy felhasználónak",
+		"usage": "case list (felhasználó)",
 		"args": {
 			"user": {
-				"name": "user",
-				"description": "The user you want to list cases for"
+				"name": "felhasználó",
+				"description": "A felhasználó, akinek szeretnéd látni az eseteit"
 			}
 		}
 	},
 	"mute": "mute",
 	"mute_specs": {
-		"description": "Mute a member",
-		"usage": "mute [member] (duration) (reason)",
+		"description": "Tag némítása",
+		"usage": "mute [tag] [hossz] (indok)",
 		"args": {
 			"user": {
-				"name": "member",
-				"description": "The member you want to mute"
+				"name": "tag",
+				"description": "A tag, akit le szeretnél némítani"
 			},
 			"expires": {
-				"name": "duration",
-				"description": "The duration of the mute (ex. 1d5h)"
+				"name": "hossz",
+				"description": "A némítás hossza (pl. 1d5h)"
 			},
 			"reason": {
-				"name": "reason",
-				"description": "The reason for the mute"
+				"name": "indok",
+				"description": "A némítás oka"
 			}
 		}
 	},
 	"unmute": "unmute",
 	"unmute_specs": {
-		"description": "Unmute a member",
-		"usage": "unmute [member]",
+		"description": "Tag némításának feloldása",
+		"usage": "unmute [tag]",
 		"args": {
 			"user": {
-				"name": "member",
-				"description": "The member you want to unmute"
+				"name": "tag",
+				"description": "A tag, akinek a némítását eltávolítanád"
 			}
 		}
 	},
 	"kick": "kick",
 	"kick_specs": {
-		"description": "Kick a member",
-		"usage": "kick [member] (reason)",
+		"description": "Tag kirúgása",
+		"usage": "kick [tag] (indok)",
 		"args": {
 			"user": {
-				"name": "member",
-				"description": "The member you want to kick"
+				"name": "tag",
+				"description": "A tag, akit ki szeretnél rúgni"
 			},
 			"reason": {
-				"name": "reason",
-				"description": "The reason for the kick"
+				"name": "indok",
+				"description": "A kirúgás indoka"
 			}
 		}
 	},
 	"ban": "ban",
 	"ban_specs": {
-		"description": "Ban a member",
-		"usage": "ban [member] (duration) (reason)",
+		"description": "Tag kitiltása",
+		"usage": "ban [tag] (hossz) (indok)",
 		"args": {
 			"user": {
-				"name": "member",
-				"description": "The member you want to ban"
+				"name": "tag",
+				"description": "A tag, akit ki szeretnél tiltani"
 			},
 			"expires": {
-				"name": "duration",
-				"description": "The duration of the ban (ex. 1d5h)"
+				"name": "hossz",
+				"description": "A kitiltás hossza (pl. 1d5h)"
 			},
 			"reason": {
-				"name": "reason",
-				"description": "The reason for the ban"
+				"name": "indok",
+				"description": "A kitiltás indoka"
 			}
 		}
 	},
 	"unban": "unban",
 	"unban_specs": {
-		"description": "Unban a member",
-		"usage": "unban [member]",
+		"description": "Kitiltás feloldása",
+		"usage": "unban [tag]",
 		"args": {
 			"user": {
-				"name": "member",
-				"description": "The member you want to unban"
+				"name": "tag",
+				"description": "A tag, akinek a kitiltását szeretnéd feloldani"
 			}
 		}
 	},
 	"prefix": "prefix",
 	"prefix_specs": {
-		"description": "Edit the prefix of the bot",
+		"description": "Bot prefixének szerkesztése (alapértelmezett: ?!)",
 		"args": {
 			"prefix": {
 				"name": "prefix",
-				"description": "The prefix you want to set"
+				"description": "A prefix, amit beállítanál"
 			},
 			"mention": {
-				"name": "mention",
-				"description": "Whether to allow mentioning the bot as a prefix"
+				"name": "említés",
+				"description": "Engedélyezed a bot megemlítését prefixként?"
 			}
 		}
 	}
