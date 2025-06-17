@@ -1,17 +1,17 @@
 {
 	"afk": {
-		"dnd": "Nincs gépnél",
+		"dnd": "Away From Keyboard",
 		"link": {
-			"content": "Az AFK státuszod nem tartalmazhat linkeket!"
+			"content": "Your AFK status can't contain invite links!"
 		},
 		"on": {
-			"content": "Mától AFK vagy."
+			"content": "You are now AFK."
 		},
 		"off": {
-			"content": "Mától nem vagy AFK."
+			"content": "You are no longer AFK."
 		},
 		"reason": {
-			"content": "**{user.name}** jelenleg AFK: `{reason}`"
+			"content": "**{user.name}** is currently AFK: `{reason}`"
 		},
 		"name": "[AFK] {nickname}"
 	},
@@ -21,12 +21,12 @@
 				"title": "Pong!",
 				"fields": [
 					{
-						"name": "Bot válaszidő",
+						"name": "Bot latency",
 						"value": "`{latency:.3f}s`",
 						"inline": false
 					},
 					{
-						"name": "Adatbázis ping",
+						"name": "Database ping",
 						"value": "`{db:.3f}s`",
 						"inline": false
 					}
@@ -37,173 +37,173 @@
 		"reply": false
 	},
 	"all": [
-		"mind",
-		"mind"
+		"all",
+		"everything"
 	],
 	"work": {
 		"embeds": [
 			{
-				"title": "Munka",
+				"title": "Work",
 				"description": "{random}",
 				"color": 6656243
 			}
 		],
 		"random": [
-			"Hazaértél, és láttad, hogy **{amount} Ft-al** bővült a számlád egyenlege.",
-			"Egy nehéz nap után **{amount} Ft-ot** kaptál fizetségül!",
-			"Sikeresen teljesítetted az első napod az új melóban, így **{amount} Ft-ot** kaptál.",
-			"Cégbeli előléptetésed mellé kaptál egy **{amount} Ft-os** bónuszt!",
-			"Részvényeid után **{amount} Ft-ot** kaptál.",
-			"Előléptettek a munkahelyeden, így szereztél **{amount} Ft-ot**.",
-			"Taxisofőrként **{amount} Ft-ot** szereztél ma.",
-			"Elmentél a boltba zacskós levest venni, de a kasszás többet adott vissza. Szereztél **{amount} Ft-ot** és egy csomag zacskós levest.",
-			"Nehéz napod volt a mezőn - kaptál **{amount} Ft-ot**."
+			"You arrived home from work and saw that **${amount}** was added to your account.",
+			"You've reached the end of a tiring day. You received **${amount}** for your hard work!",
+			"You've successfully completed your first day at work. Your reward: **${amount}**.",
+			"You've been promoted at your company, so you received a **${amount}** bonus!",
+			"You received **${amount}** dividend on your shares.",
+			"You've been successfully promoted at your workplace! You received an advance of **${amount}**",
+			"As a taxi driver, you earned **${amount}** today.",
+			"You went to the store, bought noodles, but the cashier gave you the wrong change. You received **${amount}** and a pack of noodles.",
+			"You had a hard day on the fields and earned **${amount}**."
 		]
 	},
 	"crime": {
 		"embeds": [
 			{
-				"title": "Bűnözés",
+				"title": "Crime",
 				"description": "{random}",
 				"color": 6656243
 			}
 		],
 		"random": [
-			"Kiraboltad a bankot, ezzel **{amount} Ft-ot** szerezve.",
-			"Megfenyegetted az utcai eladót, aki **{amount} Ft-ot** adott, hogy békén hagyd!",
-			"Kiraboltál egy akkumulátorgyárat, és a szerzeményt eladtad **{amount} Ft-ért**.",
-			"Kiraboltad a sarki boltot. Kaptál **{amount} Ft-t** és egy csomag rágógumit.",
-			"Rendszergazdai munkaköröd részeként kihívtak egy router lecserélésére, de te elloptad és eladtad az új routert, ezzel **{amount} Ft-ot** szereztél!"
+			"You robbed the bank and got $**{amount}**.",
+			"You threatened the street vendor. He gave you $**{amount}** to leave him alone!",
+			"You robbed the factory, so you received $**{amount}**.",
+			"You robbed the corner store. You stole $**{amount}** and a pack of gum.",
+			"You work as a sysadmin. You were called to replace an old router with a new one, but you stole the new one, earning $**{amount}**!"
 		]
 	},
 	"allowance": {
-		"content": "Megkaptad a napi jutalmad, **{amount} Ft-ot**."
+		"content": "You received your daily allowance of **${amount}**."
 	},
 	"addmoney": {
 		"success": {
-			"content": "**{amount} Ft** hozzá lett adva {member.mention} fiókjához!"
+			"content": "$**{amount}** has been added to {member.mention}'s account!"
 		},
 		"errors": {
 			"positive": {
-				"content": "Csak **pozitív** összeget lehet hozzáadni az egyenleghez!"
+				"content": "Only a **positive** amount can be added!"
 			}
 		}
 	},
 	"removemoney": {
 		"success": {
-			"content": "**{amount} Ft** el lett távolítva {member.mention} fiókjából!"
+			"content": "$**{amount}** has been removed from {member.mention}'s account!"
 		},
 		"errors": {
 			"positive": {
-				"content": "Csak **pozitív** összeget lehet levonni az egyenlegből!"
+				"content": "Only a **positive** amount can be removed!"
 			},
 			"balance": {
-				"content": "Nem tudsz több pénzt levonni valaki egyenlegéből, mint amennyi van!"
+				"content": "You can't remove more money than the user has in their balance!"
 			}
 		}
 	},
 	"deposit": {
 		"all": [
-			"mind",
-			"mind"
+			"all",
+			"everything"
 		],
 		"errors": {
 			"invalid_amount": {
-				"content": "Csak pozitív számot adhatsz meg!"
+				"content": "Please enter a valid positive number!"
 			},
 			"balance": {
-				"content": "Nincs ennyi készpénzed!"
+				"content": "You don't have that much cash!"
 			}
 		},
 		"success": {
-			"content": "Sikeresen betettél **{amount} Ft-ot** a bankba!"
+			"content": "You have successfully deposited **${amount}** into your bank account!"
 		}
 	},
 	"withdraw": {
 		"all": [
-			"mind",
-			"mind"
+			"all",
+			"everything"
 		],
 		"errors": {
 			"invalid_amount": {
-				"content": "Csak pozitív számot adhatsz meg!"
+				"content": "Please enter a valid positive number!"
 			},
 			"balance": {
-				"content": "Nincs ennyi pénz a bankodban!"
+				"content": "You don't have that much money in your bank account!"
 			}
 		},
 		"success": {
-			"content": "Sikeresen jóváírtál **{amount} Ft-ot** a bankodból!"
+			"content": "You have successfully withdrawn **${amount}** from your bank account!"
 		}
 	},
 	"luck": {
 		"win": {
 			"embeds": [
 				{
-					"title": "Szerencse",
+					"title": "Luck",
 					"description": "{random}",
 					"color": 6656243
 				}
 			],
 			"random": [
-				"Vettél egy lottószelvényt, és teli találatod lett! :tada: Szereztél **{amount} Ft-ot**.",
-				"Nagyot nyertél egy fogadáson - **{amount} Ft-ot**!",
-				"Első két kártyád összesen 21-es értékkel rendelkezett blackjackben, így nyertél **{amount} Ft-ot**.",
-				"Az utcán sétálva találtál **{amount} Ft-ot** a földön."
+				"You bought a lottery ticket and got a full match :tada: You won $**{amount}**.",
+				"You made a high-value bet and won. You received $**{amount}**.",
+				"You were dealt two cards with a total value of 21 first while playing blackjack, so you won $**{amount}**.",
+				"You found $**{amount}** on the ground while walking down the street."
 			]
 		},
 		"lose": {
 			"embeds": [
 				{
-					"title": "Szerencse",
+					"title": "Luck",
 					"description": "{random}",
 					"color": 13369344
 				}
 			],
 			"random": [
-				"Vettél egy lottószelvényt, de nem nyertél semmit :( Vesztettél **{amount} Ft-ot**.",
-				"Vesztettél **{amount} Ft-ot** egy fogadáson.",
-				"Loptál a munkahelyedről. A bíróság **{amount} Ft-ot** igényel kárpótlásként.",
-				"Sikkasztásért megbírságoltak **{amount} Ft-ra**."
+				"You bought a lottery ticket, but you didn't win anything :( You lost $**{amount}**.",
+				"You lost $**{amount}** in a bet.",
+				"You embezzled at your workplace. According to the court ruling, you have to pay $**{amount}** in damages.",
+				"You paid bribes to your voters. Your loss is $**{amount}**."
 			]
 		},
 		"errors": {
 			"balance": {
-				"content": "Minimum **{amount} Ft-al** kell rendelkezned ehhez!"
+				"content": "You need at least $**{amount}** to play this game!"
 			}
 		}
 	},
 	"pay": {
 		"success": {
-			"content": "Sikeresen adtál **{amount} Ft-ot** {member.mention} tagnak!"
+			"content": "You have successfully transferred $**{amount}** to {member.mention}!"
 		},
 		"errors": {
 			"positive": {
-				"content": "Csak pozitív értéket adhatsz meg!"
+				"content": "You can't transfer a negative amount!"
 			},
 			"balance": {
-				"content": "Nincs ennyi készpénzed!"
+				"content": "You don't have that much cash!"
 			}
 		}
 	},
 	"balance": {
 		"embeds": [
 			{
-				"title": "Egyenleg",
+				"title": "Balance",
 				"fields": [
 					{
-						"name": "Készpénz",
-						"value": "{cash} Ft",
+						"name": "Cash",
+						"value": "${cash}",
 						"inline": true
 					},
 					{
 						"name": "Bank",
-						"value": "{bank} Ft",
+						"value": "${bank}",
 						"inline": true
 					},
 					{
-						"name": "⚠️ Adósságod van.",
-						"value": "További nyert pénzed az adósságod törlesztésére fog menni.",
+						"name": "⚠️ You are in debt.",
+						"value": "Any money you earn will be used to pay off your debt.",
 						"inline": false
 					}
 				],
@@ -215,16 +215,16 @@
 		"win": {
 			"embeds": [
 				{
-					"title": "Félkarú rabló",
+					"title": "Slots",
 					"fields": [
 						{
-							"name": "Végeredmény",
+							"name": "Results",
 							"value": "{results}",
 							"inline": false
 						},
 						{
-							"name": "Nyerteség",
-							"value": "{amount} Ft",
+							"name": "Won amount",
+							"value": "${amount}",
 							"inline": false
 						}
 					],
@@ -235,21 +235,21 @@
 		"lose": {
 			"embeds": [
 				{
-					"title": "Félkarú rabló",
+					"title": "Slots",
 					"fields": [
 						{
-							"name": "Végeredmény",
+							"name": "Results",
 							"value": "{results}",
 							"inline": false
 						},
 						{
-							"name": "Veszítettél",
-							"value": "{amount} Ft",
+							"name": "Lost amount",
+							"value": "${amount}",
 							"inline": false
 						},
 						{
-							"name": "⚠️ Adósságod van.",
-							"value": "További nyert pénzed az adósságod törlesztésére fog menni.",
+							"name": "⚠️ You are in debt.",
+							"value": "Any money you earn will be used to pay off your debt.",
 							"inline": false
 						}
 					],
@@ -259,23 +259,23 @@
 		},
 		"errors": {
 			"balance": {
-				"content": "Nincs elég készpénzed!"
+				"content": "You can't bet more than your cash balance!"
 			}
 		}
 	},
 	"leaderboard": {
 		"embeds": [
 			{
-				"title": "Ranglista",
+				"title": "Leaderboard",
 				"fields": [
 					{
 						"name": "#{number} {user}",
-						"value": "Készpénz: `{cash} Ft`\nBank: `{bank} Ft`",
+						"value": "Cash: `${cash}`\nBank: `${bank}`",
 						"inline": false
 					},
 					{
-						"name": "Psszt...",
-						"value": "Úgy tűnik, még senki sem használta az economy rendszert. Légy te az első!",
+						"name": "Psst...",
+						"value": "It seems like no one has used the economy system yet. Be the first!",
 						"inline": false
 					}
 				],
@@ -288,10 +288,10 @@
 			"show": {
 				"embeds": [
 					{
-						"title": "Bolt",
+						"title": "Shop",
 						"fields": [
 							{
-								"name": "{item.name} ({item.price} Ft)",
+								"name": "{item.name} (${item.price})",
 								"value": "{item.role.mention}: {item.description}",
 								"inline": false
 							}
@@ -301,51 +301,51 @@
 				]
 			},
 			"empty": {
-				"content": "Nincsenek termékek a boltban!"
+				"content": "There are no items in the shop!"
 			}
 		},
 		"buy": {
 			"success": {
-				"content": "Megvetted a(z) **{item.name}** terméket **{item.price} Ft-ért**."
+				"content": "You bought **{item.name}** for $**{item.price}**."
 			},
 			"errors": {
 				"balance": {
-					"content": "Nincs pénzed erre a termékre!"
+					"content": "You don't have enough money to buy this item!"
 				},
 				"not_found": {
-					"content": "Nem létezik ilyen termék!"
+					"content": "This item doesn't exist!"
 				},
 				"role_not_found": {
-					"content": "Törölték a termékhez tartozó rangot! Kérj meg egy admint, hogy távolítsa el a boltból."
+					"content": "The role for this item doesn't exist! Ask an admin to remove it."
 				}
 			}
 		},
 		"set": {
 			"success": {
-				"content": "A termék hozzá lett adva a bolthoz!"
+				"content": "The item has been successfully added to the shop!"
 			},
 			"errors": {
 				"already_item": {
-					"content": "Már létezik ilyen termék a boltban!"
+					"content": "There is already such an item in the shop!"
 				},
 				"role_higher": {
-					"content": "Ez a rang magasabban van, mint a te rangod!"
+					"content": "This role is higher than your current top role!"
 				},
 				"limit": {
-					"content": "Elérted a maximum terméklimitet!"
+					"content": "You have reached the maximum number of items in the shop!"
 				}
 			}
 		},
 		"remove": {
 			"success": {
-				"content": "A termék el lett távolítva a boltból!"
+				"content": "The item has been successfully removed from the shop!"
 			},
 			"errors": {
 				"not_found": {
-					"content": "Ez a termék nem létezik!"
+					"content": "This item doesn't exist!"
 				},
 				"role_higher": {
-					"content": "Ez a rang magasabban van, mint a te rangod!"
+					"content": "This role is higher than your current top role!"
 				}
 			}
 		}
@@ -355,16 +355,16 @@
 			"response": {
 				"embeds": [
 					{
-						"title": "Figyelmeztetés",
-						"description": "{warn.user.mention} figyelmeztetve.",
+						"title": "Warn",
+						"description": "Warned {warn.user.mention}.",
 						"fields": [
 							{
-								"name": "Indok",
+								"name": "Reason",
 								"value": "{warn.reason}"
 							},
 							{
-								"name": "Lejár",
-								"value": "{warn.date}"
+								"name": "Expires",
+								"value": "{warn.length}"
 							}
 						],
 						"footer": {
@@ -377,15 +377,15 @@
 			"notify": {
 				"embeds": [
 					{
-						"title": "Figyelmeztetés",
-						"description": "Figyelmeztetve lettél a(z) **{warn.guild}** szerveren.",
+						"title": "Warn",
+						"description": "You have been warned in **{warn.guild}**.",
 						"fields": [
 							{
-								"name": "Indok",
+								"name": "Reason",
 								"value": "{warn.reason}"
 							},
 							{
-								"name": "Lejár",
+								"name": "Expires",
 								"value": "{warn.length}"
 							}
 						],
@@ -399,11 +399,11 @@
 			"unwarned": {
 				"embeds": [
 					{
-						"title": "Figyelmeztetés eltávolítva",
-						"description": "A figyelmeztetésed a(z) **{warn.guild}** szerveren el lett távolítva.",
+						"title": "Warn removed",
+						"description": "Your warn in **{warn.guild}** has been removed.",
 						"fields": [
 							{
-								"name": "Eredeti indok",
+								"name": "Original reason",
 								"value": "{warn.reason}"
 							}
 						],
@@ -413,10 +413,10 @@
 			},
 			"errors": {
 				"bot": {
-					"content": "Engem nem figyelmeztethetsz!"
+					"content": "I'm invincible."
 				},
 				"hierarchy": {
-					"content": "Nem figyelmeztethetsz olyan tagot, akinek a rangja magasabb nálad!"
+					"content": "You can't warn a user with a higher role than you."
 				}
 			}
 		},
@@ -424,36 +424,36 @@
 			"response": {
 				"embeds": [
 					{
-						"title": "`{case.type.name}` információk",
+						"title": "Case info `{case.type.name}`",
 						"fields": [
 							{
-								"name": "Szankció ID",
+								"name": "Case ID",
 								"value": "{case.id}",
 								"inline": false
 							},
 							{
-								"name": "Szankcionált felhasználó",
+								"name": "Sanctioned user",
 								"value": "{case.user.mention}",
 								"inline": false
 							},
 							{
-								"name": "Szankciót adta",
+								"name": "Given by",
 								"value": "{case.moderator.mention}",
 								"inline": false
 							},
 							{
-								"name": "Indok",
+								"name": "Reason",
 								"value": "{case.reason}",
 								"inline": false
 							},
 							{
-								"name": "Lejár",
+								"name": "Expires",
 								"value": "{case.length}",
 								"inline": false
 							}
 						],
 						"footer": {
-							"text": "Szankció megnyitva ekkor"
+							"text": "Case created at"
 						},
 						"timestamp": "{case.created.timestamp}",
 						"color": 6656243
@@ -462,7 +462,7 @@
 			},
 			"errors": {
 				"not_found": {
-					"content": "Nem található ilyen szankció."
+					"content": "Case not found."
 				}
 			}
 		},
@@ -470,15 +470,15 @@
 			"response": {
 				"embeds": [
 					{
-						"title": "Szankció",
-						"description": "`{case.id}` szankció törölve.",
+						"title": "Case deleted",
+						"description": "Case `{case.id}` has been deleted.",
 						"color": 6656243
 					}
 				]
 			},
 			"errors": {
 				"not_found": {
-					"content": "Nem található ilyen szankció."
+					"content": "Case not found."
 				}
 			}
 		},
@@ -486,8 +486,8 @@
 			"response": {
 				"embeds": [
 					{
-						"title": "Szankció szerkesztve",
-						"description": "`{case.id}` szankció adatai szerkesztve.",
+						"title": "Case edited",
+						"description": "Case `{case.id}` has been edited.",
 						"color": 6656243,
 						"timestamp": "{now}"
 					}
@@ -495,10 +495,10 @@
 			},
 			"errors": {
 				"not_found": {
-					"content": "Nem található ilyen szankció."
+					"content": "Case not found."
 				},
 				"invalid_time": {
-					"content": "Hibás időformátum."
+					"content": "Invalid time format. Please use a valid time format."
 				}
 			}
 		},
@@ -506,16 +506,16 @@
 			"response": {
 				"embeds": [
 					{
-						"title": "Szankció lista",
+						"title": "Case list",
 						"fields": [
 							{
 								"name": "{case.id} `{case.type.name}`",
-								"value": "Adta: {case.moderator.mention}\nIndok: {case.reason}\nLejár: {case.length}",
+								"value": "Given by: {case.moderator.mention}\nReason: {case.reason}\nExpires: {case.length}",
 								"inline": false
 							},
 							{
-								"name": "Nincsenek szankciók",
-								"value": "Ennek a felhasználónak nincsenek szankciói.",
+								"name": "No cases",
+								"value": "No cases found.",
 								"inline": false
 							}
 						],
@@ -528,15 +528,15 @@
 			"response": {
 				"embeds": [
 					{
-						"title": "Némítás",
-						"description": "{mute.user.mention} le lett némítva.",
+						"title": "Mute",
+						"description": "Muted {mute.user.mention}.",
 						"fields": [
 							{
-								"name": "Indok",
+								"name": "Reason",
 								"value": "{mute.reason}"
 							},
 							{
-								"name": "Lejár",
+								"name": "Expires",
 								"value": "{mute.length}"
 							}
 						],
@@ -550,11 +550,11 @@
 			"unmuted": {
 				"embeds": [
 					{
-						"title": "Némítás feloldva",
-						"description": "Feloldották a némításod a(z) **{guild}** szerveren.",
+						"title": "Unmuted",
+						"description": "You have been unmuted in **{guild}**.",
 						"fields": [
 							{
-								"name": "Eredeti indok",
+								"name": "Original reason",
 								"value": "{mute.reason}"
 							}
 						],
@@ -568,15 +568,15 @@
 			"notify": {
 				"embeds": [
 					{
-						"title": "Némítás",
-						"description": "Le lettél némítva a(z) **{guild}** szerveren.",
+						"title": "Mute",
+						"description": "You have been muted in **{guild}**.",
 						"fields": [
 							{
-								"name": "Indok",
+								"name": "Reason",
 								"value": "{mute.reason}"
 							},
 							{
-								"name": "Lejár",
+								"name": "Expires",
 								"value": "{mute.length}"
 							}
 						],
@@ -587,13 +587,13 @@
 					}
 				]
 			},
-			"reason": "Némítás {moderator.name} által",
+			"reason": "Muted by {moderator.name}",
 			"errors": {
 				"bot": {
-					"content": "Engem nem némíthatsz le!"
+					"content": "I'm invincible."
 				},
 				"hierarchy": {
-					"content": "Nem némíthatsz le nálad magasabb rangú tagot!"
+					"content": "You can't mute a user with a higher role than you."
 				}
 			}
 		},
@@ -601,18 +601,18 @@
 			"response": {
 				"embeds": [
 					{
-						"title": "Némítás feloldva",
-						"description": "{user.mention} némítása el lett távolítva.",
+						"title": "Unmute",
+						"description": "Unmuted {user.mention}.",
 						"color": 6656243
 					}
 				]
 			},
 			"notify": {
-				"content": "Feloldották a némításod a(z) **{guild}** szerveren."
+				"content": "You have been unmuted in **{guild}**."
 			},
 			"errors": {
 				"hierarchy": {
-					"content": "Nem oldhatod fel egy nálad magasabb rangú tag némítását."
+					"content": "You can't unmute a user with a higher role than you."
 				}
 			}
 		},
@@ -620,8 +620,8 @@
 			"response": {
 				"embeds": [
 					{
-						"title": "Kirúgás",
-						"description": "{kick.user.mention} ki lett rúgva {kick.reason} indokkal.",
+						"title": "Kick",
+						"description": "Kicked {kick.user.mention} for {kick.reason}.",
 						"color": 6656243,
 						"footer": {
 							"text": "{kick.id}"
@@ -632,11 +632,11 @@
 			"notify": {
 				"embeds": [
 					{
-						"title": "Kirúgás",
-						"description": "Ki lettél rúgva a(z) **{guild}** szerverről.",
+						"title": "Kick",
+						"description": "You have been kicked from **{guild}**.",
 						"fields": [
 							{
-								"name": "Indok",
+								"name": "Reason",
 								"value": "{kick.reason}"
 							}
 						],
@@ -649,7 +649,7 @@
 			},
 			"errors": {
 				"bot": {
-					"content": "Engem nem rúghatsz ki!"
+					"content": "I'm invincible."
 				}
 			}
 		},
@@ -657,16 +657,16 @@
 			"response": {
 				"embeds": [
 					{
-						"title": "Kitiltás",
-						"description": "{ban.user.mention} ki lett tiltva.",
+						"title": "Ban",
+						"description": "Banned {ban.user.mention}.",
 						"color": 6656243,
 						"fields": [
 							{
-								"name": "Indok",
+								"name": "Reason",
 								"value": "{ban.reason}"
 							},
 							{
-								"name": "Lejár",
+								"name": "Expires",
 								"value": "{ban.length}"
 							}
 						],
@@ -679,15 +679,15 @@
 			"notify": {
 				"embeds": [
 					{
-						"title": "Kitiltás",
-						"description": "Ki lettél tiltva a(z) **{guild}** szerverről.",
+						"title": "Ban",
+						"description": "You have been banned from **{guild}**.",
 						"fields": [
 							{
-								"name": "Indok",
+								"name": "Reason",
 								"value": "{ban.reason}"
 							},
 							{
-								"name": "Lejár",
+								"name": "Expires",
 								"value": "{ban.length}"
 							}
 						],
@@ -700,10 +700,10 @@
 			},
 			"errors": {
 				"bot": {
-					"content": "Engem nem tilthatsz ki!"
+					"content": "I'm invincible."
 				},
 				"hierarchy": {
-					"content": "Nem tilthatsz ki nálad magasabb rangú tagot."
+					"content": "You can't ban a user with a higher role than you."
 				}
 			}
 		},
@@ -711,14 +711,14 @@
 			"response": {
 				"embeds": [
 					{
-						"title": "Kitiltás feloldása",
-						"description": "**{user.name}** kitiltása feloldva.",
+						"title": "Unban",
+						"description": "Unbanned {user.mention}.",
 						"color": 6656243
 					}
 				]
 			},
 			"notify": {
-				"content": "Kitiltásod feloldották a(z) **{guild}** szerveren."
+				"content": "You have been unbanned from **{guild}**."
 			}
 		}
 	},
@@ -727,25 +727,25 @@
 			"member": {
 				"embeds": [
 					{
-						"title": "Tag információk",
+						"title": "Member information",
 						"fields": [
 							{
-								"name": "Felhasználónév",
+								"name": "Username",
 								"value": "{member.username}",
 								"inline": true
 							},
 							{
-								"name": "Megjelenített név",
+								"name": "Displayed name",
 								"value": "{member.display_name}",
 								"inline": true
 							},
 							{
-								"name": "Hashtag",
+								"name": "Discriminator",
 								"value": "{member.discriminator}",
 								"inline": true
 							},
 							{
-								"name": "Becenév",
+								"name": "Nickname",
 								"value": "{member.nickname}",
 								"inline": true
 							},
@@ -759,15 +759,15 @@
 								"value": "{member.bot}"
 							},
 							{
-								"name": "Fiók készült",
+								"name": "Account created",
 								"value": "{member.created_at.long}"
 							},
 							{
-								"name": "Csatlakozott",
+								"name": "Joined at",
 								"value": "{member.joined_at.long}"
 							},
 							{
-								"name": "Rangok",
+								"name": "Roles",
 								"value": "{member.roles}"
 							}
 						],
@@ -783,20 +783,20 @@
 			"not_member": {
 				"embeds": [
 					{
-						"title": "Felhasználó információk",
+						"title": "User information",
 						"fields": [
 							{
-								"name": "Felhasználónév",
+								"name": "Username",
 								"value": "{member.username}",
 								"inline": true
 							},
 							{
-								"name": "Megjelenített név",
+								"name": "Displayed name",
 								"value": "{member.display_name}",
 								"inline": true
 							},
 							{
-								"name": "Hashtag",
+								"name": "Discriminator",
 								"value": "{member.discriminator}",
 								"inline": true
 							},
@@ -810,7 +810,7 @@
 								"value": "{member.bot}"
 							},
 							{
-								"name": "Fiók készült",
+								"name": "Account created",
 								"value": "{member.created_at.long}"
 							}
 						],
@@ -827,10 +827,10 @@
 		"server": {
 			"embeds": [
 				{
-					"title": "Szerver információ",
+					"title": "Server information",
 					"fields": [
 						{
-							"name": "Leírás",
+							"name": "Description",
 							"value": "{server.description}",
 							"inline": true
 						},
@@ -840,57 +840,57 @@
 							"inline": true
 						},
 						{
-							"name": "Tulajdonos",
+							"name": "Owner",
 							"value": "{server.owner.mention}",
 							"inline": true
 						},
 						{
-							"name": "Szerver készült",
+							"name": "Server created at",
 							"value": "{server.created_at.long}",
 							"inline": true
 						},
 						{
-							"name": "Nyelvezet",
+							"name": "Language",
 							"value": "{server.language}",
 							"inline": true
 						},
 						{
-							"name": "Örök meghívó",
+							"name": "Vanity URL",
 							"value": "{server.vanity_url}",
 							"inline": true
 						},
 						{
-							"name": "Gyorsítás fokozat",
+							"name": "Boost tier",
 							"value": "{server.boost_tier}",
 							"inline": true
 						},
 						{
-							"name": "Gyorsítók száma",
+							"name": "Number of boosters",
 							"value": "{server.boosters}",
 							"inline": true
 						},
 						{
-							"name": "Gyorsító rang",
+							"name": "Boost role",
 							"value": "{server.boost_role}",
 							"inline": true
 						},
 						{
-							"name": "Rangok",
+							"name": "Roles",
 							"value": "{server.roles}",
 							"inline": true
 						},
 						{
-							"name": "Emojik",
+							"name": "Emojis",
 							"value": "{server.emojis}",
 							"inline": true
 						},
 						{
-							"name": "Bitráta limit",
+							"name": "Bitrate limit",
 							"value": "{server.bitrate_limit} kbps",
 							"inline": true
 						},
 						{
-							"name": "Feltöltési limit",
+							"name": "Upload limit",
 							"value": "{server.upload_limit} MB"
 						}
 					],
@@ -905,10 +905,10 @@
 		"role": {
 			"embeds": [
 				{
-					"title": "Rang információk",
+					"title": "Role information",
 					"fields": [
 						{
-							"name": "Név",
+							"name": "Name",
 							"value": "{role.name}",
 							"inline": true
 						},
@@ -918,42 +918,42 @@
 							"inline": true
 						},
 						{
-							"name": "Pozíció",
+							"name": "Position",
 							"value": "{role.position}",
 							"inline": true
 						},
 						{
-							"name": "Külön megjelenített?",
+							"name": "Hoisted?",
 							"value": "{role.hoist}",
 							"inline": true
 						},
 						{
-							"name": "Integráció kezelt?",
+							"name": "Managed by integration?",
 							"value": "{role.managed}",
 							"inline": true
 						},
 						{
-							"name": "Mindenki megemlítheti?",
+							"name": "Mentionable by everyone?",
 							"value": "{role.mentionable}",
 							"inline": true
 						},
 						{
-							"name": "Bot rang?",
+							"name": "Bot role?",
 							"value": "{role.bot}",
 							"inline": true
 						},
 						{
-							"name": "Rang készült",
+							"name": "Role created",
 							"value": "{role.created}",
 							"inline": true
 						},
 						{
-							"name": "Tagok száma",
+							"name": "Members",
 							"value": "{role.members}",
 							"inline": true
 						},
 						{
-							"name": "Jogok",
+							"name": "Permissions",
 							"value": "```{role.permissions}```",
 							"inline": false
 						}
@@ -964,40 +964,40 @@
 		"ip": {
 			"embeds": [
 				{
-					"title": "IP információk",
+					"title": "IP information",
 					"fields": [
 						{
-							"name": "Hosztnév",
+							"name": "Hostname",
 							"value": "{ip.hostname}",
 							"inline": true
 						},
 						{
-							"name": "Város",
+							"name": "City",
 							"value": "{ip.city}",
 							"inline": true
 						},
 						{
-							"name": "Irányítószám",
+							"name": "Postal code",
 							"value": "{ip.postal}",
 							"inline": true
 						},
 						{
-							"name": "Régió",
+							"name": "Region",
 							"value": "{ip.region}",
 							"inline": true
 						},
 						{
-							"name": "Ország",
+							"name": "Country",
 							"value": "{ip.country}",
 							"inline": true
 						},
 						{
-							"name": "Szolgáltató",
+							"name": "Organization",
 							"value": "{ip.org}",
 							"inline": true
 						},
 						{
-							"name": "Időzóna",
+							"name": "Timezone",
 							"value": "{ip.timezone}",
 							"inline": true
 						}
@@ -1008,8 +1008,8 @@
 		"bot": {
 			"embeds": [
 				{
-					"title": "Bot információk",
-					"description": "Hívd meg a **{bot.name}** botot a szeveredre [itt!](https://fightman01bot.hu/invite)\nWeboldal: https://fightman01bot.hu/",
+					"title": "Bot information",
+					"description": "Invite **{bot.name}** to your server [here!](https://fightman01bot.hu/invite)\nWebsite: https://fightman01bot.hu/",
 					"fields": [
 						{
 							"name": "VPS",
@@ -1018,21 +1018,21 @@
 						},
 						{
 							"name": "CPU",
-							"value": "{bot.processor}\nHasználat: {bot.processor.usage}%",
+							"value": "{bot.processor}\nUsage: {bot.processor.usage}%\n",
 							"inline": true
 						},
 						{
-							"name": "Memória (max/használt)",
+							"name": "Memory (max/used)",
 							"value": "{bot.memory}",
 							"inline": true
 						},
 						{
-							"name": "Tárhely",
+							"name": "Disk",
 							"value": "{bot.disk}",
 							"inline": true
 						},
 						{
-							"name": "Hálózat (küldött/fogadott)",
+							"name": "Network (sent/received)",
 							"value": "{bot.network}",
 							"inline": true
 						},
@@ -1042,7 +1042,7 @@
 							"inline": true
 						},
 						{
-							"name": "Boot ideje",
+							"name": "System uptime",
 							"value": "{bot.boot_time}"
 						}
 					],
@@ -1062,10 +1062,10 @@
 			"custom_emoji": {
 				"embeds": [
 					{
-						"title": "Emoji információk",
+						"title": "Emoji information",
 						"fields": [
 							{
-								"name": "Név",
+								"name": "Name",
 								"value": "{emoji.name}",
 								"inline": true
 							},
@@ -1075,27 +1075,27 @@
 								"inline": true
 							},
 							{
-								"name": "Animált?",
+								"name": "Animated?",
 								"value": "{emoji.animated}",
 								"inline": true
 							},
 							{
-								"name": "Készült",
+								"name": "Created",
 								"value": "{emoji.created}",
 								"inline": true
 							},
 							{
-								"name": "Ranghoz kötött?",
+								"name": "Limited to role?",
 								"value": "{emoji.roles}",
 								"inline": true
 							},
 							{
-								"name": "Szerver",
+								"name": "Server",
 								"value": "{emoji.guild}",
 								"inline": true
 							},
 							{
-								"name": "Bot kezeli?",
+								"name": "Bot owned?",
 								"value": "{emoji.bot_owned}",
 								"inline": true
 							}
@@ -1110,10 +1110,10 @@
 			"unicode_emoji": {
 				"embeds": [
 					{
-						"title": "Emoji információ",
+						"title": "Emoji information",
 						"fields": [
 							{
-								"name": "Név",
+								"name": "Name",
 								"value": "{emoji.name}",
 								"inline": true
 							},
@@ -1123,12 +1123,12 @@
 								"inline": true
 							},
 							{
-								"name": "Animált?",
+								"name": "Animated?",
 								"value": "{emoji.animated}",
 								"inline": true
 							},
 							{
-								"name": "Készült",
+								"name": "Created",
 								"value": "{emoji.created}",
 								"inline": true
 							}
@@ -1144,7 +1144,7 @@
 			"text": {
 				"embeds": [
 					{
-						"title": "Szöveges csatorna információk",
+						"title": "Text channel information",
 						"fields": [
 							{
 								"name": "ID",
@@ -1152,17 +1152,17 @@
 								"inline": true
 							},
 							{
-								"name": "Téma",
+								"name": "Topic",
 								"value": "{channel.topic}",
 								"inline": false
 							},
 							{
-								"name": "Kategória",
+								"name": "Category",
 								"value": "{channel.category.name}",
 								"inline": true
 							},
 							{
-								"name": "Lassítás (másodpercben)",
+								"name": "Slowmode (seconds)",
 								"value": "{channel.slowmode}",
 								"inline": true
 							},
@@ -1172,32 +1172,32 @@
 								"inline": true
 							},
 							{
-								"name": "Hozzáférő tagok",
+								"name": "Members",
 								"value": "{channel.members}",
 								"inline": true
 							},
 							{
-								"name": "Gondolatmenetek",
+								"name": "Threads",
 								"value": "{channel.threads}",
 								"inline": true
 							},
 							{
-								"name": "Hírcsatorna?",
+								"name": "News channel?",
 								"value": "{channel.news}",
 								"inline": true
 							},
 							{
-								"name": "Készült",
+								"name": "Created",
 								"value": "{channel.created}",
 								"inline": true
 							},
 							{
-								"name": "Jogkezelések",
+								"name": "Permission overwrites",
 								"value": "{channel.overwrites}",
 								"inline": true
 							},
 							{
-								"name": "Jogok szinkronizálva a kategóriával?",
+								"name": "Permissions synced to category?",
 								"value": "{channel.permissions_synced}",
 								"inline": true
 							}
@@ -1212,7 +1212,7 @@
 			"voice": {
 				"embeds": [
 					{
-						"title": "Hangcsatorna információk",
+						"title": "Voice channel information",
 						"fields": [
 							{
 								"name": "ID",
@@ -1220,12 +1220,12 @@
 								"inline": true
 							},
 							{
-								"name": "Kategória",
+								"name": "Category",
 								"value": "{channel.category.name}",
 								"inline": true
 							},
 							{
-								"name": "Lassítás (másodpercben)",
+								"name": "Slowmode (seconds)",
 								"value": "{channel.slowmode}",
 								"inline": true
 							},
@@ -1235,42 +1235,42 @@
 								"inline": true
 							},
 							{
-								"name": "Régió",
+								"name": "Region",
 								"value": "{channel.region}",
 								"inline": true
 							},
 							{
-								"name": "Bitráta (kbps)",
+								"name": "Bitrate (kbps)",
 								"value": "{channel.bitrate}",
 								"inline": true
 							},
 							{
-								"name": "Taglimit",
+								"name": "User limit",
 								"value": "{channel.user_limit}",
 								"inline": true
 							},
 							{
-								"name": "Készült",
+								"name": "Created",
 								"value": "{channel.created}",
 								"inline": true
 							},
 							{
-								"name": "Jogkezelések",
+								"name": "Permission overwrites",
 								"value": "{channel.overwrites}",
 								"inline": true
 							},
 							{
-								"name": "Jogok kategóriához szinkronizálva?",
+								"name": "Permissions synced to category?",
 								"value": "{channel.permissions_synced}",
 								"inline": true
 							},
 							{
-								"name": "Időzített események",
+								"name": "Scheduled events",
 								"value": "{channel.scheduled_events}",
 								"inline": true
 							},
 							{
-								"name": "Említés",
+								"name": "Mention",
 								"value": "`{channel.mention}`",
 								"inline": true
 							}
@@ -1285,7 +1285,7 @@
 			"stage": {
 				"embeds": [
 					{
-						"title": "Színpad információ",
+						"title": "Stage channel information",
 						"fields": [
 							{
 								"name": "ID",
@@ -1293,17 +1293,17 @@
 								"inline": true
 							},
 							{
-								"name": "Téma",
+								"name": "Topic",
 								"value": "{channel.topic}",
 								"inline": false
 							},
 							{
-								"name": "Kategória",
+								"name": "Category",
 								"value": "{channel.category.name}",
 								"inline": true
 							},
 							{
-								"name": "Lassítás (másodperc)",
+								"name": "Slowmode (seconds)",
 								"value": "{channel.slowmode}",
 								"inline": true
 							},
@@ -1313,42 +1313,42 @@
 								"inline": true
 							},
 							{
-								"name": "Hozzáférő tagok",
+								"name": "Members",
 								"value": "{channel.members}",
 								"inline": true
 							},
 							{
-								"name": "Beszélők",
+								"name": "Speakers",
 								"value": "{channel.speakers}",
 								"inline": true
 							},
 							{
-								"name": "Hallgatók",
+								"name": "Listeners",
 								"value": "{channel.listeners}",
 								"inline": true
 							},
 							{
-								"name": "Szót kérnek",
+								"name": "Requesting to Speak",
 								"value": "{channel.requesting_to_speak}",
 								"inline": true
 							},
 							{
-								"name": "Színpadmoderátorok",
+								"name": "Stage moderators",
 								"value": "{channel.moderators}",
 								"inline": true
 							},
 							{
-								"name": "Készült",
+								"name": "Created",
 								"value": "{channel.created}",
 								"inline": true
 							},
 							{
-								"name": "Jogkezelések",
+								"name": "Permission overwrites",
 								"value": "{channel.overwrites}",
 								"inline": true
 							},
 							{
-								"name": "Jogok kategóriához szinkronizálva?",
+								"name": "Permissions synced to category?",
 								"value": "{channel.permissions_synced}",
 								"inline": true
 							}
@@ -1363,7 +1363,7 @@
 			"forum": {
 				"embeds": [
 					{
-						"title": "Fórum információk",
+						"title": "Forum channel information",
 						"fields": [
 							{
 								"name": "ID",
@@ -1376,12 +1376,12 @@
 								"inline": false
 							},
 							{
-								"name": "Kategória",
+								"name": "Category",
 								"value": "{channel.category.name}",
 								"inline": true
 							},
 							{
-								"name": "Lassítás (másodperc)",
+								"name": "Slowmode (seconds)",
 								"value": "{channel.slowmode}",
 								"inline": true
 							},
@@ -1391,47 +1391,47 @@
 								"inline": true
 							},
 							{
-								"name": "Hozzáférő tagok",
+								"name": "Members",
 								"value": "{channel.members}",
 								"inline": true
 							},
 							{
-								"name": "Posztok",
+								"name": "Posts",
 								"value": "{channel.threads}",
 								"inline": true
 							},
 							{
-								"name": "Inaktivitás limit (percben)",
+								"name": "Inactivity duration (minutes)",
 								"value": "{channel.default_auto_archive_duration}",
 								"inline": true
 							},
 							{
-								"name": "Alapértelmezett lassítás (másodpercben)",
+								"name": "Default slowmode for posts (seconds)",
 								"value": "{channel.default_thread_slowmode_delay}",
 								"inline": true
 							},
 							{
-								"name": "Alapértelmezett reakció",
+								"name": "Default reaction",
 								"value": "{channel.default_reaction_emoji}",
 								"inline": true
 							},
 							{
-								"name": "Média csatorna?",
+								"name": "Media channel?",
 								"value": "{channel.media}",
 								"inline": true
 							},
 							{
-								"name": "Készült",
+								"name": "Created",
 								"value": "{channel.created}",
 								"inline": true
 							},
 							{
-								"name": "Jogkezelések",
+								"name": "Permission overwrites",
 								"value": "{channel.overwrites}",
 								"inline": true
 							},
 							{
-								"name": "Jogok kategóriához szinkronizálva?",
+								"name": "Permissions synced to category?",
 								"value": "{channel.permissions_synced}",
 								"inline": true
 							}
@@ -1447,7 +1447,7 @@
 		"pokemon": {
 			"embeds": [
 				{
-					"title": "Pokémon információ",
+					"title": "Pokemon information",
 					"fields": [
 						{
 							"name": "Dex",
@@ -1455,22 +1455,22 @@
 							"inline": true
 						},
 						{
-							"name": "Típus(ok)",
+							"name": "Type(s)",
 							"value": "{pokemon.type}",
 							"inline": true
 						},
 						{
-							"name": "Alap HP",
+							"name": "Base HP",
 							"value": "{pokemon.base_stats.hp}",
 							"inline": true
 						},
 						{
-							"name": "Alap támadás",
+							"name": "Base Attack",
 							"value": "{pokemon.base_stats.attack}",
 							"inline": true
 						},
 						{
-							"name": "Alap védelem",
+							"name": "Base Defense",
 							"value": "{pokemon.base_stats.defense}",
 							"inline": true
 						}
@@ -1484,59 +1484,59 @@
 		"template": {
 			"embeds": [
 				{
-					"title": "Sablon információ",
+					"title": "Template information",
 					"fields": [
 						{
-							"name": "Név",
+							"name": "Name",
 							"value": "{template.name}",
 							"inline": true
 						},
 						{
-							"name": "Szerver",
+							"name": "Server",
 							"value": "{template.guild.name}",
 							"inline": true
 						},
 						{
-							"name": "Készítette",
+							"name": "Created by",
 							"value": "{template.author}",
 							"inline": true
 						},
 						{
-							"name": "Készült",
+							"name": "Created at",
 							"value": "{template.created}",
 							"inline": true
 						},
 						{
-							"name": "Rangok száma",
+							"name": "Roles",
 							"value": "{template.roles}",
 							"inline": true
 						},
 						{
-							"name": "Csatornák száma",
+							"name": "Channels",
 							"value": "{template.channels}",
 							"inline": true
 						},
 						{
-							"name": "Használatok száma",
+							"name": "Uses",
 							"value": "{template.uses}",
 							"inline": true
 						},
 						{
-							"name": "Frissítették",
+							"name": "Updated at",
 							"value": "{template.updated}",
 							"inline": true
 						},
 						{
-							"name": "Off-sync?",
+							"name": "Unsynced?",
 							"value": "{template.unsynced}"
 						},
 						{
-							"name": "Kód",
+							"name": "Code",
 							"value": "{template.code}",
 							"inline": true
 						},
 						{
-							"name": "Leírás",
+							"name": "Description",
 							"value": "{template.description}",
 							"inline": false
 						}
@@ -1546,71 +1546,71 @@
 		}
 	},
 	"permissions": {
-		"add_reactions": "Reakciók hozzáadása",
-		"administrator": "Adminisztrátor",
-		"attach_files": "Fájlok csatolása",
-		"ban_members": "Tagok kitiltása",
-		"change_nickname": "Becenév megváltoztatása",
-		"connect": "Csatlakozás",
-		"create_events": "Események létrehozása",
-		"create_expressions": "Kifejezések létrehozása",
-		"create_instant_invite": "Meghívó létrehozása",
-		"create_polls": "Szavazások létrehozása",
-		"create_private_threads": "Privát gondolatmenetek létrehozása",
-		"create_public_threads": "Nyilvános gondolatmenetek létrehozása",
-		"deafen_members": "Tagok süketítése",
-		"embed_links": "Hivatkozások beágyazása",
-		"external_emojis": "Külső emotikon használata",
-		"external_stickers": "Külső matricák használata",
-		"kick_members": "Tagok kirúgása, jóváhagyása és elutasítása",
-		"manage_channels": "Csatornák kezelése",
-		"manage_emojis": "Kifejezések létrehozása",
-		"manage_emojis_and_stickers": "Kifejezések és matricák kezelése",
-		"manage_guild": "Szerver kezelése",
-		"manage_messages": "Üzenetek kezelése",
-		"manage_nicknames": "Becenevek kezelése",
-		"manage_permissions": "Jogok kezelése",
-		"manage_roles": "Szerepek kezelése",
-		"manage_threads": "Gondolatmenetek kezelése",
-		"manage_webhooks": "Webhookok kezelése",
-		"mention_everyone": "@everyone, @here és minden rang megemlítése",
-		"moderate_members": "Tagok felfüggesztése",
-		"move_members": "Tagok áthelyezése",
-		"mute_members": "Tagok némítása",
-		"priority_speaker": "Elsőbbségi megszólaló",
-		"read_message_history": "Üzenetelőzmények visszaolvasása",
-		"read_messages": "Üzenetek olvasása",
-		"request_to_speak": "Szó kérése",
-		"send_messages": "Üzenetek küldése",
-		"send_messages_in_threads": "Üzenetek küldése gondolatmenetekben",
-		"send_polls": "Szavazások létrehozása",
-		"send_tts_messages": "Szövegfelolvasó üzenetek küldése",
-		"send_voice_messages": "Hangüzenetek küldése",
-		"speak": "Beszéd",
-		"stream": "Videó",
-		"use_application_commands": "Alkalmazásparancsok használata",
-		"use_embedded_activities": "Tevékenységek használata",
-		"use_external_apps": "Külső Alkalmazások Használata",
-		"use_external_emojis": "Külső emotikonok használata",
-		"use_external_sounds": "Külső hangok használata",
-		"use_external_stickers": "Külső matricák használata",
-		"use_soundboard": "A Soundboard használata",
-		"use_voice_activation": "Voice Activity használata",
-		"view_audit_log": "Tevékenységnapló megtekintése",
-		"view_channel": "Csatorna megtekintése",
-		"view_creator_monetization_analytics": "Készítői monetizációs analitikák megtekintése",
-		"view_guild_insights": "A Server Insights megtekintése"
+		"add_reactions": "Add Reactions",
+		"administrator": "Administrator",
+		"attach_files": "Attach Files",
+		"ban_members": "Ban Members",
+		"change_nickname": "Change Nickname",
+		"connect": "Connect",
+		"create_events": "Create Events",
+		"create_expressions": "Create Expressions",
+		"create_instant_invite": "Create Instant Invite",
+		"create_polls": "Create Polls",
+		"create_private_threads": "Create Private Threads",
+		"create_public_threads": "Create Public Threads",
+		"deafen_members": "Deafen Members",
+		"embed_links": "Embed Links",
+		"external_emojis": "Use External Emojis",
+		"external_stickers": "Use External Stickers",
+		"kick_members": "Kick Members",
+		"manage_channels": "Manage Channels",
+		"manage_emojis": "Manage Emojis",
+		"manage_emojis_and_stickers": "Manage Emojis and Stickers",
+		"manage_guild": "Manage Server",
+		"manage_messages": "Manage Messages",
+		"manage_nicknames": "Manage Nicknames",
+		"manage_permissions": "Manage Permissions",
+		"manage_roles": "Manage Roles",
+		"manage_threads": "Manage Threads",
+		"manage_webhooks": "Manage Webhooks",
+		"mention_everyone": "Mention Everyone",
+		"moderate_members": "Timeout Members",
+		"move_members": "Move Members",
+		"mute_members": "Mute Members",
+		"priority_speaker": "Priority Speaker",
+		"read_message_history": "Read Message History",
+		"read_messages": "Read Messages",
+		"request_to_speak": "Request to Speak",
+		"send_messages": "Send Messages",
+		"send_messages_in_threads": "Send Messages in Threads",
+		"send_polls": "Send Polls",
+		"send_tts_messages": "Send TTS Messages",
+		"send_voice_messages": "Send Voice Messages",
+		"speak": "Speak",
+		"stream": "Go Live",
+		"use_application_commands": "Use Application Commands",
+		"use_embedded_activities": "Use Embedded Activities",
+		"use_external_apps": "Use External Applications",
+		"use_external_emojis": "Use External Emojis",
+		"use_external_sounds": "Use External Sounds",
+		"use_external_stickers": "Use External Stickers",
+		"use_soundboard": "Use Soundboard",
+		"use_voice_activation": "Use Voice Activation",
+		"view_audit_log": "View Audit Log",
+		"view_channel": "View Channel",
+		"view_creator_monetization_analytics": "View Creator Monetization Analytics",
+		"view_guild_insights": "View Server Insights"
 	},
 	"errors": {
 		"missing_required_argument": {
 			"embeds": [
 				{
-					"title": "Hiányzó paraméter",
-					"description": "Helyes használat:\n```{command.usage}```",
+					"title": "Missing Argument",
+					"description": "Correct usage:\n```{command.usage}```",
 					"timestamp": "{now}",
 					"fields": [
 						{
-							"name": "Leírás",
+							"name": "Description",
 							"value": "{command.description}",
 							"inline": false
 						}
@@ -1622,11 +1622,11 @@
 		"bot_missing_permissions": {
 			"embeds": [
 				{
-					"title": "Ehhez nincs jogom!",
-					"description": "A botnak kellenek még jogok, hogy ezt a parancsot végrehajthassa.",
+					"title": "Missing Permissions",
+					"description": "The bot needs additional permissions to run this command.",
 					"fields": [
 						{
-							"name": "Hiányzó jogok",
+							"name": "Missing Permissions",
 							"value": "```{permissions}```",
 							"inline": false
 						}
@@ -1638,12 +1638,12 @@
 		"bad_argument": {
 			"embeds": [
 				{
-					"title": "Hibás paraméter",
-					"description": "Helyes használat:\n```{command.usage}```",
+					"title": "Incorrect usage",
+					"description": "Correct usage:\n```{command.usage}```",
 					"timestamp": "{now}",
 					"fields": [
 						{
-							"name": "Leírás",
+							"name": "Description",
 							"value": "{command.description}",
 							"inline": false
 						}
@@ -1655,11 +1655,11 @@
 		"missing_permissions": {
 			"embeds": [
 				{
-					"title": "Nincs jogod ehhez!",
-					"description": "Egyéb jogok szükségesek a parancs lefuttatásához.",
+					"title": "Missing Permissions",
+					"description": "You need additional permissions to run this command.",
 					"fields": [
 						{
-							"name": "Hiányzó jogok",
+							"name": "Missing Permissions",
 							"value": "```{permissions}```",
 							"inline": false
 						}
@@ -1671,8 +1671,8 @@
 		"command_on_cooldown": {
 			"embeds": [
 				{
-					"title": "Egy picit lassíts!",
-					"description": "A **{command.name}** parancsot legközelebb `{retry_after}` idő múlva használhatod újra.",
+					"title": "You're on cooldown",
+					"description": "You may use this command in `{retry_after}`.",
 					"color": 13369344
 				}
 			]
@@ -1680,8 +1680,8 @@
 		"channel_not_found": {
 			"embeds": [
 				{
-					"title": "Nincs ilyen csatorna",
-					"description": "A megadott csatorna nem található.",
+					"title": "Channel not found",
+					"description": "The channel you specified was not found.",
 					"color": 13369344
 				}
 			]
@@ -1689,8 +1689,8 @@
 		"emoji_not_found": {
 			"embeds": [
 				{
-					"title": "Nincs ilyen emoji",
-					"description": "A megadott emoji nem található.",
+					"title": "Emoji not found",
+					"description": "The emoji you specified was not found.",
 					"color": 13369344
 				}
 			]
@@ -1698,8 +1698,8 @@
 		"member_not_found": {
 			"embeds": [
 				{
-					"title": "Nincs ilyen tag",
-					"description": "A megadott tag nem található.",
+					"title": "Member not found",
+					"description": "The member you specified was not found.",
 					"color": 13369344
 				}
 			]
@@ -1707,8 +1707,8 @@
 		"user_not_found": {
 			"embeds": [
 				{
-					"title": "Nincs ilyen felhasználó",
-					"description": "A megadott felhasználó nem található.",
+					"title": "User not found",
+					"description": "The user you specified was not found.",
 					"color": 13369344
 				}
 			]
@@ -1716,8 +1716,8 @@
 		"role_not_found": {
 			"embeds": [
 				{
-					"title": "Nincs ilyen rang",
-					"description": "A megadott rang nem található.",
+					"title": "Role not found",
+					"description": "The role you specified was not found.",
 					"color": 13369344
 				}
 			]
@@ -1725,8 +1725,8 @@
 		"forbidden": {
 			"embeds": [
 				{
-					"title": "Tiltott",
-					"description": "A bot 403-as (Forbidden) hibába ütközött. Kérlek, ellenőrizd a bot jogait és a rang hierarchiát.",
+					"title": "Forbidden",
+					"description": "The bot got a 403 Forbidden error. Please check for role hierarchy and bot permissions.",
 					"color": 13369344
 				}
 			]
@@ -1734,8 +1734,8 @@
 		"not_owner": {
 			"embeds": [
 				{
-					"title": "Nem használhatod ezt a parancsot!",
-					"description": "Ezt a parancsot csak a bot tulajdonosai használhatják.",
+					"title": "Not the owner",
+					"description": "You are not an owner of this bot.",
 					"color": 13369344
 				}
 			]
@@ -1743,14 +1743,14 @@
 	},
 	"snapshot": {
 		"strings": {
-			"server_snapshot": "{guild.name} Snapshot-ja",
-			"save_load_reason": "fm01 Snapshot betöltés - {author.name}"
+			"server_snapshot": "Snapshot of {guild.name}",
+			"save_load_reason": "Lumin save load - {author.name}"
 		},
 		"create": {
 			"embeds": [
 				{
 					"title": "Snapshot",
-					"description": "A Snapshot sikeresen elkészült.\nKód: ```{code}```",
+					"description": "The snapshot has been created successfully.\nCode: ```{code}```",
 					"color": 6656243
 				}
 			]
@@ -1759,7 +1759,7 @@
 			"embeds": [
 				{
 					"title": "Snapshot",
-					"description": "A Snapshot sikeresen be lett töltve. A szerver előző állapotát a **/snapshot load** paranccsal tudod visszaállítani, ezzel a kóddal: ```{code}```.",
+					"description": "The snapshot has been loaded successfully. You can restore the old state of the server by running the **/snapshot load** command with the code: ```{code}```.",
 					"color": 6656243
 				}
 			]
@@ -1767,8 +1767,8 @@
 		"owner_alert": {
 			"embeds": [
 				{
-					"title": "Snapshot betöltés",
-					"description": "{author.name} betöltött egy Snapshot-ot a(z) {guild.name} szerveren. A szerver előző állapotát a **/snapshot load** paranccsal tudod visszaállítani, ezzel a kóddal: ```{code}```.",
+					"title": "Snapshot load alert",
+					"description": "{author.name} has loaded a snapshot in {guild.name}. You can restore the old state of the server by running the snapshot load command with the code `{code}`.",
 					"color": 13369344
 				}
 			]
@@ -1776,8 +1776,8 @@
 		"not_found": {
 			"embeds": [
 				{
-					"title": "Hibás Snapshot",
-					"description": "Az általad megadott Snapshot nem található.",
+					"title": "Snapshot not found",
+					"description": "The snapshot you specified was not found.",
 					"color": 13369344
 				}
 			]
@@ -1786,11 +1786,11 @@
 	"setup": {
 		"prefix": {
 			"set": {
-				"content": "A prefix mától `{prefix}`"
+				"content": "The prefix is now `{prefix}`"
 			},
 			"errors": {
 				"long": {
-					"content": "A prefix maximum {limit} karakter hosszú lehet!"
+					"content": "The prefix can only be up to {limit} characters long!"
 				}
 			}
 		}
