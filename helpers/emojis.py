@@ -1,10 +1,10 @@
 """A helper for the bot's emojis."""
 
-TICK = "<:check:1270407775595528303>"
+TICK = "<:check:1384556587921834056>"
 """Checkmark emoji."""
 CHECK = TICK
 """Checkmark emoji."""
-X = "<:deny:1270407948643864586>"
+X = "<:deny:1384556641781026958>"
 """X mark emoji."""
 DENY = XMARK = X
 """X mark emoji."""
