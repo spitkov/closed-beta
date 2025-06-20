@@ -141,7 +141,7 @@ class LogListeners(commands.Cog):
 
 	async def log_check(self, guild: Union[int, discord.Guild]) -> bool:
 		"""
-		Returns whether or not the guild should receive log messages
+		Returns whether the guild should receive log messages
 
 		Parameters
 		----------
@@ -151,14 +151,14 @@ class LogListeners(commands.Cog):
 		Returns
 		-------
 		`bool`
-			Whether or not the guild should receive log messages
+			Whether the guild should receive log messages
 		"""
 		if isinstance(guild, int):
 			guild_id = guild
 		elif isinstance(guild, discord.Guild):
 			guild_id = guild.id
 
-		# retreive calling function name
+		# retrieve calling function name
 		func_name = sys._getframe(1).f_code.co_name  # type: ignore
 
 		result = await self.client.db.fetchval(
@@ -170,8 +170,17 @@ class LogListeners(commands.Cog):
 	@commands.Cog.listener()
 	async def on_message_edit(self, before: discord.Message, after: discord.Message):
 		if before.content != after.content:
-			await self.send_webhook(before.guild.id, "content", before=before.content, after=after.content)
+			await self.send_webhook(before.guild.id, "content", before=CustomMessage.from_message(before), after=CustomMessage.from_message(after))
+		if before.embeds != after.embeds:
+			await self.send_webhook(before.guild.id, "embeds", before=CustomMessage.from_message(before),
+									after=CustomMessage.from_message(after))
+		if before.attachments != after.attachments:
+			await self.send_webhook(before.guild.id, "attachments", before=CustomMessage.from_message(before), after=CustomMessage.from_message(after))
+		if before.pinned != after.pinned:
+			await self.send_webhook(before.guild.id, "pinned", before=CustomMessage.from_message(before), after=CustomMessage.from_message(after))
 
+
+0
 async def setup(client: MyClient) -> None:
 	await client.add_cog(LogCommands(client))
 	await client.add_cog(LogListeners(client))

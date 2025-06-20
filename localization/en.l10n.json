@@ -1545,6 +1545,34 @@
 			]
 		}
 	},
+	"log": {
+		"on_message_edit": {
+			"content": {
+				"embeds": [
+					{
+						"title": "Message Edited",
+						"fields": [
+							{
+								"name": "Content before",
+								"value": "{before.content}",
+								"inline": true
+							},
+							{
+								"name": "Content after",
+								"value": "{after.content}",
+								"inline": true
+							}
+						],
+						"author": {
+							"name": "{before.author.name}",
+							"icon_url": "{before.author.icon}"
+						},
+						"timestamp": "{now}"
+					}
+				]
+			}
+		}
+	},
 	"permissions": {
 		"add_reactions": "Add Reactions",
 		"administrator": "Administrator",
