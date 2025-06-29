@@ -907,7 +907,7 @@ class CustomMessage:
 			_embeds=message.embeds,
 			_attachments=message.attachments,
 			_stickers=message.stickers,
-			_author=CustomMember.from_user(message.author),
+			_author=CustomUser.from_user(message.author),
 			_channel=message.channel,
 			_guild=CustomGuild.from_guild(message.guild) if message.guild else None,
 			_created_at=message.created_at,
@@ -940,7 +940,7 @@ class CustomMessage:
 		return len(self._stickers)
 
 	@property
-	def author(self) -> CustomMember:
+	def author(self) -> CustomUser:
 		"""Returns the message's author."""
 		return self._author
 
