@@ -409,7 +409,7 @@ class MyClient(commands.AutoShardedBot):
 			case _:
 				# if the error is unknown, log it
 				channel: discord.TextChannel = ctx.channel if DEBUG and ctx and ctx.channel else await self.fetch_channel(
-					1268260404677574697
+					1368342716307738734
 					)
 				stack = "".join(traceback.format_exception(type(error), error, error.__traceback__))
 				# if stack is more than 1700 characters, turn it into a .txt file and store it as an attachment
@@ -424,8 +424,9 @@ class MyClient(commands.AutoShardedBot):
 					await channel.webhooks(), name=f"{self.user.display_name} Errors"
 					)
 				if not webhook:
+					avatar_data = await ctx.me.avatar.read() if ctx.me.avatar else None
 					webhook = await channel.create_webhook(
-						name=f"{self.user.display_name} Errors", avatar=await ctx.me.avatar.read()
+						name=f"{self.user.display_name} Errors", avatar=avatar_data
 						)
 				await webhook.send(
 					content=f"**ID:** {ctx.message.id}\n"
