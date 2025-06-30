@@ -879,6 +879,8 @@ class CustomMessage:
 	"""Returns the message's ID."""
 	content: str
 	"""Returns the message's content."""
+	jump_url: str
+	"""Returns a URL that allows the user to jump to the message."""
 	_embeds: list[discord.Embed] = field(repr=False)
 	_attachments: list[discord.Attachment] = field(repr=False)
 	_stickers: list[discord.StickerItem] = field(repr=False)
@@ -904,6 +906,7 @@ class CustomMessage:
 		return cls(
 			id=message.id,
 			content=message.content,
+			jump_url=message.jump_url,
 			_embeds=message.embeds,
 			_attachments=message.attachments,
 			_stickers=message.stickers,
@@ -1017,6 +1020,11 @@ class CustomMessage:
 	def poll(self) -> bool:
 		"""Returns whether the message has a poll."""
 		return bool(self._poll)
+
+	@property
+	def mention(self) -> str:
+		"""Returns the message's channel mention. An alias for .channel for consistency."""
+		return self.channel
 
 	def __str__(self):
 		return self.content
@@ -1180,11 +1188,9 @@ class CustomTextChannel:
 		return CustomGuild.from_guild(self._guild)
 
 	@property
-	def slowmode(self) -> int:
+	def slowmode_delay(self) -> int:
 		"""Returns the slowmode delay in seconds."""
 		return self._slowmode_delay
-
-	slowmode_delay = slowmode
 
 	@property
 	def auto_archive(self) -> int:
@@ -1192,11 +1198,9 @@ class CustomTextChannel:
 		return self._default_auto_archive_duration
 
 	@property
-	def thread_slowmode(self) -> int:
+	def thread_slowmode_delay(self) -> int:
 		"""Returns the channel's thread slowmode delay in minutes."""
 		return self._slowmode_delay
-
-	thread_slowmode_delay = thread_slowmode
 
 	@property
 	def members(self):
@@ -1299,8 +1303,6 @@ class CustomVoiceChannel:
 	def slowmode_delay(self) -> int:
 		"""Returns the channel's slowmode delay in seconds."""
 		return self._slowmode_delay
-
-	slowmode = slowmode_delay
 
 	@property
 	def category(self) -> Optional[CustomCategoryChannel]:
@@ -1415,8 +1417,6 @@ class CustomStageChannel:
 	def slowmode_delay(self) -> int:
 		"""Returns the channel's slowmode delay in seconds."""
 		return self._slowmode_delay
-
-	slowmode = slowmode_delay
 
 	@property
 	def requesting_to_speak(self) -> int:
