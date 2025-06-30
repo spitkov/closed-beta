@@ -70,7 +70,7 @@ class LogListeners(commands.Cog):
 		self.client = client
 
 	# TODO:
-	# 'on_guild_update', 'on_guild_emojis_update', 'on_guild_stickers_update', 'on_invite_create', 'on_invite_delete',
+	# 'on_guild_update', 'on_guild_emojis_update', 'on_guild_stickers_update', 
 	# 'on_guild_integrations_update', 'on_webhooks_update', 'on_raw_integration_delete', 'on_member_join',
 	# 'on_member_remove', 'on_member_update', 'on_member_ban', 'on_member_ban', 'on_member_unban', 'on_message_edit',
 	# 'on_message_delete', 'on_bulk_message_delete', 'on_poll_vote_add', 'on_poll_vote_remove', 'on_reaction_add',
@@ -213,6 +213,32 @@ class LogListeners(commands.Cog):
 			"action",
 			execution=CustomAutoModAction.from_action(execution),
 		)
+
+	@commands.Cog.listener()
+	async def on_invite_create(self, invite: discord.Invite):
+		custom_invite = CustomInvite.from_invite(invite)
+		await self.send_webhook(invite.guild.id, "create", invite=custom_invite)
+
+	@commands.Cog.listener()
+	async def on_invite_delete(self, invite: discord.Invite):
+		if not invite.guild:
+			return
+		
+		actor_id = None
+		found_entry = None
+		async for entry in invite.guild.audit_logs(action=discord.AuditLogAction.invite_delete, limit=5):
+			# The invite object from the event is sparse. The audit log 'before' object has the real data.
+			if hasattr(entry.before, 'code') and entry.before.code == invite.code:
+				actor_id = entry.user.id
+				found_entry = entry
+				break
+		
+		# If we found the audit log entry, use its data. Otherwise, we can't log anything useful.
+		if found_entry:
+			# Use the invite object from the audit log's 'before' state.
+			custom_invite = CustomInvite.from_audit_log_diff(found_entry.before, invite.guild.id)
+			actor_string = f" by <@{actor_id}>" if actor_id else ""
+			await self.send_webhook(invite.guild.id, "delete", invite=custom_invite, actor_string=actor_string)
 
 	@commands.Cog.listener()
 	async def on_guild_channel_create(self, channel: discord.abc.GuildChannel):

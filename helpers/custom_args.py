@@ -1768,6 +1768,79 @@ class CustomTemplate:
 	unsynced = dirty = is_dirty
 
 @dataclass
+class CustomInvite:
+	"""A class that represents a Discord invite with useful formatting properties."""
+	code: str
+	url: str
+	inviter: Optional[CustomUser] = field(repr=False)
+	created_at: Optional[FormatDateTime] = field(repr=False)
+	_max_age: int = field(repr=False)
+	max_uses: int
+	temporary: bool
+	channel: str
+	uses: int
+
+	@classmethod
+	def from_invite(cls, invite: discord.Invite):
+		# Discord API can be inconsistent, provide defaults for optional fields.
+		max_age_sec = invite.max_age if invite.max_age is not None else 0
+		return cls(
+			code=invite.code,
+			url=invite.url,
+			inviter=CustomUser.from_user(invite.inviter) if invite.inviter else None,
+			created_at=FormatDateTime(invite.created_at, "f") if invite.created_at else None,
+			_max_age=max_age_sec,
+			max_uses=invite.max_uses if invite.max_uses is not None else 0,
+			temporary=invite.temporary if invite.temporary is not None else False,
+			channel=invite.channel.mention if hasattr(invite.channel, 'mention') else "N/A",
+			uses=invite.uses if invite.uses is not None else 0
+		)
+
+	@classmethod
+	def from_audit_log_diff(cls, audit_data: discord.AuditLogDiff, guild_id: int):
+		# Create a dummy user object for CustomUser.from_user
+		inviter_obj = None
+		if hasattr(audit_data, "inviter") and audit_data.inviter:
+			inviter_obj = CustomUser.from_user(audit_data.inviter)
+
+		max_age_sec = audit_data.max_age if hasattr(audit_data, "max_age") and audit_data.max_age is not None else 0
+		max_uses_val = audit_data.max_uses if hasattr(audit_data, "max_uses") and audit_data.max_uses is not None else 0
+		temporary_val = audit_data.temporary if hasattr(audit_data, "temporary") and audit_data.temporary is not None else False
+		uses_val = audit_data.uses if hasattr(audit_data, "uses") and audit_data.uses is not None else 0
+		
+		channel_mention = "N/A"
+		if hasattr(audit_data, "channel") and audit_data.channel:
+			channel_mention = f"<#{audit_data.channel.id}>"
+
+		return cls(
+			code=audit_data.code,
+			url=f"https://discord.gg/{audit_data.code}",
+			inviter=inviter_obj,
+			created_at=None,  # Not available in audit log diff for deletes
+			_max_age=max_age_sec,
+			max_uses=max_uses_val,
+			temporary=temporary_val,
+			channel=channel_mention,
+			uses=uses_val
+		)
+
+	@property
+	def max_age(self) -> Union[str, FormatDateTime]:
+		"""Returns the invite's max age as a relative timestamp or a human-readable duration."""
+		if self._max_age == 0:
+			return "Never"
+		
+		if self.created_at:
+			expires = self.created_at.data + datetime.timedelta(seconds=self._max_age)
+			return FormatDateTime(expires, "R")
+
+		# Fallback for when created_at is not available (e.g., deleted invites)
+		return str(datetime.timedelta(seconds=self._max_age))
+
+	def __str__(self) -> str:
+		return self.code
+
+@dataclass
 class CustomRuleAction:
 	type: str
 	"""Returns the action's type."""

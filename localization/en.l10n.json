@@ -1546,6 +1546,33 @@
 		}
 	},
 	"log": {
+		"on_invite_create": {
+			"create": {
+				"embeds": [
+					{
+						"title": "Invite Created",
+						"description": "Invite `{invite.code}` was created for {invite.channel} by {invite.inviter.mention}.",
+						"fields": [
+							{ "name": "Max Uses", "value": "{invite.max_uses}", "inline": true },
+							{ "name": "Max Age (seconds)", "value": "{invite.max_age}", "inline": true },
+							{ "name": "Temporary", "value": "{invite.temporary}", "inline": true }
+						],
+						"color": 5763719
+					}
+				]
+			}
+		},
+		"on_invite_delete": {
+			"delete": {
+				"embeds": [
+					{
+						"title": "Invite Deleted",
+						"description": "Invite `{invite.code}` for {invite.channel} was deleted{actor_string}.",
+						"color": 15548997
+					}
+				]
+			}
+		},
 		"on_guild_channel_create": {
 			"create": {
 				"embeds": [
